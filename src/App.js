@@ -1,24 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import Home from './pages/Home/Home';
+import Eat from './pages/Eat/Eat';
+import Extra from './pages/Extra/Extra';
+import Play from './pages/Play/Play';
+import Study from './pages/Study/Study';
+
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* 웹 서비스 소개 페이지 */}
+        <Route path="/" element={<Home />} />
+        {/* <Play /> */}
+        <Route path="/play" element={<Play />} />
+        {/* <Eat /> */}
+        <Route path="/eat" element={<Eat />} />
+        {/* <Study /> */}
+        <Route path="/study" element={<Study />} />
+        {/* <Extra /> */}
+        <Route path="/extra" element={<Extra />} />
+      </Routes>
+    </BrowserRouter> 
   );
 }
 
