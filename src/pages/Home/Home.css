@@ -1,0 +1,12 @@
+.Home{
+    height: 200px;
+    margin : 20px auto;
+    padding : 20px;
+    border: 5px solid black;
+}
+.buttons{
+    box-sizing: border-box;
+    height: 200px;
+    padding : 10px;
+    border: 5px solid red;
+}
