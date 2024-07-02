@@ -1,10 +1,13 @@
-import logo from './logo.svg';
+
 import './App.css';
-import Home from './pages/Home/Home';
+import Intro from './pages/Intro/Intro';
 import Eat from './pages/Eat/Eat';
 import Extra from './pages/Extra/Extra';
 import Play from './pages/Play/Play';
 import Study from './pages/Study/Study';
+import Home from './pages/Home/Home';
+import Mypage from './pages/Mypage/Mypage'
+import Create from './pages/Create/Create'
 
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -12,16 +15,23 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         {/* 웹 서비스 소개 페이지 */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Intro />} />
+        {/* <All /> */}
+        <Route path="/home" element={<Home />} />
         {/* <Play /> */}
-        <Route path="/play" element={<Play />} />
+        <Route path="/home/play" element={<Play />} />
         {/* <Eat /> */}
-        <Route path="/eat" element={<Eat />} />
+        <Route path="/home/eat" element={<Eat />} />
         {/* <Study /> */}
-        <Route path="/study" element={<Study />} />
+        <Route path="/home/study" element={<Study />} />
         {/* <Extra /> */}
-        <Route path="/extra" element={<Extra />} />
+        <Route path="/home/extra" element={<Extra />} />
+        {/* <Mypage /> */}
+        <Route path="/home/mypage" element={<Mypage />} />
+        {/* <Create /> */}
+        <Route path="/home/create" element={<Create />} />
       </Routes>
     </BrowserRouter> 
   );
