@@ -28,15 +28,15 @@
   padding: 20px 40px ;
   font-size: 20px;
   margin:  5% ; /* 버튼 간격 조정 */
-  background-color: #007bff;
+  background-color: rgb(255, 187, 163);
   color: white;
-  border: none;
+  border: solid ;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: #0056b3;
+  background-color: rgb(255, 155, 119);
 }
 .App-header {
   background-color: #282c34;
