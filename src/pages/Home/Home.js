@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Sidebar from "../Sidebar";
 import Searchbar from "../Searchbar";
+import Filter from "../Filter";
 
 
 const Center = styled.div`
@@ -18,7 +19,7 @@ class Home extends React.Component {
         <Center>
           <Sidebar/>
           <Searchbar/>
-          <div> All세부 페이지</div>
+          <Filter/>
         </Center>
     );
   }

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { FaSearch } from "react-icons/fa";
 
 const Box = styled.div`
-    height : 30px;
-    padding : 10px;
+    height : 60px;
+    margin : 90px;
     display : flex;
     flex-direction: row;
+    position: relative;
 `
 
 function Searchbar(){
@@ -16,8 +18,11 @@ function Searchbar(){
     }
     return(
         <Box>
-            <input type = "text" style={{width:500}} value = {search} onChange={onChange} />
+            <input type = "text" className="searchbar" value = {search} onChange={onChange} />
+            <button className="s-button"><FaSearch/></button>
         </Box>
+        
+        
         
     );
 }
