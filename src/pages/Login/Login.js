@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = () => {  
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -48,7 +48,7 @@ const Login = () => {
         {error && <p style={{color: 'red'}}>{error}</p>}
         <button onClick={handleLogin}>Login</button>
     </div>
-    <button className="transparent-button" onClick={() => navigate('/Login/Signin')}>Sign in</button>
+    <button className="transparent-button" onClick={() => navigate('/Login/Signup')}>Sign up</button>
     <button className="transparent-button" onClick={() => navigate('/Login/Forgetpassword')}>Forget Password?</button>
     </>
     );

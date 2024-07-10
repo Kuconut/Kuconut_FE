@@ -9,7 +9,7 @@ import Home from './pages/Home/Home';
 import Mypage from './pages/Mypage/Mypage'
 import Create from './pages/Create/Create'
 import Login from './pages/Login/Login';
-import Signin from './pages/Signin/Signin';
+import Signup from './pages/Signup/Signup';
 import Forgetpassword from './pages/Forgetpassword/Forgetpassword';
 
 
@@ -38,8 +38,8 @@ function App() {
         <Route path="/home/create" element={<Create />} />
         {/* <Login /> */}
         <Route path="/login" element={<Login />} />      
-        {/* <Signin /> */}
-        <Route path="/login/Signin" element={<Signin />} />    
+        {/* <Signup /> */}
+        <Route path="/login/Signup" element={<Signup />} />    
         {/* <Forgetpassword /> */}
         <Route path="/login/Forgetpassword" element={<Forgetpassword />} />            
         </Routes>
