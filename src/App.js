@@ -8,6 +8,10 @@ import Study from './pages/Study/Study';
 import Home from './pages/Home/Home';
 import Mypage from './pages/Mypage/Mypage'
 import Create from './pages/Create/Create'
+import Login from './pages/Login/Login';
+import Signin from './pages/Signin/Signin';
+import Forgetpassword from './pages/Forgetpassword/Forgetpassword';
+
 
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -32,7 +36,13 @@ function App() {
         <Route path="/home/mypage" element={<Mypage />} />
         {/* <Create /> */}
         <Route path="/home/create" element={<Create />} />
-      </Routes>
+        {/* <Login /> */}
+        <Route path="/login" element={<Login />} />      
+        {/* <Signin /> */}
+        <Route path="/login/Signin" element={<Signin />} />    
+        {/* <Forgetpassword /> */}
+        <Route path="/login/Forgetpassword" element={<Forgetpassword />} />            
+        </Routes>
     </BrowserRouter> 
   );
 }
