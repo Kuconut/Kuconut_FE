@@ -1,5 +1,10 @@
 import React from "react";
 import { NavLink, useLocation, useNavigate} from "react-router-dom";
+
+import { IoPerson } from "react-icons/io5";
+import { LuPencilLine } from "react-icons/lu";
+
+
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
 import "../App.css";
@@ -47,8 +52,8 @@ function Sidebar() {
     return (
         <Side>
         <Row>
-            <button onClick = {goToMypage} className="side_button">마이페이지</button>
-            <button onClick = {goToCreate} className="side_button"> 게시물 작성하기</button>
+            <button onClick = {goToMypage} className="side_button"><IoPerson/></button>
+            <button onClick = {goToCreate} className="side_button"> <LuPencilLine/></button>
         </Row>
         
         <Menu>
