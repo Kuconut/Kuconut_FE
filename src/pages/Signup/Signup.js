@@ -1,39 +1,54 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Signup.css';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [id, setid] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
+  const [verify, setVerify] = useState(false);
+  const [verifycode, setVerifycode] = useState('');
+  const [redundancy, setRedundancy] = useState('');
+  const [emailLock, setEmailLock] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
       // 클라이언트 측 유효성 검사 예시
-      if (!email || !username || !password || !nickname) {
+      if (!email || !id || !password || !nickname) {
         setError('모두 입력해주세요.');
         return;
       }
 
-      // 이메일 형식 검사 예시 (간단한 형식만 검사)
-      if (!validateEmail(email)) {
-        setError('올바른 이메일 형식이 아닙니다.');
+      if (redundancy === '') {
+        setError("아이디 중복을 확인하세요.");
+        return;
+      }
+
+      if (redundancy === false) {
+        setError("아이디가 중복되었습니다.");
+        return;
+      }
+
+      if (!emailLock) {
+        setError("이메일 인증을 하세요.")
         return;
       }
 
       // 서버에 회원가입 요청
-      const response = await axios.post('http://example.com/api/signup', {
+      const response = await axios.post('API 주소', {
         email,
-        username,
+        id,
         password,
         nickname
       });
 
       if (response.data.success) {
         alert('회원가입 성공!');
-        // 로그인 페이지로 이동 또는 다른 작업 수행
+        navigate("/login");
       } else {
         setError('회원가입 실패: 서버 오류');
       }
@@ -44,21 +59,66 @@ const SignUp = () => {
   }
 
   const validateEmail = (email) => {
-    // 간단한 이메일 형식 검사
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    if(!(re.test(email))) {
+      setError("올바른 이메일 형식이 아닙니다.")
+    }
+    else {
+      setVerify(true);
+      setError('');
+    }
+  }
+
+  const ChangeId = async (inp) => {
+    setid(inp);
+    
+    try {
+      const response = await axios.post('API 주소', {
+        id
+      });
+
+      if(response.data.success) {
+        setRedundancy(true);
+        setError('');
+      }
+      else {
+        setRedundancy(false);
+        setError("아이디가 중복되었습니다.");
+      }  
+    }
+    catch {
+      setError("네트워크 오류")
+    }
+
+  }
+
+  const CheckVerifyCode = async(code) => {
+    try{
+      const response = await axios.post('API 주소', {code});
+
+      if(response.data.success) {
+        setEmailLock(true);
+        setError('');
+      }
+      else(
+        setError("인증번호가 잘못되었습니다.")
+      )
+    }
+    catch {
+      setError("네트워크 오류")
+    }
   }
 
   return (
     <div className="signup-container">
       <h2>Sign up</h2>
       <div>
-        <label htmlFor="username">ID:</label>
+        <label htmlFor="id">ID:</label>
         <input
           type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          id="id"
+          value={id}
+          onChange={(e) => ChangeId(e.target.value)}
         />
       </div>
       <div>
@@ -71,16 +131,29 @@ const SignUp = () => {
         />
       </div>
       <div>
-        <label htmlFor="email">이메일:</label>
+        <label htmlFor="email">E-mail:</label>
         <input
           type="email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled = {emailLock}
         />
+        <button onClick={()=>validateEmail(email)} disabled = {emailLock}>인증</button>
+        {verify &&
+        <div>
+        <input
+          type="text"
+          id="verifycode"
+          value={verifycode}
+          onChange={(e)=>setVerifycode(e.target.value)}
+          disabled = {emailLock}
+        />  
+        <button onClick={()=>CheckVerifyCode(verifycode)} disabled = {emailLock}>확인</button>
+        </div>}
       </div>
       <div>
-        <label htmlFor="nickname">닉네임:</label>
+        <label htmlFor="nickname">Nickname:</label>
         <input
           type="text"
           id="nickname"
