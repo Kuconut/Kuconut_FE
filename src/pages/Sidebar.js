@@ -4,7 +4,6 @@ import { NavLink, useLocation, useNavigate} from "react-router-dom";
 import { IoPerson } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
 
-
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
 import "../App.css";

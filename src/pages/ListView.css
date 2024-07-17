@@ -1,0 +1,23 @@
+.list_button{
+    width : 600px;
+    height: 60px;
+    padding: 10px;
+    margin: 50px 100px;
+    display : flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+.list_button_text{
+    font-size: 20px;
+    width: 595px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+}
+.listView{
+    margin-top: 150px;
+    padding : 0;
+    overflow-y: scroll; 
+    flex-grow: 1;
+}
