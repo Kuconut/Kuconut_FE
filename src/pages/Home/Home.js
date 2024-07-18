@@ -1,28 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
-import Sidebar from "../Sidebar";
-import Searchbar from "../Searchbar";
-import Filter from "../Filter";
+import Sidebar from "../Sidebar.js";
+import Searchbar from "../Searchbar.js";
 
 
-const Center = styled.div`
-  height: 100vh;
+const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  height:100vh;
 `
 
 
-class Home extends React.Component {
-  render() {
-    return(
-        <Center>
-          <Sidebar/>
-          <Searchbar/>
-          <Filter/>
-        </Center>
-    );
-  }
+
+const Home = () => {
+  return(
+    <Container>
+      <Sidebar/>
+      <Searchbar type = "all"/>
+    </Container>
+ 
+  );
 }
+    
 
 export default Home;

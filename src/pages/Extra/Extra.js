@@ -1,18 +1,22 @@
 import React from 'react';
 import styled from "styled-components";
 import Sidebar from '../Sidebar';
+import Searchbar from '../Searchbar';
 
-const Center = styled.div`
-  height: 100vh;
+
+const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  height:100vh;
 `
 const Extra = () => {
   return (
-    <Center>
-      <Sidebar/>
-      <div>Extra 세부 페이지</div>
-    </Center>
+    <div>
+      <Container>
+        <Sidebar/>
+        <Searchbar type="extra"/>
+      </Container>
+      
+    </div>
   );
 }
 

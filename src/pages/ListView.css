@@ -1,0 +1,83 @@
+/* ListView.css */
+.list_button {
+    width: 80%;
+    height: 60px;
+    padding: 10px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.list_button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.list_button_text {
+    font-size: 18px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #343a40;
+}
+
+.listView {
+    width: 100%;
+    margin-top: 200px;
+    padding: 0;
+    overflow-y: scroll;
+    max-height: calc(100vh - 200px);
+}
+
+.Box{
+    height: 60px;
+    width: 55%;
+    left: 57%;
+    transform: translateX(-50%);
+    margin-top: 80px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    /* z-index: 1000; */
+    background-color: #f8f9fa;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    align-items: center;
+}
+
+.text-button {
+    height: 20px;
+    width:100px;
+    margin-right: 20px;
+    background: none;
+    border: none;
+    color: black; /* 텍스트 색상 */
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0; /* 기본 패딩 제거 */
+}
+.text-button:hover {
+    color: darkblue; /* 마우스를 올렸을 때 색상 */
+}
+.filterbox{
+    position:fixed;
+    top:170px;
+    left:65%;
+}
+.searchicon{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    color: rgb(63, 128, 247);
+}
