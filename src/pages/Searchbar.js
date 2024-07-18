@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, {useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 import ListView from "./ListView";
@@ -17,7 +17,6 @@ const Container = styled.div`
 function Searchbar(props){
 
     const [search,setSearch] = useState("");
-    const [keyword,setKeyword] = useState("");
     const [sort, setSort] = useState("createdAt");
 
     const onChange = (e) => {
@@ -25,28 +24,19 @@ function Searchbar(props){
 
     }
 
-    useEffect(() => {
-        if (!search) {
-            setKeyword("");
-        }
-    }, [search]);
-
-    const onSearch = () => {
-        setKeyword(search)
-    }
-    
     return(
         <Container>
             <div className="Box">
+                <FaSearch className="searchicon"/>
                 <input type = "text" className="searchbar" value = {search} onChange={onChange} />
-                <button className="s-button" onClick={onSearch}><FaSearch/></button>
+                {/* <button className="s-button" ><FaSearch/></button> */}
             </div>
       
             <div className="filterbox">
                 <button className="text-button" onClick={() => setSort("meeting_date")}>모임 날짜</button>
                 <button className="text-button" onClick={() => setSort("createdAt")}>최신 작성 순</button>
             </div>
-            <ListView type = {props.type} keyword = {keyword} sort = {sort}/>
+            <ListView type = {props.type} keyword = {search} sort = {sort}/>
         </Container>
         
         

@@ -41,8 +41,8 @@
 
 .Box{
     height: 60px;
-    width: 50%;
-    left: 60%;
+    width: 55%;
+    left: 57%;
     transform: translateX(-50%);
     margin-top: 80px;
     display: flex;
@@ -74,4 +74,10 @@
     position:fixed;
     top:170px;
     left:65%;
+}
+.searchicon{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    color: rgb(63, 128, 247);
 }
