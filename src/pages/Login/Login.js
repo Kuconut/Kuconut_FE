@@ -11,12 +11,16 @@ const Login = () => {
 
     const handleLogin = async () => {
     try {
-        const response = await axios.post('API주소', {
-        username: id,
+        const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Signin', {
+        user_id: id,
         password: password
         });
-        if(response.data.success) navigate('/');
-        else setError('Wrong ID or Password');
+        if (response.data === "아이디 또는 비밀번호를 확인해주세요.") setError('Wrong ID or Password');
+        else {
+            const token = response.data.access_Token;
+            localStorage.setItem('access_Token', token);   
+            navigate('/home');
+        }
 
     } catch (error) {
         setError('Error');
@@ -54,4 +58,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Login;   

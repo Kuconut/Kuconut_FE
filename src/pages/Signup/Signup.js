@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
-  const [id, setid] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
   const [verify, setVerify] = useState(false);
   const [verifycode, setVerifycode] = useState('');
-  const [redundancy, setRedundancy] = useState('');
   const [emailLock, setEmailLock] = useState(false);
   const navigate = useNavigate();
 
@@ -23,34 +22,28 @@ const SignUp = () => {
         return;
       }
 
-      if (redundancy === '') {
-        setError("아이디 중복을 확인하세요.");
-        return;
-      }
-
-      if (redundancy === false) {
-        setError("아이디가 중복되었습니다.");
-        return;
-      }
-
-      if (!emailLock) {
+      /*if (!emailLock) {
         setError("이메일 인증을 하세요.")
         return;
-      }
+      }*/
 
       // 서버에 회원가입 요청
-      const response = await axios.post('API 주소', {
-        email,
-        id,
-        password,
-        nickname
+      const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Signup', {
+        user_id: id,
+        password: password,
+        email: email,
+        nickname: nickname
       });
 
-      if (response.data.success) {
+      if (response.data.message === "이미 존재하는 아이디입니다."){
+        setError("이미 존재하는 아이디입니다.")
+      }
+      else if (response.data.message === "이미 존재하는 닉네임입니다.") {
+        setError("이미 존재하는 닉네임입니다.")
+      }
+      else {
         alert('회원가입 성공!');
         navigate("/login");
-      } else {
-        setError('회원가입 실패: 서버 오류');
       }
 
     } catch (error) {
@@ -67,29 +60,6 @@ const SignUp = () => {
       setVerify(true);
       setError('');
     }
-  }
-
-  const ChangeId = async (inp) => {
-    setid(inp);
-    
-    try {
-      const response = await axios.post('API 주소', {
-        id
-      });
-
-      if(response.data.success) {
-        setRedundancy(true);
-        setError('');
-      }
-      else {
-        setRedundancy(false);
-        setError("아이디가 중복되었습니다.");
-      }  
-    }
-    catch {
-      setError("네트워크 오류")
-    }
-
   }
 
   const CheckVerifyCode = async(code) => {
@@ -118,7 +88,7 @@ const SignUp = () => {
           type="text"
           id="id"
           value={id}
-          onChange={(e) => ChangeId(e.target.value)}
+          onChange={(e) => setId(e.target.value)}
         />
       </div>
       <div>
