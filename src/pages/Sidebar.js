@@ -51,8 +51,8 @@ function Sidebar() {
     return (
         <Side>
         <Row>
-            <button onClick = {goToMypage} className="side_button"><IoPerson/></button>
-            <button onClick = {goToCreate} className="side_button"> <LuPencilLine/></button>
+            <button onClick = {goToMypage} className="side_button"><IoPerson color="white"/></button>
+            <button onClick = {goToCreate} className="side_button"> <LuPencilLine color="white"/></button>
         </Row>
         
         <Menu>
@@ -60,7 +60,7 @@ function Sidebar() {
             return (
                 <NavLink
                 exact
-                style={ pathName === menu.path? {color : "black",fontWeight:"bold",textDecoration:"none"}:{color:"gray",textDecoration:"none"}}
+                style={ pathName === menu.path? {color : "blue",fontWeight:"bold",textDecoration:"none"}:{color:"gray",textDecoration:"none"}}
                 to={menu.path}
                 key={index}
                 >

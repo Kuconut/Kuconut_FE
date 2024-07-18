@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Sidebar from "../Sidebar.js";
 import Searchbar from "../Searchbar.js";
-import ListView from "../ListView.jsx";
+
 
 const Container = styled.div`
   display: flex;
@@ -16,8 +16,7 @@ const Home = () => {
   return(
     <Container>
       <Sidebar/>
-      <Searchbar/>
-      <ListView type="all"/> 
+      <Searchbar type = "all"/>
     </Container>
  
   );
