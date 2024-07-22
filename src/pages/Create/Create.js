@@ -50,7 +50,7 @@ const Content = styled.div`
 
 const Header = styled.div`
     height: 25px;
-    background-color: rgb(247, 247, 195);
+    background-color: skyblue;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -58,7 +58,7 @@ const Header = styled.div`
 
 const Option = styled.div`
     height: 30px;
-    background-color: whitesmoke;
+    background-color: white;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 
