@@ -1,12 +1,17 @@
 import React,{useEffect,useState} from "react";
 import axios from "axios";
 import './ListView.css';
+import { CiHeart } from "react-icons/ci";
 
 const NewsRow = (props) => {
     const title = props.row.meeting_name;
 
     return (
-        <button className="list_button"><span className="list_button_text">{title}</span></button>
+        <div className="List-box">
+            <button className="List-button"><span className="list_button_text">{title}</span></button>
+            <button><CiHeart size={24}/></button>
+        </div>
+
     );  
 };
 function compareDates(date1, date2) {
