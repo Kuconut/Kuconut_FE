@@ -1,8 +1,5 @@
 import React from "react";
-import { NavLink, useLocation, useNavigate} from "react-router-dom";
-
-import { IoPerson } from "react-icons/io5";
-import { LuPencilLine } from "react-icons/lu";
+import { NavLink, useLocation} from "react-router-dom";
 
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
@@ -17,9 +14,7 @@ const Side = styled.div`
   justify-content: center;
   width: 20%;
 `
-const Row = styled.div`
-    flex-direction:row;
-`
+
 const Menu = styled.div`
   margin-top: 30px;
   width: 200px;
@@ -29,15 +24,9 @@ const Menu = styled.div`
 
 function Sidebar() {
 
-    const navigate = useNavigate();
+    
 
-    const goToMypage = () => {
-        navigate("/home/mypage");
-      }
-    const goToCreate = () => {
-        navigate("/home/create");
-    }
-
+    
     const pathName = useLocation().pathname;
 
     const menus = [
@@ -50,11 +39,7 @@ function Sidebar() {
 
     return (
         <Side>
-        <Row>
-            <button onClick = {goToMypage} className="side_button"><IoPerson color="white"/></button>
-            <button onClick = {goToCreate} className="side_button"> <LuPencilLine color="white"/></button>
-        </Row>
-        
+            <button className="logo-button"><img className  = "logo" alt = "logo" src = "img/logo.jpg"/></button>
         <Menu>
             {menus.map((menu, index) => {
             return (
