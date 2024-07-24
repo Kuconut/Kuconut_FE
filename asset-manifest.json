@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Kuconut_FE/static/css/main.48a17d8b.css",
+    "main.js": "/Kuconut_FE/static/js/main.ca05f1a3.js",
+    "static/js/453.3c7ed6ec.chunk.js": "/Kuconut_FE/static/js/453.3c7ed6ec.chunk.js",
+    "index.html": "/Kuconut_FE/index.html",
+    "main.48a17d8b.css.map": "/Kuconut_FE/static/css/main.48a17d8b.css.map",
+    "main.ca05f1a3.js.map": "/Kuconut_FE/static/js/main.ca05f1a3.js.map",
+    "453.3c7ed6ec.chunk.js.map": "/Kuconut_FE/static/js/453.3c7ed6ec.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.48a17d8b.css",
+    "static/js/main.ca05f1a3.js"
+  ]
+}
