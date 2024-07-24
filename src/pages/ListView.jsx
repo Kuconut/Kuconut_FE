@@ -1,14 +1,17 @@
 import React,{useEffect,useState} from "react";
+import Modal from 'react-modal';
 import axios from "axios";
 import './ListView.css';
 import { CiHeart } from "react-icons/ci";
+import { IoPerson } from "react-icons/io5";
 
-const NewsRow = (props) => {
-    const title = props.row.meeting_name;
+const NewsRow = ({row,setmodal}) => {
+    const title = row.meeting_name;
 
     return (
         <div className="List-box">
-            <button className="List-button"><span className="list_button_text">{title}</span></button>
+            <IoPerson/>
+            <button className="List-button" onClick={() => setmodal(true)}><span className="list_button_text">{title}</span></button>
             <button><CiHeart size={24}/></button>
         </div>
 
@@ -33,6 +36,8 @@ const ListView = ({type,keyword,sort}) => {
 
     const [articles, setArticles] = useState(null);
     const [filtered,setFiltered] = useState(null);
+
+    const [modalIsOpen,setmodalIsOpen] = useState(false);
 
     useEffect(() => {
         console.log(`Fetching data for type: ${type}`);
@@ -60,14 +65,21 @@ const ListView = ({type,keyword,sort}) => {
     }, [keyword,articles]);
 
     return (
-        <ul className='listView'>
-        {
-            filtered &&
-            filtered.map((v, inx) => {
-                return <NewsRow key={inx} row={v} />
-            })
-        }
-        </ul>
+        <>
+            <ul className='listView'>
+            {
+                filtered &&
+                filtered.map((v, inx) => {
+                    return <NewsRow key={inx} row={v} setmodal = {setmodalIsOpen}/>
+                })
+            }
+            </ul>
+            <Modal className= "PopUp"  overlayClassName="Overlay" isOpen = {modalIsOpen} onRequestClose={() => setmodalIsOpen(false)}>
+                <div>modal content</div>
+                <button onClick={() => setmodalIsOpen(false)}></button>
+            </Modal>
+        </>
+        
     );
 };
 
