@@ -1,17 +1,28 @@
 import React,{useEffect,useState} from "react";
 import Modal from 'react-modal';
 import axios from "axios";
+import Popup from "./popup_detail"
+import moment from "moment";
 import './ListView.css';
 import { CiHeart } from "react-icons/ci";
 import { IoPerson } from "react-icons/io5";
 
-const NewsRow = ({row,setmodal}) => {
+const NewsRow = ({row,setmodal,setContent}) => {
     const title = row.meeting_name;
+    const meeting_date = moment(new Date(row.meeting_date)).format("YYYY.MM.DD HH:mm:ss");
+    const deadline = moment(new Date(row.deadline)).format("YYYY.MM.DD HH:mm:ss");
 
     return (
         <div className="List-box">
             <IoPerson/>
-            <button className="List-button" onClick={() => setmodal(true)}><span className="list_button_text">{title}</span></button>
+            <button className="List-button" onClick={() => {setmodal(true); setContent(row);}}>
+                <span className="list_button_text">
+                    {title}
+                </span>
+                <span className="list_button_text" style={{color: "gray"}}>
+                    {meeting_date} | {deadline} | {row.user_count}/{row.max_user}
+                </span>
+            </button>
             <button><CiHeart size={24}/></button>
         </div>
 
@@ -38,6 +49,7 @@ const ListView = ({type,keyword,sort}) => {
     const [filtered,setFiltered] = useState(null);
 
     const [modalIsOpen,setmodalIsOpen] = useState(false);
+    const [content, setContent] = useState(null);
 
     useEffect(() => {
         console.log(`Fetching data for type: ${type}`);
@@ -70,13 +82,12 @@ const ListView = ({type,keyword,sort}) => {
             {
                 filtered &&
                 filtered.map((v, inx) => {
-                    return <NewsRow key={inx} row={v} setmodal = {setmodalIsOpen}/>
+                    return <NewsRow key={inx} row={v} setmodal = {setmodalIsOpen} setContent ={setContent}/>
                 })
             }
             </ul>
             <Modal className= "PopUp"  overlayClassName="Overlay" isOpen = {modalIsOpen} onRequestClose={() => setmodalIsOpen(false)}>
-                <div>modal content</div>
-                <button onClick={() => setmodalIsOpen(false)}></button>
+                <Popup content = {content} setmodalIsOpen = {setmodalIsOpen}/>
             </Modal>
         </>
         
