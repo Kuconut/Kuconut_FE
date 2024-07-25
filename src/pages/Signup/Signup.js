@@ -14,6 +14,13 @@ const SignUp = () => {
   const [emailLock, setEmailLock] = useState(false);
   const navigate = useNavigate();
 
+  const minLength = 3;
+  const maxLength = 20;
+  const regex = /^[a-zA-Z][a-zA-Z0-9._-]*$/;
+  const forbiddenWords = [];
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
   const handleSignUp = async () => {
     try {
       // 클라이언트 측 유효성 검사 예시
@@ -22,10 +29,35 @@ const SignUp = () => {
         return;
       }
 
-      /*if (!emailLock) {
+      if (id.length < minLength || id.length > maxLength) {
+        setError('아이디는 3~20글자입니다.');
+        return;
+      }
+
+      // 정규 표현식 확인
+      if (!regex.test(id)) {
+        setError('아이디는 영문자로 시작해야 하며, 영문자, 숫자, 밑줄(_), 하이픈(-), 마침표(.)만 포함할 수 있습니다');
+        return;
+      }
+
+      // 금지된 단어 확인
+      for (let word of forbiddenWords) {
+        if (id.toLowerCase().includes(word)) {
+          setError('금지된 단어가 포함되어 있습니다.');
+          return false;
+        }
+      }
+
+      if(!passwordRegex.test(password)){
+        setError('비밀번호는 대문자, 소문자, 숫자, 특수문자(!@?$%&*)를 포함한 8자 이상이어야 합니다.');
+        return;
+      }
+
+      if (!emailLock) {
         setError("이메일 인증을 하세요.")
         return;
-      }*/
+      }
+      setError('');
 
       // 서버에 회원가입 요청
       const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Signup', {
@@ -80,6 +112,7 @@ const SignUp = () => {
   }
 
   return (
+    <>
     <div className="signup-container">
       <h2>Sign up</h2>
       <div>
@@ -134,6 +167,8 @@ const SignUp = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <button onClick={handleSignUp}>Sign up</button>
     </div>
+    <button className="transparent-button" onClick={() => navigate('/Login')}>Log in</button>
+    </>
   );
 }
 
