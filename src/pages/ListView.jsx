@@ -1,14 +1,28 @@
 import React,{useEffect,useState} from "react";
+import Modal from 'react-modal';
 import axios from "axios";
+import Popup from "./popup_detail"
+import moment from "moment";
 import './ListView.css';
 import { CiHeart } from "react-icons/ci";
+import { IoPerson } from "react-icons/io5";
 
-const NewsRow = (props) => {
-    const title = props.row.meeting_name;
+const NewsRow = ({row,setmodal,setContent}) => {
+    const title = row.meeting_name;
+    const meeting_date = moment(new Date(row.meeting_date)).format("YYYY.MM.DD HH:mm:ss");
+    const deadline = moment(new Date(row.deadline)).format("YYYY.MM.DD HH:mm:ss");
 
     return (
         <div className="List-box">
-            <button className="List-button"><span className="list_button_text">{title}</span></button>
+            <IoPerson/>
+            <button className="List-button" onClick={() => {setmodal(true); setContent(row);}}>
+                <span className="list_button_text">
+                    {title}
+                </span>
+                <span className="list_button_text" style={{color: "gray"}}>
+                    {meeting_date} | {deadline} | {row.user_count}/{row.max_user}
+                </span>
+            </button>
             <button><CiHeart size={24}/></button>
         </div>
 
@@ -33,6 +47,9 @@ const ListView = ({type,keyword,sort}) => {
 
     const [articles, setArticles] = useState(null);
     const [filtered,setFiltered] = useState(null);
+
+    const [modalIsOpen,setmodalIsOpen] = useState(false);
+    const [content, setContent] = useState(null);
 
     useEffect(() => {
         console.log(`Fetching data for type: ${type}`);
@@ -60,14 +77,20 @@ const ListView = ({type,keyword,sort}) => {
     }, [keyword,articles]);
 
     return (
-        <ul className='listView'>
-        {
-            filtered &&
-            filtered.map((v, inx) => {
-                return <NewsRow key={inx} row={v} />
-            })
-        }
-        </ul>
+        <>
+            <ul className='listView'>
+            {
+                filtered &&
+                filtered.map((v, inx) => {
+                    return <NewsRow key={inx} row={v} setmodal = {setmodalIsOpen} setContent ={setContent}/>
+                })
+            }
+            </ul>
+            <Modal className= "PopUp"  overlayClassName="Overlay" isOpen = {modalIsOpen} onRequestClose={() => setmodalIsOpen(false)}>
+                <Popup content = {content} setmodalIsOpen = {setmodalIsOpen}/>
+            </Modal>
+        </>
+        
     );
 };
 
