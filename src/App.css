@@ -2,27 +2,30 @@
   text-align: center;
 }
 .searchbar{
-  width: 600px;
+  width: 100%;
   height: 50px;
   border-radius: 10px;
 }
-.s-button{
-  position: absolute;
-  width: 50px;
-  height: 40px;
-  top: 0;
-  bottom: 2px;
-  right: 10px;
-  margin: auto 0;
-  border-radius: 6px;
-}
+
 .side_button{
-  padding: 10px 10px;
-  font-size: 20px;
-  margin : 20px;
-  background-color: rgb(255, 187, 163);
-  border:solid;
-  border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding : 10px 10px;
+
+    &:hover {
+        background-color: darkblue;
+    }
 }
 .button {
   padding: 20px 40px ;
@@ -51,6 +54,17 @@
 
 .App-link {
   color: #61dafb;
+}
+.logo{
+  width: 50px;
+  height: 50px; 
+  border-radius: 100%;
+  
+}
+.logo-button{
+  border-radius: 100%;
+  background-color: white;
+  border-color : blue;
 }
 
 @keyframes App-logo-spin {

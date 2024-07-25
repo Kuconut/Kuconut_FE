@@ -1,12 +1,23 @@
-.Intro{
+.Intro {
     height: 200px;
-    margin : 20px auto;
-    padding : 20px;
-
+    margin: 20px auto;
+    padding: 20px;
 }
-.buttons{
+
+.buttons {
     box-sizing: border-box;
     height: 200px;
-    padding : 10px;
+    padding: 10px;
+}
 
+.login {
+    position: absolute;
+    top: 50px; 
+    right: 30px; 
+    padding: 10px;
+    background-color: #007bff;
+    color: white; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer; 
 }

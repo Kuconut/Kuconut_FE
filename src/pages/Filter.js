@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Box = styled.div`
     height : 60px;
-    margin : 90px;
+    margin : 90px 90px 0px 90px;
     display : flex;
     flex-direction: row;
     position: relative;

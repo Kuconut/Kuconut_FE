@@ -26,6 +26,10 @@ const Home = () => {
     navigate("/home/extra");
   }
 
+  const goToLogin = () => {
+    navigate("/login");
+  }
+
 
   return (
 
@@ -36,8 +40,8 @@ const Home = () => {
         <button onClick={goToEat}className='button'>Eat</button>
         <button onClick={goToExtra}className='button'>Extra</button>
         <button onClick={goToStudy}className='button'>Study</button>
+        <button onClick={goToLogin}className='login'>login</button>
       </div>
-      
     </div>
   );
 }

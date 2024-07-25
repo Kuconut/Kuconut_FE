@@ -1,0 +1,70 @@
+
+.signup-container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.signup-container div {
+    margin-bottom: 15px;
+}
+
+.signup-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.signup-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-container button:hover {
+    background-color: #0056b3;
+}
+
+.signup-container .verify-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-container .verify-section input {
+    width: calc(100% - 20px); /* button 너비 고려 */
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+.signup-container .verify-section button {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #28a745;
+}
+
+.signup-container .verify-section button:hover {
+    background-color: #218838;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+}
