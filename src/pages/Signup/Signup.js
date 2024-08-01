@@ -83,24 +83,37 @@ const SignUp = () => {
     }
   }
 
-  const validateEmail = (email) => {
+  const validateEmail = async (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!(re.test(email))) {
       setError("올바른 이메일 형식이 아닙니다.")
     }
     else {
-      setVerify(true);
-      setError('');
+
+      try{
+        const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/SendemailVerify', {email});
+
+        if(response.data.message === '이메일로 인증번호를 전송하였습니다.'){
+          setVerify(true);
+          setError('');
+          alert('인증번호를 전송하였습니다.')
+        }
+        else setError('이메일 전송 실패');
+      }
+      catch{
+        setError('네트워크 오류');
+      }
     }
   }
 
   const CheckVerifyCode = async(code) => {
     try{
-      const response = await axios.post('API 주소', {code});
+      const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Verify', {email: email, verifynumber: verifycode});
 
-      if(response.data.success) {
+      if(response.data.message === '인증되었습니다.') {
         setEmailLock(true);
         setError('');
+        alert('인증되었습니다.')
       }
       else(
         setError("인증번호가 잘못되었습니다.")

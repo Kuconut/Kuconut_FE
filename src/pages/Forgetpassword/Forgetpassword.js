@@ -15,8 +15,8 @@ const ForgetPassword = () => {
 
     const handleEmailVerification = async () => {
         try {
-            const response = await axios.post('API주소/verify-email', { email });
-            if (response.data.success) {
+            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/SendemailVerify', { email });
+            if (response.data.message === '이메일로 인증번호를 전송하였습니다.') {
                 setVerify(true);
                 setError('');
             } else {
@@ -29,8 +29,8 @@ const ForgetPassword = () => {
 
     const handleVerifyCode = async () => {
         try {
-            const response = await axios.post('API주소/verify-code', { code: verifycode, email });
-            if (response.data.success) {
+            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Verify', { email: email, verifynumber: verifycode });
+            if (response.data.message === '인증되었습니다.') {
                 setEmailLock(true);
                 setError('');
                 setPassword(response.data.password); // 비밀번호 받기
