@@ -219,8 +219,8 @@ const Create = () => {
 
         setModalTitle("error message");
 
-        if (min < 1) {
-            setModalMessage("최소 인원은 1명 이상이어야 합니다.");
+        if (min < 2) {
+            setModalMessage("최소 인원은 2명 이상이어야 합니다.");
             setModalIsOpen(true);
             return false;
         }
