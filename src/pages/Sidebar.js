@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useLocation} from "react-router-dom";
+import { NavLink, useLocation,useNavigate} from "react-router-dom";
 
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
@@ -24,9 +24,7 @@ const Menu = styled.div`
 
 function Sidebar() {
 
-    
-
-    
+    const navigate = useNavigate();
     const pathName = useLocation().pathname;
 
     const menus = [
@@ -39,7 +37,7 @@ function Sidebar() {
 
     return (
         <Side>
-            <button className="logo-button"><img className  = "logo" alt = "logo" src = "img/logo.jpg"/></button>
+            <button onClick={() => navigate('/home')} className="logo-button"><img className  = "logo" alt = "logo" src = "img/logo.jpg"/></button>
         <Menu>
             {menus.map((menu, index) => {
             return (

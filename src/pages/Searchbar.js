@@ -1,13 +1,14 @@
 import React, {useState } from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import { FaSearch } from "react-icons/fa";
 import ListView from "./ListView";
+import Dropdown from "./Dropdown";
 import './ListView.css';
 import '../App.css';
 
 import { IoPerson } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
+import { FaSearch } from "react-icons/fa";
 
 const Container = styled.div`
     width:80%;
@@ -23,7 +24,7 @@ function Searchbar(props){
 
     const [search,setSearch] = useState("");
     const [sort, setSort] = useState("createdAt");
-
+    const [search_by,setSearch_By] = useState("제목+내용");
     const onChange = (e) => {
         setSearch(e.target.value)
 
@@ -40,12 +41,20 @@ function Searchbar(props){
         <Container>
             <div className="header"> 
                 <div className="Box">
-                    <FaSearch className="searchicon"/>
+                    <div style={{ width: '80px' }}>{search_by}</div>
+                    <Dropdown>
+                        <div>
+                            <button onClick={() => setSearch_By("제목+내용")}>제목+내용</button>
+                            <button onClick={() => setSearch_By("작성자")}>작성자</button>
+                        </div>
+                    </Dropdown>
                     <input type = "text" className="searchbar" value = {search} onChange={onChange} />
+                    <FaSearch size={24} color="1C4696"/>
                     {/* <button className="s-button" ><FaSearch/></button> */}
                 </div>
-                <button className="side_button" onClick={goToMypage}><IoPerson size={24}/></button>
-                <button className="side_button" onClick={goToCreate}><LuPencilLine size={24}/></button>
+                <button className="side_button" onClick={goToCreate}><LuPencilLine size={30}/></button>
+                <button className="side_button" onClick={goToMypage}><IoPerson size={30}/></button>
+                
             </div>
             
 

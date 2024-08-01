@@ -7,9 +7,10 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Forgetpassword from './pages/Forgetpassword/Forgetpassword';
 import Detail from'./pages/detail';
-
-
+import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+
+Modal.setAppElement('#root');
 
 function App() {
   return (
