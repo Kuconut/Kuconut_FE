@@ -53,11 +53,11 @@ const Home = () => {
       </div>
 
       <div className='Buttons'>
-        <button onClick={goToAll} id='button'>All</button>
-        <button onClick={goToPlay} id='button'>Play</button>
-        <button onClick={goToEat} id='button'>Eat</button>
-        <button onClick={goToExtra} id='button'>Extra</button>
-        <button onClick={goToStudy} id='button'>Study</button>
+        <button onClick={goToAll} id='button'>all</button>
+        <button onClick={goToPlay} id='button'>play</button>
+        <button onClick={goToEat} id='button'>eat</button>
+        <button onClick={goToStudy} id='button'>study</button>
+        <button onClick={goToExtra} id='button'>etc</button>
       </div>
     </div>
   );
