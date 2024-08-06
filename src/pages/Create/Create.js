@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Sidebar from '../Sidebar';
 import Modal from "react-modal";
@@ -7,12 +8,12 @@ import 'react-quill/dist/quill.snow.css';
 
 const Container = styled.div`
     display: flex;
-`;
+;`
 
 const ContentContainer = styled.div`
     flex: 1;
     padding: 20px;
-`;
+;`
 
 const CategorySelect = styled.select`
     width: 15%;
@@ -24,7 +25,7 @@ const CategorySelect = styled.select`
     @media only screen and (max-width: 800px) {
         width: 10%;
     }
-`;
+;`
 
 const TitleInput = styled.input`
     width: 60%;
@@ -37,12 +38,12 @@ const TitleInput = styled.input`
     @media only screen and (max-width: 800px) {
         width: 75%;
     }
-`;
+;`
 
 const Page = styled.div`
     display: flex;
     flex-direction: row;
-`;
+;`
 
 const Write = styled.div`
     width: 90%;
@@ -50,14 +51,14 @@ const Write = styled.div`
     margin-left: 16px;
     display: flex;
     flex-direction: column;
-`;
+;`
 
 const Content = styled.div`
     height: 70vh;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
-`;
+;`
 
 const Header = styled.div`
     height: 25px;
@@ -65,7 +66,7 @@ const Header = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-`;
+;`
 
 const Option = styled.div`
     height: 30px;
@@ -88,7 +89,7 @@ const Option = styled.div`
     @media only screen and (max-width: 555px) {
         height: 72px;
     }
-`;
+;`
 
 const OptionItem = styled.div`
     display: flex;
@@ -112,15 +113,15 @@ const OptionItem = styled.div`
             width: 100px;
         }
     }
-`;
+;`
 
 const Startdate = styled.div`
     align-items: center;
-`;
+;`
 
 const Enddate = styled.div`
     align-itmes: center;
-`;
+;`
 
 const NumberInputContainer = styled.div`
     align-items: center;
@@ -128,7 +129,7 @@ const NumberInputContainer = styled.div`
     & > *:not(:last-child) {
         margin-right: 5px;
     }
-`;
+;`
 
 const Editor = styled.div`
     flex: 1;
@@ -151,14 +152,14 @@ const Editor = styled.div`
         min-height: 350px;
         overflow-y: scroll;
     }
-`;
+;`
 
 const Submit = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: 5px;
-`;
+;`
 
 const ModalContainer = styled(Modal)`
     display: flex;
@@ -167,29 +168,30 @@ const ModalContainer = styled(Modal)`
     overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.75)',
     }
-`;
+;`
 
 const ModalContent = styled.div`
     background: white;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-`;
+;`
 
 const ModalTitle = styled.h2`
     text-align: left;
     margin-bottom: 7px;
     font-size: 15px;
-`;
+;`
 
 const ModalButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-`;
+;`
 
 const ModalButton = styled.button`
     margin-top: 20px;
-`;
+    margin-left: 10px;
+;`
 
 const Create = () => {
     const editorRef = useRef(null);
@@ -200,6 +202,15 @@ const Create = () => {
     const [modalMessage, setModalMessage] = useState("");
     const [modalTitle, setModalTitle] = useState("");
     const [editorHtml, setEditorHtml] = useState('');
+    const [loginModalOpen, setLoginModalOpen] = useState(false); 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        if (!token) {
+            setLoginModalOpen(true);
+        }
+    }, []);
 
     const handleCategoryChange = (event) => {
         setCategory(event.target.value);
@@ -335,6 +346,21 @@ const Create = () => {
                 <div>{modalMessage}</div>
                 <ModalButtonContainer>
                     <ModalButton onClick={() => setModalIsOpen(false)}>닫기</ModalButton>
+                </ModalButtonContainer>
+            </ModalContent>
+        </ModalContainer>
+        <ModalContainer
+            isOpen={loginModalOpen}
+            onRequestClose={() => setLoginModalOpen(false)}
+            contentLabel="Login Modal"
+            ariaHideApp={false}
+        >
+            <ModalContent>
+                <div>로그인이 필요합니다.</div>
+                <div>로그인 페이지로 이동하시겠습니까?</div>
+                <ModalButtonContainer>
+                    <ModalButton onClick={() => navigate('/login')}>예</ModalButton>
+                    <ModalButton onClick={() => navigate(-1)}>아니오</ModalButton>
                 </ModalButtonContainer>
             </ModalContent>
         </ModalContainer>
