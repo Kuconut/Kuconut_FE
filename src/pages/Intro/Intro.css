@@ -59,6 +59,7 @@
     font-weight: 500;
     transition: box-shadow 0.3s ease;
     overflow: hidden;
+    cursor: pointer;
 }
 .Card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
@@ -78,4 +79,5 @@
     font-size: 1.3rem;
     background-color: rgb(245, 245, 245);
     border-color: rgb(168, 166, 166);
+    cursor: pointer;
 }
