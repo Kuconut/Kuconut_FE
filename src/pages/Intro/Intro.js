@@ -42,13 +42,14 @@ const Home = () => {
 
       <div className='Information'>
         <div id='Text'>
-          <div>함께 세상을 항해할</div>
-          <div>크루를 찾아보세요</div>
+          <div className='text'>암벽 등반부터 맛집 탐방까지,</div>
+          <div className='text'>함께 세상을 항해할</div>
+          <div className='text'>크루를 찾아보세요</div>
         </div>
         <div id='List'>
-          <div id='card'>방탈출 크루 구합니다</div>
-          <div id='card'>민주광장에서 치킨 먹을 사람!</div>
-          <div id='card'>같이 토익 스피킹 연습해요</div>
+          <div className='card'>방탈출 크루 구합니다</div>
+          <div className='card'>민주광장에서 치킨 먹을 사람!</div>
+          <div className='card'>같이 토익 스피킹 연습해요</div>
         </div>
       </div>
 
