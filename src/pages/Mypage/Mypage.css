@@ -1,53 +1,114 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .sidebar_area {
-    width: 20%;
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .main_area {
-    width: 80%;
-    padding: 20px;
-  }
-  
-  .logo {
-    width: 100px;
-    margin-bottom: 20px;
-  }
-  
-  .button {
-    margin: 10px 0;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profile img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .nav-buttons {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
+.mypage-container {
+  display: flex;
+  height: 100vh;
+}
+
+.side_area {
+  width: 20%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  justify-content: center;
+}
+
+.logo {
+  width: 100px;
+  margin-top: 50px;
+  margin-bottom: 200px;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin-bottom: auto; 
+  align-items: center;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+}
+
+.tab.active {
+  color: blue;
+  font-weight: bold;
+}
+
+.main_area {
+  width: 80%;
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.nickname {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.actions {
+  margin-left: auto;
+}
+
+.create-btn, .edit-privacy-btn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-privacy-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.meeting-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-buttons {
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.filter-btn:hover {
+  background-color: #f0f0f0;
+}
