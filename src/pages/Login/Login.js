@@ -22,7 +22,7 @@ const Login = () => {
                 user_id: id,
                 password: password
             });
-            if (response.data === "아이디 또는 비밀번호를 확인해주세요.") setError('Wrong ID or Password');
+            if (response.data.message === "아이디 또는 비밀번호를 확인해주세요.") setError('아이디 또는 비밀번호를 확인해주세요.');
             else {
                 const token = response.data.access_Token;
                 localStorage.setItem('access_Token', token);   
@@ -70,8 +70,8 @@ const Login = () => {
                 <button onClick={handleLogin}>로그인</button>
             </div>
             <div className="login-links">
-                <button className="transparent-button" onClick={() => navigate('/Login/Signup')}>회원가입</button>
-                <button className="transparent-button" onClick={() => navigate('/Login/Forgetpassword')}>비밀번호 찾기</button>
+                <button className="login-transparent-button" onClick={() => navigate('/Login/Signup')}>회원가입</button>
+                <button className="login-transparent-button" onClick={() => navigate('/Login/Forgetpassword')}>비밀번호 찾기</button>
             </div>
         </div>
     );

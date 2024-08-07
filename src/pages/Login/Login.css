@@ -81,7 +81,7 @@ body.login-body {
     background-color: #357ABD;
 }
 
-.transparent-button {
+.login-transparent-button {
     background: none;
     border: none;
     color: black;
@@ -90,7 +90,7 @@ body.login-body {
     font-size: 15px;
 }
 
-.transparent-button:hover {
+.login-transparent-button:hover {
     color: #0056b3;
 }
 
