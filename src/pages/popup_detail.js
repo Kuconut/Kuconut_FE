@@ -27,6 +27,7 @@ const Placeholder = styled.div`
 `
 const DescriptionBox = styled.div`
     flex:1;
+    padding : 10px;
     display : flex;
     flex-direction : column;
     border-radius : 5%;
@@ -62,12 +63,12 @@ const Popup = ({content,setmodalIsOpen}) => {
         <Container>
             <Row>
                 <button className ='back-button'onClick={() => setmodalIsOpen(false)} ><IoArrowBack size={24}/></button>
-                <div>{content.meeting_name}</div>
+                <div>{content.meeting_meeting_name}</div>
             </Row>
             
             <Row>
                 <DescriptionBox>  
-                    <div>{content.meeting_description}</div>
+                    <div>{content.meeting_meeting_description}</div>
                 </DescriptionBox>
                 <Placeholder>
                     <div>댓글창</div>

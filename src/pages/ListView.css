@@ -190,19 +190,20 @@
     color: #7e7d7d;
   }
   .dropdown-container {
-    /* position: relative; */
+    position: relative;
     display: inline-block;
 }
 .dropdown-menu {
   display: block;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  top: 100%;
-  left: 0;
-  padding: 10px 0;
+  left: 30px;
+  top: 150%;
+  padding: 0;
+  transform: translateX(-100%); /* 드롭다운 메뉴를 버튼의 왼쪽으로 이동 */
 }
 
 .dropdown-menu button {
@@ -212,7 +213,7 @@
   display: block;
   width: 100%;
   text-align: left;
-  background: none;
+  background: white;
   border: none;
   cursor: pointer;
 }
