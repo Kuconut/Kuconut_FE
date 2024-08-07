@@ -1,0 +1,70 @@
+body.forgetid-body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    height: 100vh;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+.forget-id-wrapper {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Increase max-width to match container */
+}
+
+.forget-id-container {
+    width: 600px; /* Use full width within the max-width constraint */
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 100px 1fr auto; /* label, input, button */
+    grid-gap: 10px;
+}
+
+.forget-id-group {
+    display: contents; /* align child elements in grid */
+}
+
+.forget-id-group label {
+    grid-column: 1;
+    text-align: right;
+    align-self: center;
+}
+
+.forget-id-group input {
+    grid-column: 2;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    width: 400px; /* Ensure full width within the grid column */
+}
+
+.forget-id-group button {
+    grid-column: 3;
+    padding: 10px;
+    background: none;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.forget-id-group button:hover {
+    text-decoration: underline;
+}
+
+.forget-id-error {
+    color: red;
+    margin-bottom: 15px;
+    grid-column: 1 / span 3;
+    text-align: center;
+}

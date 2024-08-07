@@ -40,6 +40,7 @@ const Login = () => {
     };
 
     return (
+        <>
         <div className="login-wrapper">
             <div className="login-logo">
                 <img src="img/logo.jpg" alt="Logo" className="logo-image" />
@@ -69,11 +70,13 @@ const Login = () => {
                 {error && <p style={{color: 'red'}}>{error}</p>}
                 <button onClick={handleLogin}>로그인</button>
             </div>
-            <div className="login-links">
-                <button className="login-transparent-button" onClick={() => navigate('/Login/Signup')}>회원가입</button>
-                <button className="login-transparent-button" onClick={() => navigate('/Login/Forgetpassword')}>비밀번호 찾기</button>
-            </div>
         </div>
+        <div className="login-links">
+            <button className="login-transparent-button" onClick={() => navigate('/Login/Signup')}>회원가입</button>
+            <button className="login-transparent-button" onClick={() => navigate('/Login/ForgetId')}>아이디 찾기</button>
+            <button className="login-transparent-button" onClick={() => navigate('/Login/Forgetpassword')}>비밀번호 찾기</button>
+        </div>        
+        </>
     );
 }
 
