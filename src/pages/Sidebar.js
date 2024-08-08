@@ -3,7 +3,7 @@ import { NavLink, useLocation,useNavigate} from "react-router-dom";
 
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
-import "../App.css";
+import "./ListView.css";
 
 
 const Side = styled.div`
@@ -37,7 +37,7 @@ function Sidebar() {
 
     return (
         <Side>
-            <button onClick={() => navigate('/home')} className="logo-button"><img className  = "logo" alt = "logo" src = "img/logo.jpg"/></button>
+            <button onClick={() => navigate('/home')} className="side-logo-button"><img className  = "side-logo" alt = "logo" src = "img/logo.jpg"/></button>
         <Menu>
             {menus.map((menu, index) => {
             return (

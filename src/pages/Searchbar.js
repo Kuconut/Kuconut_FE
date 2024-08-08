@@ -5,7 +5,6 @@ import ListView from "./ListView";
 import Dropdown from "./Dropdown";
 import Modal from "react-modal";
 import './ListView.css';
-import '../App.css';
 
 import { IoPerson } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
