@@ -1,4 +1,4 @@
-body.forgetpassword-body {
+body.forgetid-body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -8,14 +8,14 @@ body.forgetpassword-body {
     margin: 0;
 }
 
-.forget-password-wrapper {
+.forget-id-wrapper {
     text-align: center;
     position: relative;
     width: 100%;
     max-width: 600px; /* Increase max-width to match container */
 }
 
-.forget-password-container {
+.forget-id-container {
     width: 600px; /* Use full width within the max-width constraint */
     margin: 0 auto;
     padding: 20px;
@@ -25,17 +25,17 @@ body.forgetpassword-body {
     grid-gap: 10px;
 }
 
-.forget-password-group {
+.forget-id-group {
     display: contents; /* align child elements in grid */
 }
 
-.forget-password-group label {
+.forget-id-group label {
     grid-column: 1;
     text-align: right;
     align-self: center;
 }
 
-.forget-password-group input {
+.forget-id-group input {
     grid-column: 2;
     padding: 15px;
     margin: 10px 0;
@@ -46,7 +46,7 @@ body.forgetpassword-body {
     width: 400px; /* Ensure full width within the grid column */
 }
 
-.forget-password-group button {
+.forget-id-group button {
     grid-column: 3;
     padding: 10px;
     background: none;
@@ -58,11 +58,11 @@ body.forgetpassword-body {
     height: 100%;
 }
 
-.forget-password-group button:hover {
+.forget-id-group button:hover {
     text-decoration: underline;
 }
 
-.forget-password-error {
+.forget-id-error {
     color: red;
     margin-bottom: 15px;
     grid-column: 1 / span 3;

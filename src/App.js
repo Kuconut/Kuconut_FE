@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Forgetpassword from './pages/Forgetpassword/Forgetpassword';
 import Detail from'./pages/detail';
+import Forgetid from './pages/Forgetid/Forgetid';
 import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -38,7 +39,9 @@ function App() {
         {/* <Signup /> */}
         <Route path="/login/Signup" element={<Signup />} />    
         {/* <Forgetpassword /> */}
-        <Route path="/login/Forgetpassword" element={<Forgetpassword />} />            
+        <Route path="/login/Forgetpassword" element={<Forgetpassword />} />    
+        {/* <Forgetid /> */}
+        <Route path="/login/Forgetid" element={<Forgetid />} />           
       </Routes>
     </BrowserRouter> 
   );
