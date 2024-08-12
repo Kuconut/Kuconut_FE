@@ -3,7 +3,7 @@ import { NavLink, useLocation,useNavigate} from "react-router-dom";
 
 import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
-import "./ListView.css";
+import "../App.css";
 
 
 const Side = styled.div`
