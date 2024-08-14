@@ -8,65 +8,81 @@ const Mypage = () => {
     const [meetings, setMeetings] = useState([]);
     const navigate = useNavigate();
 
-    const checkAuthentication = async () => {
-      try {
-          const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken');
-          if (response.status !== 200) {
-              navigate('/Login');
-          }
-      } catch (error) {
-          navigate('/Login');
-          window.alert('로그인이 필요합니다.');
-      }
-  };
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
 
-  useEffect(() => {
-      checkAuthentication();
-  }, []);
+        if(!token){
+            window.alert('로그인이 필요합니다.');
+            navigate('/Login');
+        }
 
-    const handleTabClick = async (tab) => {
-      setActiveTab(tab);
+        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            if(response.status !== 200){
+                window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
+                navigate('/Login');
+            }
+        })
+        .catch((response) => {
+            console.log(response);
+        });
+    }, []);
 
-      try {
-          let response;
-          if (tab === 'upcoming') {
-              response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/mademeeting/all'); //api 수정필요 - 현재 내가 만든 모든 모임 api
-          } else if (tab === 'past') {
-              response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/postedmeeting/all'); //api 수정필요 - 현재 내가 가입한 모든 모임 api
-          } else if (tab === 'saved') {
-              response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/likedmeeting'); 
-          }
 
-          if (response) {
-              setMeetings(response.data);
-          }
-      } catch (error) {
-          console.error('Error fetching meetings:', error);
-      }
-  };
+    const fetchMeetings = async () => {
+        try {
+            let response;
+            if (activeTab === 'upcoming') {
+                response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/mademeeting/all');
+            } else if (activeTab === 'past') {
+                response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/postedmeeting/all');
+            } else if (activeTab === 'saved') {
+                response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/likedmeeting');
+            }
+
+            if (response) {
+                console.log('Meetings Response:', response.data);
+                setMeetings(response.data);
+            }
+        } catch (error) {
+            console.error('Error fetching meetings:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchMeetings();
+    }, [activeTab, fetchMeetings]);
+
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     const handleLogoClick = () => {
-      navigate('/'); // 메인 페이지로 이동
-  };
+        navigate('/'); // 메인 페이지로 이동
+    };
 
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="/img/logo.jpg" alt="Homepage Logo" className="logo" onClick={handleLogoClick}/>
+                <img src="/img/logo.jpg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
                 <div className="tabs">
-                    <button 
+                    <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
                         onClick={() => handleTabClick('upcoming')}
                     >
                         다가오는 모임
                     </button>
-                    <button 
+                    <button
                         className={`tab ${activeTab === 'past' ? 'active' : ''}`}
                         onClick={() => handleTabClick('past')}
                     >
                         지난 모임
                     </button>
-                    <button 
+                    <button
                         className={`tab ${activeTab === 'saved' ? 'active' : ''}`}
                         onClick={() => handleTabClick('saved')}
                     >
