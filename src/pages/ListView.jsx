@@ -31,7 +31,7 @@ const ListView = ({auth,type,keyword,search_key,sort}) => {
         console.log(keyword);
         setLoading(true);
 
-        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/type${type}`,{params : {"searchtype" : search_key,"keyword": keyword}, headers: headers })
+        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/type${type}`,{params : {"searchtype" : search_key,"keyword": keyword,"new" : sort }, headers: headers })
         .then((response) => {
             setArticles(response.data);
             setLoading(false);
