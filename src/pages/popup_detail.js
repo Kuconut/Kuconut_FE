@@ -7,7 +7,6 @@ import './Comment/Comment.css'
 import './ListView.css'
 
 import { IoArrowBack } from "react-icons/io5";
-import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -51,15 +50,15 @@ const Popup = ({auth,content,setmodalIsOpen}) => {
         <Container>
             <Row>
                 <button className ='back-button'onClick={() => setmodalIsOpen(false)} ><IoArrowBack size={24}/></button>
-                <div>{content.meeting_meeting_name}</div>
+                <div>{content.meeting_name}</div>
             </Row>
             
             <Row>
                 <DescriptionBox>  
-                    <div>{content.meeting_meeting_description}</div>
+                    <div>{content.meeting_description}</div>
                 </DescriptionBox>
                 <Placeholder>
-                    <CommentSection id = {content.meeting_id} />
+                    <CommentSection id = {content.id} />
                 </Placeholder>
             </Row>
             <Modal className = 'alert_Modal'overlayClassName="blur" isOpen ={alert}> 

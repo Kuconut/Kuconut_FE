@@ -2,13 +2,34 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CommentRow from "./CommentRow";
 
-const UpdateComment = () =>{
-    
+const UpdateComment = async (id,parentId,comment) =>{
+
+
+    const token = localStorage.getItem('access_Token');
+
+    try {
+        const response = await axios.post(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/comment/${id}`, 
+        {
+            content: comment,
+            parent_id: parentId,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        // 서버로부터 받은 새 댓글 데이터를 반환합니다.
+        return response.data;
+
+    } catch (error) {
+        console.error('Error posting comment:', error);
+        throw error;
+    }
 }
 
 const CommentSection = ({id}) => {
     const [comments,setComments] = useState(null);
-    const [comment,setComment] = useState(null);
+    const [comment,setComment] = useState("");
     const [parentId,setParentId] = useState("");
 
     useEffect(() => {
@@ -22,15 +43,18 @@ const CommentSection = ({id}) => {
         })
     },[id]);
 
-    const HandleClick = () => {
-        UpdateComment(id,)
-            .then(() => {
-               
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
+    const handleClick = async () => {
+        try {
+            const newComment = await UpdateComment(id, parentId, comment);
+            setComments((prevComments) => [...prevComments, newComment]);
+            console.log(newComment);
+            setComment(""); // 입력값 초기화
+            setParentId("");
+        } catch (error) {
+            console.error("Error adding comment:", error);
+        }
+    };
+
     return(
         <div className="comment-section">  
             <ul className="comment-listview">
@@ -45,7 +69,7 @@ const CommentSection = ({id}) => {
                     value={comment} 
                     onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
                 />
-                <button onClick={HandleClick} >게시</button>
+                <button onClick={handleClick} >게시</button>
             </div>
             
         </div>

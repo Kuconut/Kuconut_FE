@@ -1,15 +1,11 @@
 import React ,{useState}from "react";
-import styled from "styled-components";
 import './Comment.css'
 
-const Row = styled.div`
-    flex-direction : row;
-`
 const ReplyComment = ({ children }) => {
     return (
         <ul>
             {children && children.map((v, inx) => (
-                <div className="comment-text">-{v.content}</div>
+                <div className="comment-text" key={inx}>-{v.content}</div>
             ))}
         </ul>
     );
@@ -30,7 +26,7 @@ const CommentRow = ({ row ,setParentId}) => {
                     <button onClick = {() => setParentId(row.id)}className="comment-button">답글 달기</button>
                 </div>
             </div>
-            {row.children.length > 0 && (
+            {row.children && row.children.length > 0 && (
                 <div>
                     <button className ="comment-button"onClick={handleToggleReplies}>
                         {showReplies ? '답글 숨기기' : '답글 보기'}
