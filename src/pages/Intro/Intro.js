@@ -33,7 +33,7 @@ const Home = () => {
 
 
   return (
-    <div className='Container'>
+    <div className='Intro_Container'>
       <div className='Intro'>
         <div id='Icon'></div>
         <h1 id='Intro-Title'>OnBoard</h1>
