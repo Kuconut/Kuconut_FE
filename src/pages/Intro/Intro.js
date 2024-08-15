@@ -35,7 +35,7 @@ const Home = () => {
   return (
     <div className='Intro_Container'>
       <div className='Intro'>
-        <div id='Icon'></div>
+        <div id='Intro-Icon'></div>
         <h1 id='Intro-Title'>OnBoard</h1>
         <span id='Login' onClick={goToLogin}>로그인/회원가입</span>
       </div>
