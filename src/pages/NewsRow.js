@@ -15,7 +15,7 @@ const NewsRow = ({auth,row,setmodal,setContent,setalert}) => {
         ClickLike(row.id, setalert,auth)
             .then(() => {
                 // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
-                setIsLiked(prevState => (prevState === '1' ? '0' : '1'));
+                setIsLiked(prevState => (prevState ? false : true));
             })
             .catch(error => {
                 console.error('Error updating like status:', error);
@@ -32,7 +32,7 @@ const NewsRow = ({auth,row,setmodal,setContent,setalert}) => {
                     {meeting_date} | {deadline} | {row.user_count}/{row.max_user}
                 </span>
             </button>
-            <button onClick={handleClick} style={{background : 'none',border : 'none'}}>{isLiked === '1'? <FaHeart size={24}/> : <FaRegHeart size={24}/>}</button>
+            <button onClick={handleClick} style={{background : 'none',border : 'none'}}>{isLiked ? <FaHeart size={24}/> : <FaRegHeart size={24}/>}</button>
         </div>
 
     );  
