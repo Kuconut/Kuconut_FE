@@ -1,9 +1,8 @@
 import React, { useState,useEffect,useRef } from "react";
 import './ListView.css'
-import { IoMdArrowDropdown } from "react-icons/io";
-import { IoMdArrowDropup } from "react-icons/io";
 
-const Dropdown = (props) => {
+
+const Dropdown = ({iconOpen,iconClose,children}) => {
     const [open,setOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -24,11 +23,11 @@ const Dropdown = (props) => {
         <div className="dropdown-container" ref={dropdownRef}>
             
             <button className="search-button" onClick={() => setOpen(!open)}>
-                {open ? <IoMdArrowDropup size={24} color="1C4696"/>:<IoMdArrowDropdown size={24} color="1C4696"/>}
+                {open ? iconOpen:iconClose}
             </button>
             {open && (
                 <div className="dropdown-menu">
-                    {props.children}
+                    {children}
                 </div>
             )}
         </div>

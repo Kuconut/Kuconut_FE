@@ -1,8 +1,9 @@
 import React , {useEffect,useState} from "react";
 import styled from "styled-components";
 import Modal from 'react-modal';
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import CommentSection from "./Comment/CommentSection";
+import './Comment/Comment.css'
 import './ListView.css'
 
 import { IoArrowBack } from "react-icons/io5";
@@ -33,45 +34,31 @@ const DescriptionBox = styled.div`
     border-radius : 5%;
     background-color : lightgray;
 `
-const Popup = ({content,setmodalIsOpen}) => {
+
+const Popup = ({auth,content,setmodalIsOpen}) => {
     
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('access_Token');
-        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken`,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then((response) => {
-            if(response.status === 200){
-                setalert(false);
-            }else{
-                console.log(response.status);
-                setalert(true);
-            }
-        })
-        .catch((response) => {
-            console.log(response);
-            setalert(true);
-        });
-    }, []);
+        if(auth){
+            setalert(false);
+        }else setalert(true);
+    }, [auth]);
 
     return(
         <Container>
             <Row>
                 <button className ='back-button'onClick={() => setmodalIsOpen(false)} ><IoArrowBack size={24}/></button>
-                <div>{content.meeting_meeting_name}</div>
+                <div>{content.meeting_name}</div>
             </Row>
             
             <Row>
                 <DescriptionBox>  
-                    <div>{content.meeting_meeting_description}</div>
+                    <div>{content.meeting_description}</div>
                 </DescriptionBox>
                 <Placeholder>
-                    <div>댓글창</div>
+                    <CommentSection id = {content.id} />
                 </Placeholder>
             </Row>
             <Modal className = 'alert_Modal'overlayClassName="blur" isOpen ={alert}> 

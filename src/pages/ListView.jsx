@@ -9,7 +9,7 @@ import NewsRow from "./NewsRow";
 
 
 
-const ListView = ({type,keyword,search_key,sort}) => {
+const ListView = ({auth,type,keyword,search_key,sort}) => {
 
     const [articles, setArticles] = useState(null);
 
@@ -31,7 +31,7 @@ const ListView = ({type,keyword,search_key,sort}) => {
         console.log(keyword);
         setLoading(true);
 
-        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/type${type}`,{params : {"searchtype" : search_key,"keyword": keyword}, headers: headers })
+        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/type${type}`,{params : {"searchtype" : search_key,"keyword": keyword/*,"new" : sort*/ }, headers: headers })
         .then((response) => {
             setArticles(response.data);
             setLoading(false);
@@ -51,12 +51,12 @@ const ListView = ({type,keyword,search_key,sort}) => {
             ) : (
                 <ul className='listView'>
                     {articles && articles.map((v, inx) => {
-                        return <NewsRow key={inx} row={v} setmodal={setmodalIsOpen} setContent={setContent} setalert = {setalert} />
+                        return <NewsRow auth = {auth} key={inx} row={v} setmodal={setmodalIsOpen} setContent={setContent} setalert = {setalert} />
                     })}
                 </ul>
             )}
             <Modal className="PopUp" overlayClassName="Overlay" isOpen={modalIsOpen} onRequestClose={() => setmodalIsOpen(false)}>
-                <Popup content={content} setmodalIsOpen={setmodalIsOpen} />
+                <Popup auth ={auth} content={content} setmodalIsOpen={setmodalIsOpen} />
             </Modal>
             <Modal className = 'alert_Modal'overlayClassName="Overlay" isOpen ={alert} onRequestClose={() => setalert(false)}> 
                 <div>로그인이 필요합니다.</div>

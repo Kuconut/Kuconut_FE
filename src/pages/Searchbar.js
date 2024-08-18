@@ -1,14 +1,17 @@
-import React, {useState } from "react";
+import React, {useState,useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 import styled from "styled-components";
 import ListView from "./ListView";
 import Dropdown from "./Dropdown";
 import Modal from "react-modal";
 import './ListView.css';
 
-import { IoPerson } from "react-icons/io5";
+import { MdOutlinePerson } from "react-icons/md";
 import { LuPencilLine } from "react-icons/lu";
 import { FaSearch } from "react-icons/fa";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropup } from "react-icons/io";
 
 const Container = styled.div`
     width:80%;
@@ -27,6 +30,7 @@ function Searchbar(props){
     const [search_key,setSearch_key] = useState("meeting_name_description");
     const [search_by,setSearch_By] = useState("제목+내용");
     const [isopen,setIsOpen] = useState(false);
+    const [auth,setAuth] = useState(false);
     const onChange = (e) => {
         setSearch(e.target.value)
 
@@ -37,7 +41,26 @@ function Searchbar(props){
     const goToCreate = () => {
         navigate("/home/create");
     }
-
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            if(response.status === 200){
+                setAuth(true);
+            }else{
+                console.log(response.status);
+                setAuth(false);
+            }
+        })
+        .catch((response) => {
+            console.log(response);
+            setAuth(false);
+        });
+    }, []);
 
     return(
         <>
@@ -45,7 +68,8 @@ function Searchbar(props){
                 <div className="header"> 
                     <div className="Box">
                         <div style={{ width: '80px' }}>{search_by}</div>
-                        <Dropdown>
+                        <Dropdown iconOpen={<IoMdArrowDropup size={24}/>} iconClose={<IoMdArrowDropdown size={24} />}>
+
                             <div>
                                 <button onClick={() => {setSearch_By("제목+내용"); setSearch_key("meeting_name_description");}}>제목+내용</button>
                                 <button onClick={() => {setSearch_By("작성자"); setSearch_key("created_by");}}>작성자</button>
@@ -55,22 +79,28 @@ function Searchbar(props){
                         <FaSearch size={24} color="1C4696"/>
                         {/* <button className="s-button" ><FaSearch/></button> */}
                     </div>
-                    <button className="side_button" onClick={goToCreate}><LuPencilLine size={30}/></button>
-                    <button className="side_button" onClick={goToMypage}><IoPerson size={30}/></button>
-                    <Dropdown>
-                            <div>
-                                <button onClick={goToMypage}>마이페이지</button>
-                                <button onClick={() => setIsOpen(true)}>로그아웃</button>
-                            </div>
-                    </Dropdown>
+                    {auth?(
+                        <>
+                            <button className="side_button" onClick={goToCreate}><LuPencilLine size={30}/></button>
+                            <Dropdown iconOpen={<MdOutlinePerson size={40}/>} iconClose={<MdOutlinePerson size={40}/>}>
+                                    <div>
+                                        <button onClick={goToMypage}>마이페이지</button>
+                                        <button onClick={() => setIsOpen(true)}>로그아웃</button>
+                                    </div>
+                            </Dropdown>
+                        </>
+                    ):(
+                        <button style = {{border:"none", background:"none",fontSize:"15px", width:"150px"}}onClick={() => {navigate('/login')}}>로그인/회원가입</button>
+                    )}
+                    
                     
                 </div>
       
                 <div className="filterbox">
-                    <button className="text-button" onClick={() => setSort(false)}>모임 날짜</button>
-                    <button className="text-button" onClick={() => setSort(true)}>최신 작성 순</button>
+                    <button className="text-button" onClick={() => setSort(false)}>모임 날짜 가까운 순</button>
+                    <button className="text-button" onClick={() => setSort(true)}>최근에 만들어진 모임 순</button>
                 </div>
-                <ListView type = {props.type} keyword = {search} sort = {sort} search_key = {search_key}/>
+                <ListView auth = {auth} type = {props.type} keyword = {search} sort = {sort} search_key = {search_key}/>
             </Container>
             <Modal className = 'alert_Modal'overlayClassName="Overlay" isOpen = {isopen} onRequestClose={() => setIsOpen(false)}>
                 <div>로그아웃하시렵니까?</div>
