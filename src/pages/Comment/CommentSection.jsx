@@ -45,9 +45,9 @@ const CommentSection = ({id}) => {
 
     const handleClick = async () => {
         try {
-            const newComment = await UpdateComment(id, parentId, comment);
-            setComments((prevComments) => [...prevComments, newComment]);
-            console.log(newComment);
+            const newComments = await UpdateComment(id, parentId, comment);
+            setComments(newComments);
+            console.log(newComments);
             setComment(""); // 입력값 초기화
             setParentId("");
         } catch (error) {
