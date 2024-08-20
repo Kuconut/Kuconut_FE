@@ -76,7 +76,11 @@ function Searchbar(props){
                             </div>
                         </Dropdown>
                         <input type = "text" className="searchbar" value = {search} onChange={onChange} />
-                        <FaSearch size={24} color="1C4696"/>
+                        <FaSearch size={24} color="444444"/>
+                        <div className="filterbox">
+                            <button className="text-button" onClick={() => setSort(false) } style={{color: sort? "#979797" : "black"}}>모임 날짜 가까운 순</button>
+                            <button className="text-button" onClick={() => setSort(true)} style={{color: sort? "black" : "#979797"}}>최근에 만들어진 모임 순</button>
+                        </div>
                         {/* <button className="s-button" ><FaSearch/></button> */}
                     </div>
                     {auth?(
@@ -96,10 +100,7 @@ function Searchbar(props){
                     
                 </div>
       
-                <div className="filterbox">
-                    <button className="text-button" onClick={() => setSort(false)}>모임 날짜 가까운 순</button>
-                    <button className="text-button" onClick={() => setSort(true)}>최근에 만들어진 모임 순</button>
-                </div>
+                
                 <ListView auth = {auth} type = {props.type} keyword = {search} sort = {sort} search_key = {search_key}/>
             </Container>
             <Modal className = 'alert_Modal'overlayClassName="Overlay" isOpen = {isopen} onRequestClose={() => setIsOpen(false)}>
