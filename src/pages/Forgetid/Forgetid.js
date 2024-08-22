@@ -60,7 +60,11 @@ const ForgetId = () => {
     };
 
     return (
-      <>
+    <>
+    <div className="login-logo">
+        <img src="../../img/logo.jpg" alt="Logo" className="second-logo-image" />
+        <button className="second-logo-button" onClick={() => navigate('/')}>OnBoard</button>
+    </div>  
         <div className="forget-id-wrapper">
             <div className="forget-id-container">
                 <div className="forget-id-group">
