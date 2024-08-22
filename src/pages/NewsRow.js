@@ -53,7 +53,7 @@ const NewsRow = ({auth,row,setalert}) => {
                     </Infohead>
                     
                     <div className="list_button_text" style={{fontSize:"18px"}}>
-                        {nickname}   |   {meeting_date}   |   {deadline}   |   {row.user_count}/{row.max_user}
+                        {nickname}   |   {meeting_date}   |   {deadline}   |   {content.user_count}/{content.max_user}
                     </div>
                 </button>
                 <button onClick={handleClick} style={{background : 'none',border : 'none'}}>{content.is_liked ? <FaHeart size={24}/> : <FaRegHeart size={24}/>}</button>
