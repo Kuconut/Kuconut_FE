@@ -67,6 +67,10 @@ const ForgetPassword = () => {
 
     return (
       <>
+      <div className="login-logo">
+        <img src="../../img/logo.jpg" alt="Logo" className="logo-image" />
+        <button className="logo-button" onClick={() => navigate('/')}>OnBoard</button>
+      </div>  
         <div className="forget-password-wrapper">
             <div className="forget-password-container">
                 <div className="forget-password-group">

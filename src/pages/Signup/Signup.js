@@ -9,6 +9,12 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
+  const [idmessage, setIdmessage] = useState('');
+  const [passwordmessage, setPasswordmessage] = useState('');
+  const [passwordcheckmessage, setPasswordcheckmessage] = useState('');
+  const [nicknamemessage, setNicknamemessage] = useState('');
+  const [emailmessage, setEmailmessage] = useState('');
+  const [verifymessage, setVerifymessage] = useState('');
   const [error, setError] = useState('');
   const [verify, setVerify] = useState(false);
   const [verifycode, setVerifycode] = useState('');
@@ -81,6 +87,36 @@ const SignUp = () => {
     }
   }
 
+  const idCheck = async () => {
+    try {
+      const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checkid'+id, {id});
+      if(response.data.message === '사용 가능한 아이디입니다.') {
+        setIdmessage('사용 가능한 아이디입니다.')
+      }
+      else {
+        setIdmessage('이미 있는 아이디입니다.')
+      }
+    }
+    catch {
+      setIdmessage('이미 있는 아이디입니다.')
+    }
+  }
+
+  const nicknameCheck = async () => {
+    try {
+      const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checknickname'+nickname, {nickname});
+      if(response.data.message === '사용 가능한 닉네임입니다.') {
+        setNicknamemessage('사용 가능한 별명입니다.')
+      }
+      else {
+        setNicknamemessage('이미 있는 아이디입니다.')
+      }
+    }
+    catch {
+      setNicknamemessage('이미 있는 별명입니다.')
+    }
+  }
+
   const validateEmail = async (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!(re.test(email))) {
@@ -120,6 +156,10 @@ const SignUp = () => {
 
   return (
     <>
+    <div className="login-logo">
+        <img src="../../img/logo.jpg" alt="Logo" className="logo-image" />
+        <button className="logo-button" onClick={() => navigate('/')}>OnBoard</button>
+    </div>    
     <div className="signup-wrapper">
       <div className="signup-form">
         <div className="signup-form-group">
@@ -130,7 +170,8 @@ const SignUp = () => {
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
-          <button className="signup-small-button" onClick={() => {/* 중복확인 로직 */}}>중복확인</button>
+          <button className="signup-small-button" onClick={() => idCheck()}>중복확인</button>
+          <p className='idmessage'>{idmessage}</p>
         </div>
         <div className="signup-form-group">
           <label htmlFor="password">비밀번호</label>
@@ -140,6 +181,7 @@ const SignUp = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <p className='message'>{passwordmessage}</p>
         </div>
         <div className="signup-form-group">
           <label htmlFor="passwordConfirm">비밀번호 확인</label>
@@ -149,6 +191,7 @@ const SignUp = () => {
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
           />
+          <p className='message'>{passwordcheckmessage}</p>
         </div>
         <div className="signup-form-group">
           <label htmlFor="nickname">별명</label>
@@ -158,6 +201,8 @@ const SignUp = () => {
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
+          <button className="signup-small-button" onClick={() => nicknameCheck()}>중복확인</button>
+          <p className='message'>{nicknamemessage}</p>
         </div>
         <div className="signup-form-group">
           <label htmlFor="email">이메일</label>
@@ -169,6 +214,7 @@ const SignUp = () => {
             disabled={emailLock}
           />
           <button className="signup-small-button" onClick={() => validateEmail(email)} disabled={emailLock}>인증받기</button>
+          <p className='message'>{emailmessage}</p>
         </div>
         {verify && (
           <div className="signup-form-group">
@@ -181,9 +227,10 @@ const SignUp = () => {
               disabled={emailLock}
             />
             <button className="signup-small-button" onClick={() => CheckVerifyCode(verifycode)} disabled={emailLock}>확인</button>
+            <p className="message">{verifymessage}</p>
           </div>
         )}
-        {error && <p className="signup-error-message">{error}</p>}
+        <p className="signup-error-message">{error}</p>
       </div>
     </div>
     <div className="signup-links">

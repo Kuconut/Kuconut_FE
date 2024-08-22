@@ -24,8 +24,12 @@ const Login = () => {
             });
             if (response.data.message === "아이디 또는 비밀번호를 확인해주세요.") setError('아이디 또는 비밀번호를 확인해주세요.');
             else {
-                const token = response.data.access_Token;
-                localStorage.setItem('access_Token', token);   
+                const access_token = response.data.access_Token;
+                const refresh_token = response.data.refresh_Token;
+                localStorage.setItem('access_Token', access_token);   
+                localStorage.setItem('refresh_Token', refresh_token);   
+                console.log(access_token)
+                console.log(refresh_token)
                 navigate('/home');
             }
         } catch (error) {
@@ -43,7 +47,7 @@ const Login = () => {
         <>
         <div className="login-wrapper">
             <div className="login-logo">
-                <img src="img/logo.jpg" alt="Logo" className="logo-image" />
+                <img src="../../img/logo.jpg" alt="Logo" className="logo-image" />
                 <button className="logo-button" onClick={() => navigate('/')}>OnBoard</button>
             </div>
             <div className="login-container">
