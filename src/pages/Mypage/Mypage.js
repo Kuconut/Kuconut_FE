@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
-
 import { LuPencilLine } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
+import Modal from 'react-modal';
+import Popup from "./popup_detail";
+import NewsRow from "./NewsRow";
 
 const Mypage = () => {
     const [activeTab, setActiveTab] = useState('upcoming'); 
@@ -12,6 +14,12 @@ const Mypage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [filterType, setFilterType] = useState('all'); 
+    const [articles, setArticles] = useState(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [content, setContent] = useState(null);
+    const [alert, setAlert] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);  // 드롭다운 메뉴 상태
+
     const navigate = useNavigate();
 
     // Token 확인 및 리디렉션 처리
@@ -95,6 +103,27 @@ const Mypage = () => {
         window.open('/home/create', '_blank');
     };
 
+    const handleDropdownToggle = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
+
+    const handleProfileEdit = () => {
+        navigate('/profile/edit');
+    };
+
+    const handleEmailEdit = () => {
+        navigate('/profile/edit-email');
+    };
+
+    const handlePasswordChange = () => {
+        navigate('/Login/Forgetpassword');
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_Token');
+        navigate('/login');
+    };
+
     return (
         <div className="mypage-container">
             <div className="side_area">
@@ -126,7 +155,17 @@ const Mypage = () => {
                     <span className="nickname">닉네임</span>
                     <div className="actions">
                         <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={30}/></button>
-                        <button className="edit-privacy-btn"><IoSettingsOutline size={30}/></button>
+                        <div className="dropdown-container">
+                            <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={30}/></button>
+                            {dropdownOpen && (
+                                <div className="dropdown-menu">
+                                    <button onClick={handleProfileEdit}>프로필 수정</button>
+                                    <button onClick={handleEmailEdit}>이메일 수정</button>
+                                    <button onClick={handlePasswordChange}>비밀번호 변경</button>
+                                    <button onClick={handleLogout}>로그아웃</button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <React.Fragment>
@@ -153,19 +192,29 @@ const Mypage = () => {
                     <div className="meetings">
                         {loading && <p>로딩 중...</p>}
                         {error && <p>오류 발생: {error}</p>}
-                        {meetings.length > 0 ? (
-                            meetings.map((meeting) => (
-                                <div key={meeting.id} className="meeting-item">
-                                    <h3>{meeting.title}</h3>
-                                    <p>{meeting.description}</p>
-                                </div>
-                            ))
+                        {articles ? (
+                            <ul className='listView'>
+                                {articles.map((v, inx) => (
+                                    <NewsRow auth={true} key={inx} row={v} setmodal={setModalIsOpen} setContent={setContent} setalert={setAlert} />
+                                ))}
+                            </ul>
                         ) : (
                             <p>No meetings available</p>
                         )}
                     </div>
                 </React.Fragment>
             </div>
+            <Modal className="PopUp" overlayClassName="Overlay" isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+                <Popup auth={true} content={content} setmodalIsOpen={setModalIsOpen} />
+            </Modal>
+            <Modal className='alert_Modal' overlayClassName="Overlay" isOpen={alert} onRequestClose={() => setAlert(false)}> 
+                <div>로그인이 필요합니다.</div>
+                <div>로그인 하시겠습니까?</div>
+                <div className="button-container">
+                    <button onClick={() => navigate('/login')}>예</button>
+                    <button onClick={() => setAlert(false)}>아니요</button>
+                </div>
+            </Modal>
         </div>
     );
 };

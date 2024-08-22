@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CommentRow from "./CommentRow";
+import { FaArrowUp } from "react-icons/fa6";
 
 const UpdateComment = async (id,parentId,comment) =>{
 
@@ -62,14 +63,21 @@ const CommentSection = ({id}) => {
                     return <CommentRow key = {inx} row = {v} setParentId={setParentId}/>
                 })}
             </ul>
-            <div className="comment-input-container">
-                <input 
-                    placeholder="댓글 달기" 
-                    className="comment-input" 
-                    value={comment} 
-                    onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
-                />
-                <button onClick={handleClick} >게시</button>
+            <div className="input-section">
+                <div className="input-container">
+                    <input 
+                        placeholder={parentId ? "답글 입력" : "댓글을 입력하세요"}
+                        value={comment} 
+                        onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleClick();
+                            }
+                        }} 
+                    />
+                    <button onClick={handleClick} ><FaArrowUp size={20}/></button>
+                </div>
+                
             </div>
             
         </div>
