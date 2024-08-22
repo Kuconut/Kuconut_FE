@@ -88,7 +88,7 @@ const SignUp = () => {
     try {
       const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checkid'+id, {id});
       
-      if(response.status === 200) setIdmessage('사용 가능한 아이디입니다.');
+      if(response.status === 201) setIdmessage('사용 가능한 아이디입니다.');
       else setIdmessage('이미 있는 아이디입니다.');
 
     }

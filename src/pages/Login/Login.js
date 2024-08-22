@@ -22,7 +22,7 @@ const Login = () => {
                 user_id: id,
                 password: password
             });
-            if(response.status === 200) {
+            if(response.status === 201) {
                 const access_token = response.data.access_Token;
                 const refresh_token = response.data.refresh_Token;
                 localStorage.setItem('access_Token', access_token);   
