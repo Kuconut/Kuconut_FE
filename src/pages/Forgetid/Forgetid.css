@@ -5,14 +5,14 @@
     margin-bottom: 20px;
 }
 
-.logo-image {
+.second-logo-image {
     width: 150px; /* 원하는 크기로 조정 */
     height: 150px; /* 원하는 크기로 조정 */
     margin-right: 15px; /* 간격 조정 */
 }
 
-.logo-button {
-    font-size: 100px; /* 폰트 크기를 키움 */
+.second-logo-button {
+    font-size: 50px; /* 폰트 크기를 키움 */
     margin: 0;
     font-weight: normal; /* 글씨 굵기를 줄임 */
     background: none;
@@ -56,6 +56,7 @@ body.forgetid-body {
     grid-column: 1;
     text-align: right;
     align-self: center;
+    font-size: 14px;
 }
 
 .forget-id-group input {
@@ -66,7 +67,7 @@ body.forgetid-body {
     border-radius: 20px;
     box-sizing: border-box;
     background-color: #f0f0f0;
-    width: 400px; /* Ensure full width within the grid column */
+    width: 100%; /* Ensure full width within the grid column */
 }
 
 .forget-id-group button {
