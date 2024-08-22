@@ -9,10 +9,10 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const [idmessage, setIdmessage] = useState('');
-  const [passwordmessage, setPasswordmessage] = useState('');
-  const [passwordcheckmessage, setPasswordcheckmessage] = useState('');
-  const [nicknamemessage, setNicknamemessage] = useState('');
+  const [idmessage, setIdmessage] = useState('아이디를 입력해주세요.');
+  const passwordmessage = '비밀번호는 8글자 이상입니다.';
+  const [passwordcheckmessage, setPasswordcheckmessage] = useState('비밀번호를 입력해주세요.');
+  const [nicknamemessage, setNicknamemessage] = useState('별명을 입력해주세요');
   const [emailmessage, setEmailmessage] = useState('');
   const [verifymessage, setVerifymessage] = useState('');
   const [error, setError] = useState('');
@@ -128,7 +128,7 @@ const SignUp = () => {
         if (response.data.message === '이메일로 인증번호를 전송하였습니다.') {
           setVerify(true);
           setError('');
-          alert('인증번호를 전송하였습니다.');
+          setEmailmessage('인증번호를 전송하였습니다.');
         } else if (response.data.message === '이미 가입된 이메일입니다.') {
           setError("이미 가입된 이메일입니다.");
         } else setError('이메일 전송 실패');
@@ -145,20 +145,44 @@ const SignUp = () => {
       if (response.data.message === '인증되었습니다.') {
         setEmailLock(true);
         setError('');
-        alert('인증되었습니다.');
+        setVerifymessage('인증되었습니다.');
       } else (
-        setError("인증번호가 만료되었거나 입력되지 않은 이메일입니다.")
+        setVerifymessage("인증번호가 만료되었거나 입력되지 않은 이메일입니다.")
       )
     } catch {
       setError("네트워크 오류");
     }
   }
 
+  const changeId = (inp) => {
+    setId(inp);
+    setIdmessage('중복을 확인해주세요.')
+  }
+
+  const changeNickname = (inp) => {
+    setNickname(inp);
+    setNicknamemessage('중복을 확인해주세요.')
+  }
+
+  const changePasswordConfirm = (inp) => {
+    setPasswordConfirm(inp);
+    if(password === inp) {
+      setPasswordcheckmessage('비밀번호가 일치합니다.');
+    }
+    else setPasswordcheckmessage('비밀번호가 일치하지 않습니다.');
+  }
+
+  const changePassword = (inp) => {
+    setPassword(inp);
+    if(passwordConfirm === inp) setPasswordcheckmessage('비밀번호가 일치합니다.');
+    else setPasswordcheckmessage('비밀번호가 일치하지 않습니다.');
+  }
+
   return (
     <>
     <div className="login-logo">
-        <img src="../../img/logo.jpg" alt="Logo" className="logo-image" />
-        <button className="logo-button" onClick={() => navigate('/')}>OnBoard</button>
+        <img src="../../img/logo.jpg" alt="Logo" className="second-logo-image" />
+        <button className="second-logo-button" onClick={() => navigate('/')}>OnBoard</button>
     </div>    
     <div className="signup-wrapper">
       <div className="signup-form">
@@ -168,10 +192,10 @@ const SignUp = () => {
             type="text"
             id="id"
             value={id}
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => changeId(e.target.value)}
           />
           <button className="signup-small-button" onClick={() => idCheck()}>중복확인</button>
-          <p className='idmessage'>{idmessage}</p>
+          <p className='message'>{idmessage}</p>
         </div>
         <div className="signup-form-group">
           <label htmlFor="password">비밀번호</label>
@@ -179,7 +203,7 @@ const SignUp = () => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => changePassword(e.target.value)}
           />
           <p className='message'>{passwordmessage}</p>
         </div>
@@ -189,7 +213,7 @@ const SignUp = () => {
             type="password"
             id="passwordConfirm"
             value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
+            onChange={(e) => changePasswordConfirm(e.target.value)}
           />
           <p className='message'>{passwordcheckmessage}</p>
         </div>
@@ -199,7 +223,7 @@ const SignUp = () => {
             type="text"
             id="nickname"
             value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            onChange={(e) => changeNickname(e.target.value)}
           />
           <button className="signup-small-button" onClick={() => nicknameCheck()}>중복확인</button>
           <p className='message'>{nicknamemessage}</p>
@@ -230,13 +254,16 @@ const SignUp = () => {
             <p className="message">{verifymessage}</p>
           </div>
         )}
-        <p className="signup-error-message">{error}</p>
+        </div>
+        <div>
+          {(verifymessage==='인증되었습니다.' && idmessage === '사용 가능한 아이디입니다.' && passwordcheckmessage === '비밀번호가 일치합니다.' && nicknamemessage ==='사용 가능한 별명입니다.') && 
+            <button className='signup-button' onClick={() => handleSignUp()}>회원가입</button>}
+          <p className="signup-error-message">{error}</p>
+        </div>
       </div>
-    </div>
-    <div className="signup-links">
-        <button className="transparent-login-button" onClick={() => navigate('/Login')}>← 로그인</button>
-        <button className="transparent-singup-button" onClick={() => handleSignUp()}>회원가입 →</button>
-    </div>
+      <div className="signup-links">
+          <button className="transparent-login-button" onClick={() => navigate('/Login')}>← 로그인</button>
+      </div>
     </>
   );
 }
