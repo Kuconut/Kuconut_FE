@@ -258,7 +258,6 @@ const SignUp = () => {
         <div>
           {(verifymessage==='인증되었습니다.' && idmessage === '사용 가능한 아이디입니다.' && passwordcheckmessage === '비밀번호가 일치합니다.' && nicknamemessage ==='사용 가능한 별명입니다.') && 
             <button className='signup-button' onClick={() => handleSignUp()}>회원가입</button>}
-          <button className='signup-button' onClick={() => handleSignUp()}>회원가입</button>
           <p className="signup-error-message">{error}</p>
         </div>
       </div>
