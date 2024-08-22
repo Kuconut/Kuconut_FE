@@ -66,7 +66,7 @@ const CommentSection = ({id}) => {
             <div className="input-section">
                 <div className="input-container">
                     <input 
-                        placeholder="댓글을 입력하세요"
+                        placeholder={parentId ? "답글 입력" : "댓글을 입력하세요"}
                         value={comment} 
                         onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
                         onKeyDown={(e) => {

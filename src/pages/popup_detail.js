@@ -4,12 +4,17 @@ import Modal from 'react-modal';
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import CommentSection from "./Comment/CommentSection";
+import parse from "html-react-parser/lib/index";
+import axios from "axios";
 import './Comment/Comment.css'
 import './ListView.css'
 
+import { FaRegTrashAlt } from "react-icons/fa";
+import { LuPencilLine } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { FaXmark } from "react-icons/fa6";
 
 const Container = styled.div`
@@ -49,6 +54,13 @@ const Contentsection = styled.div`
     flex-direction : column;
     justify-content : center;
     height : 80%;
+    &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 `
 const Buttonsection = styled.div`
     display : flex;
@@ -63,11 +75,10 @@ const Infohead = styled.div`
     flex-direction : row;
 
 `
-const Popup = ({auth,content,setmodalIsOpen}) => {
+const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
-
     const meeting_date = moment(new Date(content.meeting_date)).format("YYYY.MM.DD(dddd)  HH:mm")
     const deadline = moment(new Date(content.deadline)).format("~YYYY.MM.DD(dddd)  HH:mm");
     const nickname = content.created_by.nickname  ?   content.created_by.nickname : "(익명)";
@@ -77,7 +88,32 @@ const Popup = ({auth,content,setmodalIsOpen}) => {
             setalert(false);
         }else setalert(true);
     }, [auth]);
-
+    const handleLike = () => {
+        ClickLike(content.id, setalert,auth)
+            .then(() => {
+                // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
+                setContent(prevContent => ({
+                    ...prevContent,
+                    is_liked: !content.is_liked
+                }));
+            })
+            .catch(error => {
+                console.error('Error updating like status:', error);
+            });
+    }
+    const handleJoin = () => {
+        ClickJoin(content.id, setalert,auth)
+            .then(() => {
+                // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
+                setContent(prevContent => ({
+                    ...prevContent,
+                    is_joined: !content.is_joined
+                }));
+            })
+            .catch(error => {
+                console.error('Error updating join status:', error);
+            });
+    }
     return(
         <Container>
             <Popupheader>
@@ -101,19 +137,53 @@ const Popup = ({auth,content,setmodalIsOpen}) => {
             
             <Row>
                 <DescriptionBox>
-                    <Contentsection>
-                        <div>{content.meeting_description}</div>
+                    <Contentsection style={{ maxHeight: '80%', overflowY: 'auto' }}>
+                        <div>{parse(content.meeting_description)}</div>
                     </Contentsection>  
+                    {content.is_mine ? 
                     <Buttonsection>
-                        <button className="popup-like">
+                        {content.is_liked? 
+                        <button className="popup-button" onClick={handleLike}>
+                            <FaHeart style={{marginRight : "5px"}} size={24}/>
+                            찜취소
+                        </button>  : 
+                        <button className="popup-button" onClick={handleLike}>
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
+                        </button>}
+                        <button className = "popup-button">
+                            <LuPencilLine style={{marginRight : "5px"}} size={24}/>
+                            수정하기
                         </button>
-                        <button className="popup-join">
-                            <FiLogIn style={{marginRight : "5px",color:"white"}} size={24}/>
-                            <div style={{color:"white"}}>합류하기</div>
+                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}}>
+                            <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
+                            <div style={{color:"white"}}>삭제하기</div>
                         </button>
-                    </Buttonsection>
+                    </Buttonsection>    : 
+                    
+                    <Buttonsection>
+                     {content.is_liked? 
+                        <button className="popup-button" onClick={handleLike}>
+                            <FaHeart style={{marginRight : "5px"}} size={24}/>
+                            찜취소
+                        </button>  : 
+                        <button className="popup-button" onClick={handleLike}>
+                            <FaRegHeart style={{marginRight : "5px"}} size={24}/>
+                            찜하기
+                        </button>}
+                        {content.is_joined ?
+                            <button className="popup-button" style={{backgroundColor : "#EB4B4B"}}>
+                                <FiLogOut style={{marginRight : "5px",color:"white"}} size={24}/>
+                                <div style={{color:"white"}}>나가기</div>
+                            </button> :
+                            <button className="popup-button" style={{backgroundColor : "#3C64C8"} }onClick={handleJoin}>
+                                <FiLogIn style={{marginRight : "5px",color:"white"}} size={24}/>
+                                <div style={{color:"white"}}>합류하기</div>
+                            </button>
+                        }
+                    
+                    </Buttonsection>}
+                    
                     
                 </DescriptionBox>
                 <CommentBox>
@@ -136,5 +206,53 @@ const Popup = ({auth,content,setmodalIsOpen}) => {
     );
     
 }
+const ClickLike = (id,setalert,auth) =>{
 
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.patch(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/like`,
+        { "meeting_id": id },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+    .then(response => {
+        console.log('Like status updated:', response);
+    })
+    .catch(error => {
+        console.error('Error updating like status:', error);
+    });
+}
+
+const ClickJoin = (id,setalert,auth) =>{
+
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.patch(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/join`,
+        { "meeting_id": id },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+    .then(response => {
+        console.log('Join status updated:', response);
+    })
+    .catch(error => {
+        console.error('Error updating join status:', error);
+    });
+}
 export default Popup;
