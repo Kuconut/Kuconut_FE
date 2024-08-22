@@ -22,8 +22,7 @@ const Login = () => {
                 user_id: id,
                 password: password
             });
-            if (response.data.message === "아이디 또는 비밀번호를 확인해주세요.") setError('아이디 또는 비밀번호를 확인해주세요.');
-            else {
+            if(response.status === 200) {
                 const access_token = response.data.access_Token;
                 const refresh_token = response.data.refresh_Token;
                 localStorage.setItem('access_Token', access_token);   
@@ -32,6 +31,7 @@ const Login = () => {
                 console.log(refresh_token)
                 navigate('/home');
             }
+            else setError('아이디 또는 비밀번호를 확인해주세요.');
         } catch (error) {
             setError('Error');
         }

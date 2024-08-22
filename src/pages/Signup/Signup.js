@@ -73,14 +73,11 @@ const SignUp = () => {
         nickname: nickname
       });
 
-      if (response.data.message === "이미 존재하는 아이디입니다.") {
-        setError("이미 존재하는 아이디입니다.");
-      } else if (response.data.message === "이미 존재하는 닉네임입니다.") {
-        setError("이미 존재하는 닉네임입니다.");
-      } else {
+      if(response.status === 200) {
         alert('회원가입 성공!');
         navigate("/login");
       }
+      else setError('아이디 혹은 별명이 중복되었습니다.')
 
     } catch (error) {
       setError('회원가입 실패: 네트워크 오류');
@@ -90,15 +87,13 @@ const SignUp = () => {
   const idCheck = async () => {
     try {
       const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checkid'+id, {id});
-      if(response.data.message === '사용 가능한 아이디입니다.') {
-        setIdmessage('사용 가능한 아이디입니다.')
-      }
-      else {
-        setIdmessage('이미 있는 아이디입니다.')
-      }
+      
+      if(response.status === 200) setIdmessage('사용 가능한 아이디입니다.');
+      else setIdmessage('이미 있는 아이디입니다.');
+
     }
     catch {
-      setIdmessage('이미 있는 아이디입니다.')
+      setIdmessage('네트워크 오류.')
     }
   }
 
