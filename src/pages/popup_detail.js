@@ -45,7 +45,7 @@ const DescriptionBox = styled.div`
     flex:3;
     height : calc(100%-30px);
     padding : 10px 20px;
-    display : flex;
+    display: flex;
     flex-direction : column;
     border-radius : 5%;
 `
