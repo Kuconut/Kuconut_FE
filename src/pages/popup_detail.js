@@ -115,6 +115,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.error('Error updating join status:', error);
             });
     }
+    
     const handleLeave = () => {
         ClickLeave(content.id, setalert,auth)
             .then(() => {
@@ -129,6 +130,11 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.error('Error updating leave status:', error);
             });
     }
+
+    const handleEidt = () => {
+        navigate(`/EidtMeeting/${content.id}`);
+    }
+
     return(
         <Container>
             <Popupheader>
@@ -153,7 +159,9 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
             <Row>
                 <DescriptionBox>
                     <Contentsection style={{ maxHeight: '80%', overflowY: 'auto' }}>
-                        <div>{parse(content.meeting_description)}</div>
+                        <div className="ql-editor detail-page-editor">
+                            {parse(content.meeting_description)}
+                        </div>
                     </Contentsection>  
                     {content.is_mine ? 
                     <Buttonsection>
@@ -166,7 +174,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button">
+                        <button className = "popup-button" onClick={handleEidt}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>

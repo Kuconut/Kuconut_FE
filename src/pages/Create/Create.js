@@ -26,12 +26,26 @@ const Write = styled.div`
         border: none;
         box-sizing: border-box;
         overflow-y: auto;
+        text-align: left !important;
     }
 
     .ql-toolbar {
         border: none !important;
         border-bottom: 1px solid #ccc;
         border-radius: inherit;
+    }
+
+    .ql-align-left {
+        text-align: left !important;
+    }
+    .ql-align-center {
+        text-align: center !important;
+    }
+    .ql-align-right {
+        text-align: right !important;
+    }
+    .ql-align-justify {
+        text-align: justify !important;
     }
 ;`
 
@@ -82,6 +96,12 @@ const Submitbutton = styled.button`
     }
 ;`
 
+const Align = ReactQuill.Quill.import("formats/align");
+Align.whitelist = ["left", "center", "right", "justify"];
+
+const Icons = ReactQuill.Quill.import("ui/icons");
+Icons.align["left"] = Icons.align[""];
+
 const Create = () => {
     const editorRef = useRef(null);
     const deadlineRef = useRef(null);
@@ -119,6 +139,13 @@ const Create = () => {
                 setLoginModalOpen(true);
             });
         }
+    }, []);
+
+    useEffect(() => {
+        const quill = editorRef.current.getEditor();
+    
+        // 텍스트가 아무것도 없을 때 기본 정렬을 왼쪽으로 설정
+        quill.format('align', 'left');
     }, []);
 
     const handleCategoryChange = (event) => {
@@ -311,7 +338,7 @@ const Create = () => {
                         </div>
                         <div className="margin2"></div>
                         <div className="Number">
-                            <label htmlFor="minNumber">인원</label>
+                            <label htmlFor="number">인원</label>
                                 <input 
                                     type="number" 
                                     id="minNumber" 
@@ -395,7 +422,7 @@ Create.modules = {
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }, {'indent' : '-1'}, {'indent' : '+1'}],
             [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
+            [{ align: ["left", "center", "right", "justify"] }],
             ['link', 'image'],
             ['clean'],                                        
     ],

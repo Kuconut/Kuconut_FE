@@ -299,3 +299,6 @@
   align-items: center;
 }
 
+.detail-page-editor p {
+  text-align: left;
+}
