@@ -114,6 +114,11 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.error('Error updating join status:', error);
             });
     }
+
+    const handleEidt = () => {
+        navigate(`/EidtMeeting/${content.id}`);
+    }
+
     return(
         <Container>
             <Popupheader>
@@ -153,7 +158,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button">
+                        <button className = "popup-button" onClick={handleEidt}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>
