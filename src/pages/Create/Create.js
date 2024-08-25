@@ -38,6 +38,15 @@ const Write = styled.div`
     .ql-align-left {
         text-align: left !important;
     }
+    .ql-align-center {
+        text-align: center !important;
+    }
+    .ql-align-right {
+        text-align: right !important;
+    }
+    .ql-align-justify {
+        text-align: justify !important;
+    }
 ;`
 
 const ModalContainer = styled(Modal)`
@@ -134,13 +143,6 @@ const Create = () => {
 
     useEffect(() => {
         const quill = editorRef.current.getEditor();
-        
-        // 에디터가 로드된 직후에 커서 위치를 강제로 왼쪽으로 설정
-        quill.on('editor-change', (eventName) => {
-            if (eventName === 'text-change') {
-                quill.setSelection(0, 0);
-            }
-        });
     
         // 텍스트가 아무것도 없을 때 기본 정렬을 왼쪽으로 설정
         quill.format('align', 'left');

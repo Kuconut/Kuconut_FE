@@ -138,7 +138,9 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
             <Row>
                 <DescriptionBox>
                     <Contentsection style={{ maxHeight: '80%', overflowY: 'auto' }}>
-                        <div>{parse(content.meeting_description)}</div>
+                        <div className="ql-editor detail-page-editor">
+                            {parse(content.meeting_description)}
+                        </div>
                     </Contentsection>  
                     {content.is_mine ? 
                     <Buttonsection>
