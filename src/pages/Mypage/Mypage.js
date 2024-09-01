@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
 import { LuPencilLine } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
+import { format } from 'date-fns';
 
 const Mypage = () => {
-    const [activeTab, setActiveTab] = useState('upcoming'); 
+    const [activeTab, setActiveTab] = useState('upcoming');
     const [meetings, setMeetings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [filterType, setFilterType] = useState('all'); 
+    const [filterType, setFilterType] = useState('all');
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
@@ -61,27 +62,33 @@ const Mypage = () => {
     const fetchMeetings = useCallback(async () => {
         setLoading(true);
         setError(null);
-
+    
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+    
         try {
             let url;
             switch (activeTab) {
                 case 'upcoming':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/comingmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/comingmeeting';
                     break;
                 case 'past':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/pastmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/pastmeeting';
                     break;
                 case 'liked':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/likedmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/likedmeeting';
                     break;
                 default:
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/comingmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/comingmeeting';
             }
-
+    
             const response = await axios.get(url, {
-                params: { type: filterType } 
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: { type: filterType }
             });
-
+    
             setMeetings(response.data);
         } catch (error) {
             setError('Error fetching meetings: ' + error.message);
@@ -95,12 +102,12 @@ const Mypage = () => {
     }, [activeTab, filterType, fetchMeetings]);
 
     const handleTabClick = (tab) => {
-        setActiveTab(tab); 
-        setFilterType('all'); 
+        setActiveTab(tab);
+        setFilterType('all');
     };
 
     const handleFilterClick = (type) => {
-        setFilterType(type); 
+        setFilterType(type);
     };
 
     const handleLogoClick = () => {
@@ -116,15 +123,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/profile/edit');
+        navigate('/home/Editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/profile/edit-email');
+        navigate('/home/Editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/Login/Forgetpassword');
+        navigate('/home/Editpassword');
     };
 
     const handleLogout = () => {
@@ -134,6 +141,14 @@ const Mypage = () => {
 
     if (!userData) {
         return <div>Loading...</div>;
+    }
+
+    if (loading) {
+        return <div>Loading meetings...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
     return (
@@ -164,7 +179,7 @@ const Mypage = () => {
 
             <div className="main_area">
                 <div className="profile-section">
-                    <img src={userData.profile_image} alt="Profile" className="profile-image" />
+                    <img src={userData.profile_image} alt="Profile" className="mypage-profile-image" />
                     <span className="nickname">{userData.nickname}</span>
                     <div className="actions">
                         <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={30}/></button>
@@ -181,7 +196,8 @@ const Mypage = () => {
                         </div>
                     </div>
                 </div>
-                <React.Fragment>
+
+                {activeTab !== 'liked' && (
                     <div className="mypage-filter-buttons">
                         <button
                             className={`mypage-filter-btn ${filterType === 'all' ? 'active' : ''}`}
@@ -202,7 +218,26 @@ const Mypage = () => {
                             합류한 모임
                         </button>
                     </div>
-                </React.Fragment>
+                )}
+
+                <div className="mypage-meetings">
+                    {meetings.length > 0 ? (
+                        meetings.map(meeting => (
+                            <div key={meeting.id} className="meeting-item">
+                                <img src={meeting.created_by.profile_image} alt="Profile" className="meeting-profile-image" />
+                                <div class="info">
+                                    <h3>{meeting.meeting_name}</h3>
+                                    <p>{meeting.created_by.nickname} |&nbsp;
+                                    {format(new Date(meeting.meeting_date), 'yy.MM.dd HH:mm')} |&nbsp;
+                                    ~{format(new Date(meeting.deadline), 'yy.MM.dd HH:mm')} |&nbsp;
+                                    {meeting.user_count}/{meeting.max_user}</p>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div>No meetings found.</div>
+                    )}
+                </div>
             </div>
         </div>
     );
