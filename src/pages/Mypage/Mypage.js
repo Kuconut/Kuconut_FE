@@ -195,9 +195,9 @@ const Mypage = () => {
                     <img src={userData.profile_image} alt="Profile" className="mypage-profile-image" />
                     <span className="nickname">{userData.nickname}</span>
                     <div className="actions">
-                        <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={30}/></button>
+                        <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={40}/></button>
                         <div className="mypage-dropdown-container">
-                            <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={30}/></button>
+                            <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={40}/></button>
                             {dropdownOpen && (
                                 <div className="mypage-dropdown-menu">
                                     <button onClick={handleProfileEdit}>프로필 수정</button>
