@@ -9,14 +9,7 @@ const EditPassword = () => {
     const [verifypassword, setVerifypassword] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        document.body.classList.add('forgetid-body');
-        return () => {
-            document.body.classList.remove('forgetid-body');
-        };
-    }, []);
-
-    const handleChange = async () => {
+    const handleChange = () => {
         if(newpassword !== verifypassword) {
             setError('새 비밀번호가 일치하지 않습니다.')
             return;
@@ -24,25 +17,29 @@ const EditPassword = () => {
         const token = localStorage.getItem('access_Token');
         console.log(token)
         console.log(token)
-        try {
-            const response = axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/changepwd',
-                {
-                    nowpassword: currentpassword,
-                    newpassword: newpassword
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }    
-                }            
-            )
-            if(response.status === 200) {
-                alert('비밀번호가 변경되었습니다.')
+        return axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/changepwd',
+            {
+                nowpassword: currentpassword,
+                newpassword: newpassword
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }    
+            }            
+        )
+        .then(response => {
+            alert('비밀변호 변경')
+            navigate('/home/mypage')
+        })
+        .catch(error => {
+            if(error.response.status === 401) {
+                setError('현재 비밀번호가 일치하지 않습니다.')
             }
-        }
-        catch {
-            setError('오류')
-        }
+            else if(error.response.status == 403) {
+                setError('새 비밀번호가 현재 비밀번호와 일치합니다.')
+            }
+        })
     }
 
     return (
