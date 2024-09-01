@@ -45,15 +45,19 @@ const CommentSection = ({id}) => {
     },[id]);
 
     const handleClick = async () => {
-        try {
-            const newComments = await UpdateComment(id, parentId, comment);
-            setComments(newComments);
-            console.log(newComments);
-            setComment(""); // 입력값 초기화
-            setParentId("");
-        } catch (error) {
-            console.error("Error adding comment:", error);
+        if(comment.length !== 0 ){
+            try {
+                const newComments = await UpdateComment(id, parentId, comment);
+                setComments(newComments);
+                console.log(newComments);
+
+                setComment(""); // 입력값 초기화
+                setParentId("");
+            } catch (error) {
+                console.error("Error adding comment:", error);
+            }
         }
+        
     };
 
     return(
@@ -66,7 +70,7 @@ const CommentSection = ({id}) => {
             <div className="input-section">
                 <div className="input-container">
                     <input 
-                        placeholder={parentId ? "답글 입력" : "댓글을 입력하세요"}
+                        placeholder= {parentId ? "답글 입력" : "댓글을 입력하세요"}
                         value={comment} 
                         onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
                         onKeyDown={(e) => {

@@ -45,7 +45,7 @@ const DescriptionBox = styled.div`
     flex:3;
     height : calc(100%-30px);
     padding : 10px 20px;
-    display : flex;
+    display: flex;
     flex-direction : column;
     border-radius : 5%;
 `
@@ -107,6 +107,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
                 setContent(prevContent => ({
                     ...prevContent,
+                    user_count : content.user_count + 1,
                     is_joined: !content.is_joined
                 }));
             })
@@ -114,6 +115,26 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.error('Error updating join status:', error);
             });
     }
+    
+    const handleLeave = () => {
+        ClickLeave(content.id, setalert,auth)
+            .then(() => {
+                // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
+                setContent(prevContent => ({
+                    ...prevContent,
+                    user_count : content.user_count - 1,
+                    is_joined: !content.is_joined
+                }));
+            })
+            .catch(error => {
+                console.error('Error updating leave status:', error);
+            });
+    }
+
+    const handleEidt = () => {
+        navigate(`/EidtMeeting/${content.id}`);
+    }
+
     return(
         <Container>
             <Popupheader>
@@ -138,7 +159,9 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
             <Row>
                 <DescriptionBox>
                     <Contentsection style={{ maxHeight: '80%', overflowY: 'auto' }}>
-                        <div>{parse(content.meeting_description)}</div>
+                        <div className="ql-editor detail-page-editor">
+                            {parse(content.meeting_description)}
+                        </div>
                     </Contentsection>  
                     {content.is_mine ? 
                     <Buttonsection>
@@ -151,11 +174,11 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button">
+                        <button className = "popup-button" onClick={handleEidt}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>
-                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}}>
+                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} >
                             <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
                             <div style={{color:"white"}}>삭제하기</div>
                         </button>
@@ -172,7 +195,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             찜하기
                         </button>}
                         {content.is_joined ?
-                            <button className="popup-button" style={{backgroundColor : "#EB4B4B"}}>
+                            <button className="popup-button" style={{backgroundColor : "#EB4B4B"}} onClick={handleLeave}>
                                 <FiLogOut style={{marginRight : "5px",color:"white"}} size={24}/>
                                 <div style={{color:"white"}}>나가기</div>
                             </button> :
@@ -253,6 +276,30 @@ const ClickJoin = (id,setalert,auth) =>{
     })
     .catch(error => {
         console.error('Error updating join status:', error);
+    });
+}
+const ClickLeave = (id,setalert,auth) =>{
+
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.patch(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/leave`,
+        { "meeting_id": id },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+    .then(response => {
+        console.log('Leave status updated:', response);
+    })
+    .catch(error => {
+        console.error('Error updating leave status:', error);
     });
 }
 export default Popup;

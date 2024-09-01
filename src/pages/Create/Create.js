@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import './Create.css';
+import axios from 'axios';
 import Modal from "react-modal";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -25,12 +26,26 @@ const Write = styled.div`
         border: none;
         box-sizing: border-box;
         overflow-y: auto;
+        text-align: left !important;
     }
 
     .ql-toolbar {
         border: none !important;
         border-bottom: 1px solid #ccc;
         border-radius: inherit;
+    }
+
+    .ql-align-left {
+        text-align: left !important;
+    }
+    .ql-align-center {
+        text-align: center !important;
+    }
+    .ql-align-right {
+        text-align: right !important;
+    }
+    .ql-align-justify {
+        text-align: justify !important;
     }
 ;`
 
@@ -81,8 +96,16 @@ const Submitbutton = styled.button`
     }
 ;`
 
+const Align = ReactQuill.Quill.import("formats/align");
+Align.whitelist = ["left", "center", "right", "justify"];
+
+const Icons = ReactQuill.Quill.import("ui/icons");
+Icons.align["left"] = Icons.align[""];
+
 const Create = () => {
     const editorRef = useRef(null);
+    const deadlineRef = useRef(null);
+    const dateRef = useRef(null);
     const [category, setCategory] = useState("카테고리");
     const [title, setTitle] = useState('');
     const [minNumber, setMinNumber] = useState("");
@@ -96,9 +119,33 @@ const Create = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
+
         if (!token) {
             setLoginModalOpen(true);
         }
+        else {
+            axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status !== 200) {
+                    setLoginModalOpen(true);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                setLoginModalOpen(true);
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        const quill = editorRef.current.getEditor();
+    
+        // 텍스트가 아무것도 없을 때 기본 정렬을 왼쪽으로 설정
+        quill.format('align', 'left');
     }, []);
 
     const handleCategoryChange = (event) => {
@@ -158,13 +205,103 @@ const Create = () => {
         return true;
     };
 
-    const handleSubmit = () => {
-        if (validateNumbers()) {
-            setModalTitle("");
-            setModalMessage("등록되었습니다.");
-            setModalIsOpen(true);
+    const convertToISO8601 = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            console.error("Invalid date string:", dateString);
+            return '';
         }
-    };
+        return date.toISOString();
+    }
+
+    const handleSubmit = async () => {
+        const deadline = deadlineRef.current ? deadlineRef.current.value : '';
+        const meetingDate = dateRef.current ? dateRef.current.value : '';
+
+        if (title.trim() === '') {
+            setModalTitle("error message");
+            setModalMessage("제목을 입력해주세요.");
+            setModalIsOpen(true);
+            return false;
+        }
+
+        if (category === "카테고리") {
+            setModalTitle("error message");
+            setModalMessage("카테고리를 선택해주세요.");
+            setModalIsOpen(true);
+            return false;
+        }
+
+        if (!deadline || !meetingDate) {
+            setModalTitle("error message");
+            setModalMessage("날짜를 선택해주세요.");
+            setModalIsOpen(true);
+            return;
+        }
+
+        if (validateNumbers()) {
+            const meetingData = {
+                "meeting_name": title,
+                "meeting_description": editorHtml,
+                "type": category,
+                "deadline": convertToISO8601(deadline),
+                "meeting_date": convertToISO8601(meetingDate),
+                "min_user": parseInt(minNumber),
+                "max_user": parseInt(maxNumber)
+            };
+
+            console.log("Sending data:", meetingData);
+
+            const token = localStorage.getItem('access_Token');
+
+            try {
+                const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/make_meeting', meetingData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if(response.status === 201) {
+                    setModalTitle("");
+                    setModalMessage("모임이 등록되었습니다.");
+                    setModalIsOpen(true);
+                }
+            }
+            catch (error) {
+                console.error('Error:', error);
+
+                setModalTitle("error message");
+            
+                if (error.response.status === 401) {
+                    setLoginModalOpen(true);
+                }
+                // else if (error.response.status === 403.2) {
+                //     setModalMessage("인원 수 설정이 올바르지 않습니다.");
+                //     setModalIsOpen(true);
+                // }
+                else if (error.response.status === 403) {
+                    setModalMessage((
+                        <div style={{ textAlign: 'left' }}>
+                        모임 이후에는 크루를 모집할 수 없습니다.<br />
+                        올바른 날짜를 선택해주세요.
+                        </div>
+                    ));
+                    setModalIsOpen(true);
+                }
+                else {
+                    setModalMessage((
+                        <div style={{ textAlign: 'left' }}>
+                        모임 등록에 실패했습니다.<br />
+                        다시 시도해주세요
+                        </div>
+                        ));
+                    setModalIsOpen(true);
+                }
+            }
+        };
+    }
 
     return (
         <div className='Create_Container'>
@@ -192,16 +329,16 @@ const Create = () => {
                     <div className='Option'>
                         <div className="Startdate">
                             <label htmlFor="date">모임 일시</label>
-                            <input type="datetime-local" id="date" />
+                            <input type="datetime-local" id="date" ref={dateRef} defaultValue="" />
                         </div>
                         <div className="margin2"></div>
                         <div className="Enddate">
                             <label htmlFor="limit">크루 모집</label>
-                            <input type="datetime-local" id="limit" />
+                            <input type="datetime-local" id="limit" ref={deadlineRef} defaultValue="" />
                         </div>
                         <div className="margin2"></div>
                         <div className="Number">
-                            <label htmlFor="minNumber">인원</label>
+                            <label htmlFor="number">인원</label>
                                 <input 
                                     type="number" 
                                     id="minNumber" 
@@ -249,7 +386,14 @@ const Create = () => {
                     <ModalTitle>{modalTitle}</ModalTitle>
                     <div>{modalMessage}</div>
                     <ModalButtonContainer>
-                        <ModalButton onClick={() => setModalIsOpen(false)}>닫기</ModalButton>
+                        <ModalButton onClick={() => {
+                            setModalIsOpen(false);
+                            if (modalTitle === "") {
+                                navigate(-1);
+                            }
+                        }}>
+                            닫기
+                        </ModalButton>
                     </ModalButtonContainer>
                 </ModalContent>
             </ModalContainer>
@@ -278,7 +422,7 @@ Create.modules = {
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }, {'indent' : '-1'}, {'indent' : '+1'}],
             [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
+            [{ align: ["left", "center", "right", "justify"] }],
             ['link', 'image'],
             ['clean'],                                        
     ],

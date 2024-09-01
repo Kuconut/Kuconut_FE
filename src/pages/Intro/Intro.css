@@ -1,4 +1,4 @@
-.Intor_Container {
+.Container {
     flex-direction: row;
 }
 .Intro {
@@ -10,7 +10,7 @@
     height: 18vh;
     position: relative;
 }
-#Icon {
+#Intro-Icon {
     width: 5.2vw;
     height: 5.2vw;
     background-color: rgb(60, 100, 200);
