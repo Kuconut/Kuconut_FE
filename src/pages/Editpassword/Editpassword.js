@@ -9,6 +9,14 @@ const EditPassword = () => {
     const [verifypassword, setVerifypassword] = useState('');
     const navigate = useNavigate();
 
+
+    useEffect(() => {
+        document.body.classList.add('forgetpassword-body');
+        return () => {
+            document.body.classList.remove('forgetpassword-body');
+        };
+    }, []);
+
     const handleChange = () => {
         if(newpassword !== verifypassword) {
             setError('새 비밀번호가 일치하지 않습니다.')
@@ -36,7 +44,7 @@ const EditPassword = () => {
             if(error.response.status === 401) {
                 setError('현재 비밀번호가 일치하지 않습니다.')
             }
-            else if(error.response.status == 403) {
+            else if(error.response.status === 403) {
                 setError('새 비밀번호가 현재 비밀번호와 일치합니다.')
             }
         })
