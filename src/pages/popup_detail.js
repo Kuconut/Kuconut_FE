@@ -116,7 +116,9 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     }
 
     const handleEidt = () => {
-        navigate(`/EidtMeeting/${content.id}`);
+        setmodalIsOpen(false);
+        navigate(`/EditMeeting/:id`);
+        // navigate(`/EidtMeeting/${content.id}`);
     }
 
     return(

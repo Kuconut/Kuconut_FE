@@ -10,6 +10,7 @@ import Detail from'./pages/detail';
 import Forgetid from './pages/Forgetid/Forgetid';
 import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import EditMeeting from './pages/EidtMeeting/EditMeeting';
 
 Modal.setAppElement('#root');
 
@@ -41,7 +42,9 @@ function App() {
         {/* <Forgetpassword /> */}
         <Route path="/login/Forgetpassword" element={<Forgetpassword />} />    
         {/* <Forgetid /> */}
-        <Route path="/login/Forgetid" element={<Forgetid />} />           
+        <Route path="/login/Forgetid" element={<Forgetid />} />   
+        {/* <EditMeeting /> */}
+        <Route path="/EditMeeting/:id" element={<EditMeeting />} />        
       </Routes>
     </BrowserRouter> 
   );
