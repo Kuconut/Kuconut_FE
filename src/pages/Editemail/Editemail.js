@@ -45,7 +45,7 @@ const EditEmail = () => {
             email: email,
         },
         {
-            header: {
+            headers: {
                 Authorization: `Bearer ${token}`
             }
         })
