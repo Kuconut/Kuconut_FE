@@ -10,12 +10,27 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if(response.status === 200) {
+                navigate('/home')
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
         document.body.classList.add('login-body');
         return () => {
             document.body.classList.remove('login-body');
         };
     }, []);
-
+    
     const handleLogin = async () => {
         try {
             const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Signin', {

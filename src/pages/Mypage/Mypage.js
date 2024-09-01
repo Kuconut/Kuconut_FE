@@ -108,15 +108,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/profile/edit');
+        navigate('/home/mypage/Editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/profile/edit-email');
+        navigate('/home/mypage/Editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/Login/Forgetpassword');
+        navigate('/home/mypage/Editpassword');
     };
 
     const handleLogout = () => {

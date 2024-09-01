@@ -26,7 +26,7 @@ function Searchbar(props){
     const navigate = useNavigate();
 
     const [search,setSearch] = useState("");
-    const [sort, setSort] = useState(false);
+    const [sort, setSort] = useState(null);
     const [search_key,setSearch_key] = useState("meeting_name_description");
     const [search_by,setSearch_By] = useState("제목+내용");
     const [isopen,setIsOpen] = useState(false);
@@ -42,10 +42,11 @@ function Searchbar(props){
         navigate("/home/create");
     }
     useEffect(() => {
-        const token = localStorage.getItem('access_Token');
+        const access_Token = localStorage.getItem('access_Token');
+        const refresh_Token = localStorage.getItem('refresh_Token');
         axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken`,{
             headers:{
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${access_Token}`
             }
         })
         .then((response) => {
@@ -53,6 +54,22 @@ function Searchbar(props){
                 setAuth(true);
             }else{
                 console.log(response.status);
+                axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Refresh',{
+                    refreshToken : refresh_Token
+                })
+                .then((response) =>{
+                    if(response.status === 200){
+                        localStorage.setItem('access_Token', response.data.access_token);   
+                        localStorage.setItem('refresh_Token', response.data.refresh_token);
+                        setAuth(true);       
+                    }else{
+                        setAuth(false)
+                    }
+                })
+                .catch((error) =>{
+                    console.log(error);
+                    setAuth(false);
+                })
                 setAuth(false);
             }
         })
@@ -78,7 +95,7 @@ function Searchbar(props){
                         <input type = "text" className="searchbar" value = {search} onChange={onChange} />
                         <FaSearch size={24} color="444444"/>
                         <div className="filterbox">
-                            <button className="text-button" onClick={() => setSort(false) } style={{color: sort? "#979797" : "black"}}>모임 날짜 가까운 순</button>
+                            <button className="text-button" onClick={() => setSort(null) } style={{color: sort? "#979797" : "black"}}>모임 날짜 가까운 순</button>
                             <button className="text-button" onClick={() => setSort(true)} style={{color: sort? "black" : "#979797"}}>최근에 만들어진 모임 순</button>
                         </div>
                         {/* <button className="s-button" ><FaSearch/></button> */}

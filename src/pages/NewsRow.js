@@ -17,13 +17,19 @@ const Infohead = styled.div`
 `
 
 const NewsRow = ({auth,row,setalert}) => {
+
     const [content, setContent] = useState(row);
+    const [modalIsOpen,setmodalIsOpen] = useState(false);
+    if (!content) {
+        return null;
+    }
     const title = content.meeting_name;
+    const profile_image = content.created_by.profile_image;
     moment.locale();
     const meeting_date = moment(new Date(content.meeting_date)).format("YYYY.MM.DD(dddd)  HH:mm")
     const deadline = moment(new Date(content.deadline)).format("~YYYY.MM.DD(dddd)  HH:mm");
     const nickname = content.created_by.nickname  ?   content.created_by.nickname : "(익명)";
-    const [modalIsOpen,setmodalIsOpen] = useState(false);
+    
 
     const handleClick = () => {
         ClickLike(content.id, setalert,auth)
@@ -41,7 +47,10 @@ const NewsRow = ({auth,row,setalert}) => {
     return (
         <>
             <div className="List-box">
-                <IoPerson/>
+                {profile_image ? <img src={profile_image} alt = "profile"className="profile-image" ></img>
+                :
+                <IoPerson/>}
+                
                 <button className="List-button" onClick={() => {setmodalIsOpen(true); }}>
                     <Infohead>
                         <span className="list_button_text" style={{fontSize: "20px",fontWeight : "500"}}>
@@ -52,14 +61,14 @@ const NewsRow = ({auth,row,setalert}) => {
                         </span>
                     </Infohead>
                     
-                    <div className="list_button_text" style={{fontSize:"18px"}}>
-                        {nickname}   |   {meeting_date}   |   {deadline}   |   {row.user_count}/{row.max_user}
+                    <div className="list_button_text" style={{fontSize:"15px"}}>
+                        {nickname}   |   {meeting_date}   |   {deadline}   |   {content.user_count}/{content.max_user}
                     </div>
                 </button>
                 <button onClick={handleClick} style={{background : 'none',border : 'none'}}>{content.is_liked ? <FaHeart size={24}/> : <FaRegHeart size={24}/>}</button>
             </div>
             <Modal className="PopUp" overlayClassName="Overlay" isOpen={modalIsOpen} onRequestClose={() => setmodalIsOpen(false)}>
-                <Popup auth ={auth} content={content} setContent = {setContent} setmodalIsOpen={setmodalIsOpen} />
+                <Popup auth ={auth} content={content} setContent = {setContent} setmodalIsOpen={setmodalIsOpen}  />
             </Modal>
         </>
         

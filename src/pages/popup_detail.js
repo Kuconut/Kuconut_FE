@@ -45,7 +45,7 @@ const DescriptionBox = styled.div`
     flex:3;
     height : calc(100%-30px);
     padding : 10px 20px;
-    display : flex;
+    display: flex;
     flex-direction : column;
     border-radius : 5%;
 `
@@ -79,6 +79,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
+    const [delete_alert,setDelete_alert] = useState(false);
     const meeting_date = moment(new Date(content.meeting_date)).format("YYYY.MM.DD(dddd)  HH:mm")
     const deadline = moment(new Date(content.deadline)).format("~YYYY.MM.DD(dddd)  HH:mm");
     const nickname = content.created_by.nickname  ?   content.created_by.nickname : "(익명)";
@@ -107,11 +108,39 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
                 setContent(prevContent => ({
                     ...prevContent,
+                    user_count : content.user_count + 1,
                     is_joined: !content.is_joined
                 }));
             })
             .catch(error => {
                 console.error('Error updating join status:', error);
+            });
+    }
+    
+    const handleLeave = () => {
+        ClickLeave(content.id, setalert,auth)
+            .then(() => {
+                // 좋아요 상태를 성공적으로 업데이트한 후, 로컬 상태를 업데이트합니다.
+                setContent(prevContent => ({
+                    ...prevContent,
+                    user_count : content.user_count - 1,
+                    is_joined: !content.is_joined
+                }));
+            })
+            .catch(error => {
+                console.error('Error updating leave status:', error);
+            });
+    }
+    const handleDelete = () => {
+        ClickDelete(content.id, setalert,auth)
+            .then(() => {
+                console.log(content.id)
+                setContent(null);
+                setmodalIsOpen(false);
+                console.log("delete completed");
+            })
+            .catch(error => {
+                console.error('Error updating delete status:', error);
             });
     }
 
@@ -122,7 +151,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     }
 
     return(
-        <Container>
+        content && (<Container>
             <Popupheader>
                 <div style={{width:"90%",padding:"20px"}}>
                     <Infohead>
@@ -160,11 +189,11 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button" onClick={handleEidt}>
+                        <button className = "popup-button" onClick={handleEdit}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>
-                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}}>
+                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} onClick={() => setDelete_alert(true)} >
                             <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
                             <div style={{color:"white"}}>삭제하기</div>
                         </button>
@@ -181,7 +210,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             찜하기
                         </button>}
                         {content.is_joined ?
-                            <button className="popup-button" style={{backgroundColor : "#EB4B4B"}}>
+                            <button className="popup-button" style={{backgroundColor : "#EB4B4B"}} onClick={handleLeave}>
                                 <FiLogOut style={{marginRight : "5px",color:"white"}} size={24}/>
                                 <div style={{color:"white"}}>나가기</div>
                             </button> :
@@ -208,7 +237,15 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 </div>
                 
             </Modal>
-        </Container>
+            <Modal className = 'alert_Modal'isOpen ={delete_alert} onRequestClose={() => setDelete_alert(false)}> 
+                <div>정말 삭제하시겠습니까?</div>
+                <div className="button-container">
+                    <button onClick={handleDelete} className="delete-button" >예</button>
+                    <button onClick={() => setDelete_alert(false)}>아니요</button>
+                </div>
+                
+            </Modal>
+        </Container>)
         
         
 
@@ -234,9 +271,11 @@ const ClickLike = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('Like status updated:', response);
+        return response;
     })
     .catch(error => {
         console.error('Error updating like status:', error);
+        throw error;
     });
 }
 
@@ -259,9 +298,65 @@ const ClickJoin = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('Join status updated:', response);
+        return response;
     })
     .catch(error => {
         console.error('Error updating join status:', error);
+        throw error;
+    });
+}
+const ClickLeave = (id,setalert,auth) =>{
+
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.patch(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/leave`,
+        { "meeting_id": id },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+    .then(response => {
+        console.log('Leave status updated:', response);
+        return response;
+    })
+    .catch(error => {
+        console.error('Error updating leave status:', error);
+        throw error;
+    });
+}
+const ClickDelete = (id,setalert,auth) =>{
+
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.delete(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/delete`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data:{
+                'meeting_id' : id
+            }
+        }
+    )
+    .then(response => {
+        console.log('delete status updated:', response);
+        return response;
+    })
+    .catch(error => {
+        console.error('Error updating delete status:', error);
+        throw error;
     });
 }
 export default Popup;

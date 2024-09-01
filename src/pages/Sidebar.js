@@ -38,7 +38,7 @@ function Sidebar() {
 
     return (
         <Side>
-            <button onClick={() => navigate('/home')} className="side-logo-button"><img className  = "side-logo" alt = "logo" src = "img/logo.jpg"/></button>
+            <button onClick={() => navigate('/home')} className="side-logo-button"><img className  = "side-logo" alt = "logo" src = "../img/logo.jpg"/></button>
         <Menu>
             {menus.map((menu, index) => {
             return (

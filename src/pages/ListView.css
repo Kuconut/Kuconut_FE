@@ -75,7 +75,7 @@
 .Box{
     position: relative;
     display: flex;
-    width: 100%;
+    width: 70%;
     align-items: center;
     justify-content: space-around;
     flex-grow: 1;
@@ -180,7 +180,10 @@
 }
 
 .button-container button:hover{
-    background-color: rgba(27, 95, 232, 0.846);
+    background-color: rgba(135, 142, 155, 0.846);
+}
+.button-container .delete-button:hover{
+  background-color: rgba(232, 47, 27, 0.846);
 }
 .blur{
     position: fixed;
@@ -247,6 +250,7 @@
 }
 
 .searchbar{
+  text-align: left;
   width: 80%;
   height: 50px;
   margin-right: 5px;
@@ -285,20 +289,13 @@
   justify-content: center; /* 세로 중앙 정렬 */
   align-items: center;
 }
-.popup-join{
-  width: 150px;
-  margin:10px;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  background-color: #3C64C8;
-
-  display: flex; /* Flexbox 레이아웃 적용 */
-  flex-direction: row; 
-  justify-content:center; /* 세로 중앙 정렬 */
-  align-items: center;
+.popup-button:hover {
+  filter: brightness(0.85); /* 배경색을 85% 밝기로 조정 (어두워짐) */
 }
-
 .detail-page-editor p {
   text-align: left;
+}
+.profile-image{
+  height: 30px;
+  width: 30px;
 }
