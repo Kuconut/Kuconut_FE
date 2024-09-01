@@ -5,6 +5,7 @@ import './Mypage.css';
 import { LuPencilLine } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { format } from 'date-fns';
+import Popup from '../popup_detail';
 
 const Mypage = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
@@ -15,6 +16,8 @@ const Mypage = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const [selectedMeeting, setSelectedMeeting] = useState(null);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
@@ -123,20 +126,30 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/home/Editnickname');
+        navigate('/home/editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/home/Editemail');
+        navigate('/home/editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/home/Editpassword');
+        navigate('/home/editpassword');
     };
 
     const handleLogout = () => {
         localStorage.removeItem('access_Token');
         navigate('/login');
+    };
+
+    const openPopup = (meeting) => {
+        setSelectedMeeting(meeting);
+        setIsPopupOpen(true);
+    };
+
+    const closePopup = () => {
+        setIsPopupOpen(false);
+        setSelectedMeeting(null);
     };
 
     if (!userData) {
@@ -223,9 +236,9 @@ const Mypage = () => {
                 <div className="mypage-meetings">
                     {meetings.length > 0 ? (
                         meetings.map(meeting => (
-                            <div key={meeting.id} className="meeting-item">
+                            <div key={meeting.id} className="meeting-item" onClick={() => openPopup(meeting)}>
                                 <img src={meeting.created_by.profile_image} alt="Profile" className="meeting-profile-image" />
-                                <div class="info">
+                                <div className="info">
                                     <h3>{meeting.meeting_name}</h3>
                                     <p>{meeting.created_by.nickname} |&nbsp;
                                     {format(new Date(meeting.meeting_date), 'yy.MM.dd HH:mm')} |&nbsp;
@@ -239,6 +252,15 @@ const Mypage = () => {
                     )}
                 </div>
             </div>
+
+            {isPopupOpen && (
+                <Popup
+                    auth={!!userData} // Check if user data exists for authentication status
+                    content={selectedMeeting}
+                    setmodalIsOpen={closePopup} // Pass the function to close the popup
+                    setContent={setSelectedMeeting}
+                />
+            )}
         </div>
     );
 };
