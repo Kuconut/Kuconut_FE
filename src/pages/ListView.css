@@ -285,20 +285,13 @@
   justify-content: center; /* 세로 중앙 정렬 */
   align-items: center;
 }
-.popup-join{
-  width: 150px;
-  margin:10px;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  background-color: #3C64C8;
-
-  display: flex; /* Flexbox 레이아웃 적용 */
-  flex-direction: row; 
-  justify-content:center; /* 세로 중앙 정렬 */
-  align-items: center;
+.popup-button:hover {
+  filter: brightness(0.85); /* 배경색을 85% 밝기로 조정 (어두워짐) */
 }
-
 .detail-page-editor p {
   text-align: left;
+}
+.profile-image{
+  height: 30px;
+  width: 30px;
 }

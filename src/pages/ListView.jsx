@@ -48,7 +48,7 @@ const ListView = ({auth,type,keyword,search_key,sort}) => {
             ) : (
                 <ul className='listView'>
                     {articles && articles.map((v, inx) => {
-                        return <NewsRow auth = {auth} key={inx} row={v} setalert = {setalert} />
+                        return <NewsRow auth = {auth} key={inx} row={v} setalert = {setalert} setArticles = {setArticles} />
                     })}
                 </ul>
             )}

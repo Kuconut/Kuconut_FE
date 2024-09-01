@@ -75,7 +75,7 @@ const Infohead = styled.div`
     flex-direction : row;
 
 `
-const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
+const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
     
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
@@ -130,8 +130,21 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.error('Error updating leave status:', error);
             });
     }
+    const handleDelete = () => {
+        ClickDelete(content.id, setalert,auth)
+            .then(() => {
+                setArticles((prevArticles) =>
+                    prevArticles.filter(article => article.id !== content.id)
+                );
+                setmodalIsOpen(false);
+                console.log("delete completed");
+            })
+            .catch(error => {
+                console.error('Error updating delete status:', error);
+            });
+    }
 
-    const handleEidt = () => {
+    const handleEdit = () => {
         navigate(`/EidtMeeting/${content.id}`);
     }
 
@@ -174,11 +187,11 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button" onClick={handleEidt}>
+                        <button className = "popup-button" onClick={handleEdit}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>
-                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} >
+                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} onClick={handleDelete} >
                             <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
                             <div style={{color:"white"}}>삭제하기</div>
                         </button>
@@ -300,6 +313,34 @@ const ClickLeave = (id,setalert,auth) =>{
     })
     .catch(error => {
         console.error('Error updating leave status:', error);
+    });
+}
+const ClickDelete = (id,setalert,auth) =>{
+
+    if (!auth) {
+        setalert(true);
+        return Promise.reject('User not authenticated');
+    }else setalert(false);
+
+    const token = localStorage.getItem('access_Token');
+    return axios.delete(
+        `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/delete`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data:{
+                'meeting_id' : id
+            }
+        }
+    )
+    .then(response => {
+        console.log('delete status updated:', response);
+        return response;
+    })
+    .catch(error => {
+        console.error('Error updating delete status:', error);
+        throw error;
     });
 }
 export default Popup;

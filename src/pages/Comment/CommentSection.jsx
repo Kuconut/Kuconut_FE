@@ -64,7 +64,7 @@ const CommentSection = ({id}) => {
         <div className="comment-section">  
             <ul className="comment-listview">
                 {comments && comments.map((v, inx) => {
-                    return <CommentRow key = {inx} row = {v} setParentId={setParentId}/>
+                    return <CommentRow key = {inx} row = {v} setParentId={setParentId} isreply = {false}/>
                 })}
             </ul>
             <div className="input-section">
