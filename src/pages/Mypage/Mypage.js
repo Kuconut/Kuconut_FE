@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
 import { LuPencilLine } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
-import Modal from 'react-modal';
-import Popup from "./popup_detail";
-import NewsRow from "./NewsRow";
 
 const Mypage = () => {
     const [activeTab, setActiveTab] = useState('upcoming'); 
@@ -14,15 +11,10 @@ const Mypage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [filterType, setFilterType] = useState('all'); 
-    const [articles, setArticles] = useState(null);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [content, setContent] = useState(null);
-    const [alert, setAlert] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false);  // 드롭다운 메뉴 상태
-
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
 
-    // Token 확인 및 리디렉션 처리
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
 
@@ -30,26 +22,42 @@ const Mypage = () => {
             window.alert('로그인이 필요합니다.');
             navigate('/Login');
             return;
+        } else {
+            axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status !== 200) {
+                    window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
+                    navigate('/Login');
+                }
+            })
+            .catch(() => {
+                window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
+                navigate('/Login');
+            });
         }
+    }, [navigate]);
 
-        axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken', {
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+
+        axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/profile', {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         })
         .then(response => {
-            if (response.status !== 200) {
-                window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
-                navigate('/Login');
-            }
+            setUserData(response.data);
         })
-        .catch(() => {
-            window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
-            navigate('/Login');
+        .catch(error => {
+            console.error('프로필 정보 가져오기 실패:', error);
         });
-    }, [navigate]);
+    }, []);
 
-    // 모임 목록 불러오기
     const fetchMeetings = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -108,15 +116,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/home/mypage/Editnickname');
+        navigate('/profile/edit');
     };
 
     const handleEmailEdit = () => {
-        navigate('/home/mypage/Editemail');
+        navigate('/profile/edit-email');
     };
 
     const handlePasswordChange = () => {
-        navigate('/home/mypage/Editpassword');
+        navigate('/Login/Forgetpassword');
     };
 
     const handleLogout = () => {
@@ -124,10 +132,14 @@ const Mypage = () => {
         navigate('/login');
     };
 
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="/img/logo.jpg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
+                <img src="/img/logo.png" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
                 <div className="tabs">
                     <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
@@ -149,16 +161,17 @@ const Mypage = () => {
                     </button>
                 </div>
             </div>
+
             <div className="main_area">
                 <div className="profile-section">
-                    <img src="profile.jpg" alt="Profile" className="profile-image" />
-                    <span className="nickname">닉네임</span>
+                    <img src={userData.profile_image} alt="Profile" className="profile-image" />
+                    <span className="nickname">{userData.nickname}</span>
                     <div className="actions">
                         <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={30}/></button>
-                        <div className="dropdown-container">
+                        <div className="mypage-dropdown-container">
                             <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={30}/></button>
                             {dropdownOpen && (
-                                <div className="dropdown-menu">
+                                <div className="mypage-dropdown-menu">
                                     <button onClick={handleProfileEdit}>프로필 수정</button>
                                     <button onClick={handleEmailEdit}>이메일 수정</button>
                                     <button onClick={handlePasswordChange}>비밀번호 변경</button>
@@ -169,52 +182,28 @@ const Mypage = () => {
                     </div>
                 </div>
                 <React.Fragment>
-                    <div className="filter-buttons">
+                    <div className="mypage-filter-buttons">
                         <button
-                            className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'all' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('all')}
                         >
                             모든 모임
                         </button>
                         <button
-                            className={`filter-btn ${filterType === 'mine' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'mine' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('mine')}
                         >
                             내가 만든 모임
                         </button>
                         <button
-                            className={`filter-btn ${filterType === 'joined' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'joined' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('joined')}
                         >
                             합류한 모임
                         </button>
                     </div>
-                    <div className="meetings">
-                        {loading && <p>로딩 중...</p>}
-                        {error && <p>오류 발생: {error}</p>}
-                        {articles ? (
-                            <ul className='listView'>
-                                {articles.map((v, inx) => (
-                                    <NewsRow auth={true} key={inx} row={v} setmodal={setModalIsOpen} setContent={setContent} setalert={setAlert} />
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No meetings available</p>
-                        )}
-                    </div>
                 </React.Fragment>
             </div>
-            <Modal className="PopUp" overlayClassName="Overlay" isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-                <Popup auth={true} content={content} setmodalIsOpen={setModalIsOpen} />
-            </Modal>
-            <Modal className='alert_Modal' overlayClassName="Overlay" isOpen={alert} onRequestClose={() => setAlert(false)}> 
-                <div>로그인이 필요합니다.</div>
-                <div>로그인 하시겠습니까?</div>
-                <div className="button-container">
-                    <button onClick={() => navigate('/login')}>예</button>
-                    <button onClick={() => setAlert(false)}>아니요</button>
-                </div>
-            </Modal>
         </div>
     );
 };
