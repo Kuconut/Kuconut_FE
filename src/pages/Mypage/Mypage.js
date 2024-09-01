@@ -126,15 +126,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/home/editnickname');
+        navigate('/home/mypage/Editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/home/editemail');
+        navigate('/home/mypage/Editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/home/editpassword');
+        navigate('/home/mypage/Editpassword');
     };
 
     const handleLogout = () => {
