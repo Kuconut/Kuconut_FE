@@ -34,13 +34,13 @@
     width: 21vw;
     background-color: white;
 }
-.Title {
+.Edit_Title {
     display: flex;
     height: 6vh;
     background-color: inherit;
     border-radius: inherit;
 }
-.Title select {
+.Edit_Title select {
     height: 4vh;
     margin-right: 1vw;
     margin-top: 0.5vh;
@@ -49,9 +49,9 @@
     border-radius: 5px;
     background-color: inherit;
     font-size: 1rem;
-    
+    cursor: not-allowed;
 }
-.Title input {
+.Edit_Title input {
     height: 4vh;
     padding: 0.5vh 1vw;
     border: none;
@@ -60,6 +60,7 @@
     font-size: 1rem;
     width: calc(100% - 7vw);
     text-align: left;
+    cursor: not-allowed;
 }
 .margin1 {
     height: 3vh;

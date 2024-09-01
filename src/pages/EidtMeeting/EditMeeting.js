@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from 'axios';
 import Modal from "react-modal";
@@ -96,27 +96,44 @@ const Submitbutton = styled.button`
     }
 ;`
 
+const ReadOnlyInput = styled.input`
+    background-color: #f0f0f0; 
+    cursor: not-allowed;
+    border: 1px solid #ccc; 
+    padding: 0.5rem;
+`;
+
 const Align = ReactQuill.Quill.import("formats/align");
 Align.whitelist = ["left", "center", "right", "justify"];
 
 const Icons = ReactQuill.Quill.import("ui/icons");
 Icons.align["left"] = Icons.align[""];
 
+const formatDateForInput = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
 const EditMeeting = () => {
     const editorRef = useRef(null);
-    const deadlineRef = useRef(null);
-    const dateRef = useRef(null);
-    const [category, setCategory] = useState("카테고리");
-    const [title, setTitle] = useState('');
-    const [minNumber, setMinNumber] = useState("");
-    const [maxNumber, setMaxNumber] = useState("");
     const [editorHtml, setEditorHtml] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
     const [modalTitle, setModalTitle] = useState("");
     const [loginModalOpen, setLoginModalOpen] = useState(false); 
-    const { id } = useParams(); // Meeting ID from route params
     const navigate = useNavigate();
+    const location = useLocation();
+    const { content } = location.state || {};
+    const [minParticipants, setMinParticipants] = useState(content.min_user);
+    const [maxParticipants, setMaxParticipants] = useState(content.max_user);
+
+    const formattedMeetingDate = formatDateForInput(content.meeting_date);
+    const formattedDeadline = formatDateForInput(content.deadline);
 
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
@@ -141,132 +158,100 @@ const EditMeeting = () => {
             });
         }
     }, []);
-    
+
     useEffect(() => {
-        const fetchMeetingData = async () => {
-            try {
-                const token = localStorage.getItem('access_Token');
-                const response = await axios.get(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                const data = response.data;
-                setCategory(data.type);
-                setTitle(data.meeting_name);
-                setMinNumber(data.min_user);
-                setMaxNumber(data.max_user);
-                setEditorHtml(data.meeting_description);
-                dateRef.current.value = data.meeting_date;
-                deadlineRef.current.value = data.deadline;
-            } catch (error) {
-                console.error('Error fetching meeting data:', error);
-                setModalTitle("Error");
-                setModalMessage("회의 정보를 가져오는 데 실패했습니다.");
-                setModalIsOpen(true);
+
+        setEditorHtml(content.meeting_description || '');
+    }, [content.meeting_description]);
+
+    useEffect(() => {
+        const quill = editorRef.current.getEditor();
+    
+        quill.format('align', 'left');
+    }, []);
+
+    useEffect(() => {
+        if (editorRef.current) {
+            const quill = editorRef.current.getEditor();
+            const content = quill.getContents();
+            
+            const align = content.ops.find(op => op.attributes && op.attributes.align);
+            if (align) {
+                quill.format('align', align.attributes.align);
+            } else {
+                quill.format('align', 'left');
             }
-        };
+        }
+    }, [editorHtml]);
 
-        fetchMeetingData();
-    }, [id]);
-
-    const handleCategoryChange = (event) => {
-        setCategory(event.target.value);
+    const handleMinParticipantsChange = (event) => {
+        const value = parseInt(event.target.value, 10);
+        if (value <= content.min_user && value >= 2) {
+            setMinParticipants(value);
+            if (value > maxParticipants) {
+                setMaxParticipants(value);
+            }
+        }
     };
 
-    const handleTitleChange = (event) => {
-        setTitle(event.target.value);
-    }
-
-    const handleMinNumberChange = (event) => {
-        setMinNumber(event.target.value);
+    const handleMaxParticipantsChange = (event) => {
+        const value = parseInt(event.target.value, 10);
+        if (value >= content.max_user) { 
+            setMaxParticipants(value);
+        }
     };
 
-    const handleMaxNumberChange = (event) => {
-        setMaxNumber(event.target.value);
+    const handleDescriptionChange = (event) => {
+        setEditorHtml(event);
     };
-
-    const validateNumbers = () => {
-        const min = parseFloat(minNumber);
-        const max = parseFloat(maxNumber);
-
-        if (min < 2) {
-            setModalMessage("최소 인원은 2명 이상이어야 합니다.");
-            setModalIsOpen(true);
-            return false;
-        }
-        if (max < min) {
-            setModalMessage("최대 인원은 최소 인원보다 적을 수 없습니다.");
-            setModalIsOpen(true);
-            return false;
-        }
-        if (!min) {
-            setModalMessage("최소 인원을 설정해주세요.");
-            setModalIsOpen(true);
-            return false;
-        }
-        if (!max) {
-            setModalMessage("최대 인원을 설정해주세요.");
-            setModalIsOpen(true);
-            return false;
-        }
-        if (!Number.isInteger(min) || !Number.isInteger(max)) {
-            setModalMessage("올바른 숫자를 입력해주세요.");
-            setModalIsOpen(true);
-            return false;
-        }
-
-        return true;
-    };
-
-    const convertToISO8601 = (dateString) => {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-            console.error("Invalid date string:", dateString);
-            return '';
-        }
-        return date.toISOString();
-    }
 
     const handleSubmit = async () => {
-        const deadline = deadlineRef.current ? deadlineRef.current.value : '';
-        const meetingDate = dateRef.current ? dateRef.current.value : '';
-
-        if (validateNumbers()) {
+        try {
+            const token = localStorage.getItem('access_Token');
             const meetingData = {
-                "meeting_name": title,
+                "meeting_id": content.id,
+                "min_user": minParticipants,
+                "max_user": maxParticipants,
                 "meeting_description": editorHtml,
-                "type": category,
-                "deadline": convertToISO8601(deadline),
-                "meeting_date": convertToISO8601(meetingDate),
-                "min_user": parseInt(minNumber),
-                "max_user": parseInt(maxNumber)
             };
-
-            try {
-                const token = localStorage.getItem('access_Token');
-                const response = await axios.patch(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/${id}`, meetingData, {
+    
+            const response = await axios.patch(
+                `https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/edit`,
+                meetingData,
+                {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
-                });
-
-                if(response.status === 200) {
-                    setModalTitle("");
-                    setModalMessage("모임이 수정되었습니다.");
-                    setModalIsOpen(true);
                 }
-            }
-            catch (error) {
-                console.error('Error:', error);
-                setModalTitle("Error");
-                setModalMessage("모임 수정에 실패했습니다. 다시 시도해주세요.");
+            );
+            if (response.status === 200) {
+                setModalTitle("");
+                setModalMessage("수정되었습니다.");
+                setModalIsOpen(true);
+            } else {
+                setModalTitle("error message");
+                setModalMessage((
+                    <div style={{ textAlign: 'left' }}>
+                    수정에 실패했습니다.<br />
+                    잠시 후 시도해주세요.
+                    </div>
+                ));
                 setModalIsOpen(true);
             }
-        };
-    }
+    
+        } catch (error) {
+            console.error('Error updating meeting:', error);
+            setModalTitle("error message");
+            if (error.response.status === 401.1) {
+                setLoginModalOpen(true);
+            }
+            else if (error.response.status === 401.2) {
+                setModalMessage("모임을 만든 사람만 수정할 수 있습니다.")
+                setModalIsOpen(true);
+            }
+        }
+    };
 
     return (
         <div className='Create_Container'>
@@ -275,8 +260,8 @@ const EditMeeting = () => {
             </div>
             <div className="Center">
                 <div className='Content'>
-                    <div className='Title'>
-                        <select value={category} onChange={handleCategoryChange}>
+                    <div className='Edit_Title'>
+                    <select value={content.category} disabled>
                             <option value="카테고리" disabled>카테고리</option>
                             <option value="eat">Eat</option>
                             <option value="play">Play</option>
@@ -285,22 +270,20 @@ const EditMeeting = () => {
                         </select>
                         <input
                             type="text"
-                            placeholder="제목을 입력하세요"
-                            value={title}
-                            onChange={handleTitleChange}
-                            disabled
+                            value={content.meeting_name}
+                            readOnly
                         />
                     </div>
                     <div className="margin1"></div>
                     <div className='Option'>
                         <div className="Startdate">
                             <label htmlFor="date">모임 일시</label>
-                            <input type="datetime-local" id="date" ref={dateRef} disalbed />
+                            <ReadOnlyInput type="datetime-local" id="date" value={formattedMeetingDate} disabled />
                         </div>
                         <div className="margin2"></div>
                         <div className="Enddate">
                             <label htmlFor="limit">크루 모집</label>
-                            <input type="datetime-local" id="limit" ref={deadlineRef} disabled />
+                            <ReadOnlyInput type="datetime-local" id="limit" value={formattedDeadline} disabled />
                         </div>
                         <div className="margin2"></div>
                         <div className="Number">
@@ -308,19 +291,17 @@ const EditMeeting = () => {
                                 <input 
                                     type="number" 
                                     id="minNumber" 
-                                    placeholder="최소" 
                                     min="2" 
-                                    value={minNumber}
-                                    onChange={handleMinNumberChange}
+                                    value={minParticipants}
+                                    onChange={handleMinParticipantsChange}
                                 />
                                 <span>~</span>
                                 <input 
                                     type="number" 
                                     id="maxNumber" 
-                                    placeholder="최대" 
-                                    min="2" 
-                                    value={maxNumber}
-                                    onChange={handleMaxNumberChange}
+                                    min={minParticipants} 
+                                    value={maxParticipants}
+                                    onChange={handleMaxParticipantsChange}
                                 />
                             </div>
                     </div>
@@ -329,10 +310,9 @@ const EditMeeting = () => {
                         <ReactQuill
                                 ref={editorRef}
                                 value={editorHtml}
-                                onChange={setEditorHtml}
+                                onChange={handleDescriptionChange}
                                 modules={EditMeeting.modules}
                                 formats={EditMeeting.formats}
-                                placeholder="내용을 입력하세요"
                             />
                     </Write>
                 </div>
