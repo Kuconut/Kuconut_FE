@@ -8,6 +8,9 @@ import Signup from './pages/Signup/Signup';
 import Forgetpassword from './pages/Forgetpassword/Forgetpassword';
 import Detail from'./pages/detail';
 import Forgetid from './pages/Forgetid/Forgetid';
+import Editpassword from './pages/Editpassword/Editpassword';
+import Editnickname from './pages/Editnickname/Editnickname';
+import Editemail from './pages/Editemail/Editemail';
 import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -42,6 +45,12 @@ function App() {
         <Route path="/login/Forgetpassword" element={<Forgetpassword />} />    
         {/* <Forgetid /> */}
         <Route path="/login/Forgetid" element={<Forgetid />} />           
+        {/* <Editpassword /> */}
+        <Route path="/home/mypage/Editpassword" element={<Editpassword />} />    
+        {/* <Editnickname /> */}
+        <Route path="/home/mypage/Editnickname" element={<Editnickname />} />  
+        {/* <Editemail /> */}
+        <Route path="/home/mypage/Editemail" element={<Editemail />} />  
       </Routes>
     </BrowserRouter> 
   );

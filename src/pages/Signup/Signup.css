@@ -34,9 +34,10 @@ body.signup-body {
 }
 
 .signup-form-group input {
+    text-align: left;
     grid-column: 2;
     padding: 15px;
-    margin: 10px 0;
+    margin: 1px 0;
     border: 1px solid #ccc;
     border-radius: 20px;
     box-sizing: border-box;
@@ -64,6 +65,7 @@ body.signup-body {
     font-size: 13px; /* 메세지 폰트 크기 조정 */
     color: #000000;
     margin: 0;
+    margin-bottom: 9px;
     padding-left: 10px;
 }
 

@@ -73,7 +73,7 @@ const SignUp = () => {
         nickname: nickname
       });
 
-      if(response.status === 200) {
+      if(response.status === 201) {
         alert('회원가입 성공!');
         navigate("/login");
       }
@@ -88,24 +88,18 @@ const SignUp = () => {
     try {
       const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checkid'+id, {id});
       
-      if(response.status === 201) setIdmessage('사용 가능한 아이디입니다.');
-      else setIdmessage('이미 있는 아이디입니다.');
+      if(response.status === 200) setIdmessage('사용 가능한 아이디입니다.');
 
     }
     catch {
-      setIdmessage('네트워크 오류.')
+      setIdmessage('이미 있는 아이디입니다.')
     }
   }
 
   const nicknameCheck = async () => {
     try {
       const response = await axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checknickname'+nickname, {nickname});
-      if(response.data.message === '사용 가능한 닉네임입니다.') {
-        setNicknamemessage('사용 가능한 별명입니다.')
-      }
-      else {
-        setNicknamemessage('이미 있는 아이디입니다.')
-      }
+      if(response.status === 200) setNicknamemessage('사용 가능한 별명입니다.');
     }
     catch {
       setNicknamemessage('이미 있는 별명입니다.')
