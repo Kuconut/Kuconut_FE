@@ -1,8 +1,6 @@
 import React ,{useState}from "react";
 import './Comment.css'
 import { IoPerson } from "react-icons/io5";
-import moment from "moment";
-import 'moment/locale/ko';
 
 const ReplyComment = ({ children ,setParentId}) => {
     return (
@@ -17,9 +15,6 @@ const ReplyComment = ({ children ,setParentId}) => {
 const CommentRow = ({ row ,setParentId,isreply}) => {
     const [showReplies, setShowReplies] = useState(false);
     const profile_image = row.user.profile_image
-    const createdtime = moment.utc(row.createdAt) // UTC 시간으로 파싱
-    .utcOffset('+09:00') // KST 시간대 (UTC+9)로 변환
-    .fromNow(); // 상대적 시간으로 변환
 
     const handleToggleReplies = () => {
         setShowReplies(!showReplies);
@@ -28,11 +23,11 @@ const CommentRow = ({ row ,setParentId,isreply}) => {
     return (
         <>
             <div className="comment-row">
-                {profile_image ? <img src={profile_image} className="profile-image"></img> :<IoPerson style={{marginRight : "10px"}}/>} 
+                {profile_image ? <img src={profile_image} alt = "profile"className="profile-image"></img> :<IoPerson style={{marginRight : "10px"}}/>} 
                 <div className="comment-text"> 
                     <div style={{ display : "flex" ,flexDirection: "row", alignItems: 'center'}}>
                         <div style={{marginRight : "10px"}}>{row.user.nickname} </div>
-                        <div style={{fontSize : "10px", color : "#979797"}}>{createdtime}</div>
+                        <div style={{fontSize : "10px", color : "#979797"}}>{row.created_time}</div>
                     </div>
                     <div>{row.content}</div>
                 </div>

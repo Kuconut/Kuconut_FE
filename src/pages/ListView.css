@@ -180,7 +180,10 @@
 }
 
 .button-container button:hover{
-    background-color: rgba(27, 95, 232, 0.846);
+    background-color: rgba(135, 142, 155, 0.846);
+}
+.button-container .delete-button:hover{
+  background-color: rgba(232, 47, 27, 0.846);
 }
 .blur{
     position: fixed;
@@ -247,6 +250,7 @@
 }
 
 .searchbar{
+  text-align: left;
   width: 80%;
   height: 50px;
   margin-right: 5px;

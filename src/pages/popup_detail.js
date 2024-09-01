@@ -75,10 +75,11 @@ const Infohead = styled.div`
     flex-direction : row;
 
 `
-const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
+const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
+    const [delete_alert,setDelete_alert] = useState(false);
     const meeting_date = moment(new Date(content.meeting_date)).format("YYYY.MM.DD(dddd)  HH:mm")
     const deadline = moment(new Date(content.deadline)).format("~YYYY.MM.DD(dddd)  HH:mm");
     const nickname = content.created_by.nickname  ?   content.created_by.nickname : "(익명)";
@@ -133,9 +134,8 @@ const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
     const handleDelete = () => {
         ClickDelete(content.id, setalert,auth)
             .then(() => {
-                setArticles((prevArticles) =>
-                    prevArticles.filter(article => article.id !== content.id)
-                );
+                console.log(content.id)
+                setContent(null);
                 setmodalIsOpen(false);
                 console.log("delete completed");
             })
@@ -149,7 +149,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
     }
 
     return(
-        <Container>
+        content && (<Container>
             <Popupheader>
                 <div style={{width:"90%",padding:"20px"}}>
                     <Infohead>
@@ -191,7 +191,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>
-                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} onClick={handleDelete} >
+                        <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} onClick={() => setDelete_alert(true)} >
                             <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
                             <div style={{color:"white"}}>삭제하기</div>
                         </button>
@@ -235,7 +235,15 @@ const Popup = ({auth,content,setmodalIsOpen,setContent,setArticles}) => {
                 </div>
                 
             </Modal>
-        </Container>
+            <Modal className = 'alert_Modal'isOpen ={delete_alert} onRequestClose={() => setDelete_alert(false)}> 
+                <div>정말 삭제하시겠습니까?</div>
+                <div className="button-container">
+                    <button onClick={handleDelete} className="delete-button" >예</button>
+                    <button onClick={() => setDelete_alert(false)}>아니요</button>
+                </div>
+                
+            </Modal>
+        </Container>)
         
         
 
@@ -261,9 +269,11 @@ const ClickLike = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('Like status updated:', response);
+        return response;
     })
     .catch(error => {
         console.error('Error updating like status:', error);
+        throw error;
     });
 }
 
@@ -286,9 +296,11 @@ const ClickJoin = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('Join status updated:', response);
+        return response;
     })
     .catch(error => {
         console.error('Error updating join status:', error);
+        throw error;
     });
 }
 const ClickLeave = (id,setalert,auth) =>{
@@ -310,9 +322,11 @@ const ClickLeave = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('Leave status updated:', response);
+        return response;
     })
     .catch(error => {
         console.error('Error updating leave status:', error);
+        throw error;
     });
 }
 const ClickDelete = (id,setalert,auth) =>{
