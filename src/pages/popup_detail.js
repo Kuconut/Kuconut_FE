@@ -144,8 +144,10 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
             });
     }
 
-    const handleEdit = () => {
-        navigate(`/EidtMeeting/${content.id}`);
+    const handleEidt = () => {
+        setmodalIsOpen(false);
+        navigate(`/EditMeeting/${content.id}`, {state: {content}});
+        // navigate(`/EidtMeeting/${content.id}`);
     }
 
     return(
@@ -187,7 +189,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                             <FaRegHeart style={{marginRight : "5px"}} size={24}/>
                             찜하기
                         </button>}
-                        <button className = "popup-button" onClick={handleEdit}>
+                        <button className = "popup-button" onClick={handleEidt}>
                             <LuPencilLine style={{marginRight : "5px"}} size={24}/>
                             수정하기
                         </button>

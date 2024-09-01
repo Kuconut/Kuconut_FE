@@ -13,6 +13,7 @@ import Editnickname from './pages/Editnickname/Editnickname';
 import Editemail from './pages/Editemail/Editemail';
 import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import EditMeeting from './pages/EidtMeeting/EditMeeting';
 
 Modal.setAppElement('#root');
 
@@ -45,6 +46,8 @@ function App() {
         <Route path="/login/Forgetpassword" element={<Forgetpassword />} />    
         {/* <Forgetid /> */}
         <Route path="/login/Forgetid" element={<Forgetid />} />           
+        {/* <EditMeeting /> */}
+        <Route path="/EditMeeting/:id" element={<EditMeeting />} />        
         {/* <Editpassword /> */}
         <Route path="/home/mypage/Editpassword" element={<Editpassword />} />    
         {/* <Editnickname /> */}

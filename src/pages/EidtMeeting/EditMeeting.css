@@ -1,0 +1,135 @@
+.Edit_Container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+.Left {
+    width: 21vw;
+}
+#Icon {
+    width: 4.5vw;
+    height: 4.5vw;
+    background-color: rgb(60, 100, 200);
+    border-radius: 50%;
+    margin-left: 6.5vw;
+    margin-top: 6.6vh;
+    cursor: pointer;
+}
+.Center {
+    margin-top: 6vh;
+    margin-bottom: 9vh;
+}
+.Content {
+    width: 58vw;
+    height: 75vh;
+    background-color: rgb(238, 238, 238);
+    border-radius: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1vh 1vw;
+    box-sizing: border-box;
+}
+.Right {
+    width: 21vw;
+    background-color: white;
+}
+.Edit_Title {
+    display: flex;
+    height: 6vh;
+    background-color: inherit;
+    border-radius: inherit;
+}
+.Edit_Title select {
+    height: 4vh;
+    margin-right: 1vw;
+    margin-top: 0.5vh;
+    padding: 0.5vh;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    font-size: 1rem;
+    cursor: not-allowed;
+}
+.Edit_Title input {
+    height: 4vh;
+    padding: 0.5vh 1vw;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    font-size: 1rem;
+    width: calc(100% - 7vw);
+    text-align: left;
+    cursor: not-allowed;
+}
+.margin1 {
+    height: 3vh;
+    background-color: white;
+    margin-left: -1vw;
+    margin-right: -1vw;
+}
+.Option {
+    display: flex;
+    flex-direction: row;
+    height: 7vh;
+    background-color: inherit;
+}
+.Startdate {
+    width: 38vw;
+    background-color: inherit;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+.Startdate label, .Enddate label {
+    margin-right: 1vw;
+}
+.Startdate input[type="datetime-local"], .Enddate input[type="datetime-local"] {
+    width: 60%;
+    padding: 0.5vh;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    font-size: 0.8rem;
+    color: black;
+}
+.Enddate {
+    width: 38vw;
+    background-color: inherit;
+    padding-left: 1vw;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+.Number {
+    width: 24vw;
+    background-color: inherit;
+    display: flex;
+    padding-left: 1vw;
+    align-items: center;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+.Number label {
+    margin-right: 1vw;
+}
+.Number input[type="number"] {
+    width: 35%;
+    padding: 0.5vh;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    font-size: 1rem;
+    color: black;
+}
+.margin2 {
+    width: 2.5vw;
+    background-color: white;
+}
+.margin3 {
+    height: 4vh;
+    background-color: white;
+}
+.Submit {
+    text-align: end;
+}

@@ -4,25 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
 import { LuPencilLine } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
-import Modal from 'react-modal';
-import Popup from "./popup_detail";
-import NewsRow from "./NewsRow";
+import { format } from 'date-fns';
+import Popup from '../popup_detail';
 
 const Mypage = () => {
-    const [activeTab, setActiveTab] = useState('upcoming'); 
+    const [activeTab, setActiveTab] = useState('upcoming');
     const [meetings, setMeetings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [filterType, setFilterType] = useState('all'); 
-    const [articles, setArticles] = useState(null);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [content, setContent] = useState(null);
-    const [alert, setAlert] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false);  // 드롭다운 메뉴 상태
-
+    const [filterType, setFilterType] = useState('all');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const [selectedMeeting, setSelectedMeeting] = useState(null);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    // Token 확인 및 리디렉션 처리
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
 
@@ -30,50 +26,72 @@ const Mypage = () => {
             window.alert('로그인이 필요합니다.');
             navigate('/Login');
             return;
+        } else {
+            axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status !== 200) {
+                    window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
+                    navigate('/Login');
+                }
+            })
+            .catch(() => {
+                window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
+                navigate('/Login');
+            });
         }
+    }, [navigate]);
 
-        axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Checktoken', {
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+
+        axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/users/profile', {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         })
         .then(response => {
-            if (response.status !== 200) {
-                window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
-                navigate('/Login');
-            }
+            setUserData(response.data);
         })
-        .catch(() => {
-            window.alert('로그인 상태가 올바르지 않습니다. 다시 로그인해주세요.');
-            navigate('/Login');
+        .catch(error => {
+            console.error('프로필 정보 가져오기 실패:', error);
         });
-    }, [navigate]);
+    }, []);
 
-    // 모임 목록 불러오기
     const fetchMeetings = useCallback(async () => {
         setLoading(true);
         setError(null);
-
+    
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+    
         try {
             let url;
             switch (activeTab) {
                 case 'upcoming':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/comingmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/comingmeeting';
                     break;
                 case 'past':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/pastmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/pastmeeting';
                     break;
                 case 'liked':
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/likedmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/likedmeeting';
                     break;
                 default:
-                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/users/comingmeeting';
+                    url = 'https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/comingmeeting';
             }
-
+    
             const response = await axios.get(url, {
-                params: { type: filterType } 
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: { type: filterType }
             });
-
+    
             setMeetings(response.data);
         } catch (error) {
             setError('Error fetching meetings: ' + error.message);
@@ -87,12 +105,12 @@ const Mypage = () => {
     }, [activeTab, filterType, fetchMeetings]);
 
     const handleTabClick = (tab) => {
-        setActiveTab(tab); 
-        setFilterType('all'); 
+        setActiveTab(tab);
+        setFilterType('all');
     };
 
     const handleFilterClick = (type) => {
-        setFilterType(type); 
+        setFilterType(type);
     };
 
     const handleLogoClick = () => {
@@ -108,15 +126,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/home/mypage/Editnickname');
+        navigate('/home/editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/home/mypage/Editemail');
+        navigate('/home/editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/home/mypage/Editpassword');
+        navigate('/home/editpassword');
     };
 
     const handleLogout = () => {
@@ -124,10 +142,32 @@ const Mypage = () => {
         navigate('/login');
     };
 
+    const openPopup = (meeting) => {
+        setSelectedMeeting(meeting);
+        setIsPopupOpen(true);
+    };
+
+    const closePopup = () => {
+        setIsPopupOpen(false);
+        setSelectedMeeting(null);
+    };
+
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
+    if (loading) {
+        return <div>Loading meetings...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="/img/logo.jpg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
+                <img src="/img/logo.png" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
                 <div className="tabs">
                     <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
@@ -149,16 +189,17 @@ const Mypage = () => {
                     </button>
                 </div>
             </div>
+
             <div className="main_area">
                 <div className="profile-section">
-                    <img src="profile.jpg" alt="Profile" className="profile-image" />
-                    <span className="nickname">닉네임</span>
+                    <img src={userData.profile_image} alt="Profile" className="mypage-profile-image" />
+                    <span className="nickname">{userData.nickname}</span>
                     <div className="actions">
-                        <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={30}/></button>
-                        <div className="dropdown-container">
-                            <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={30}/></button>
+                        <button className="create-btn" onClick={handleCreateClick}><LuPencilLine size={40}/></button>
+                        <div className="mypage-dropdown-container">
+                            <button className="edit-privacy-btn" onClick={handleDropdownToggle}><IoSettingsOutline size={40}/></button>
                             {dropdownOpen && (
-                                <div className="dropdown-menu">
+                                <div className="mypage-dropdown-menu">
                                     <button onClick={handleProfileEdit}>프로필 수정</button>
                                     <button onClick={handleEmailEdit}>이메일 수정</button>
                                     <button onClick={handlePasswordChange}>비밀번호 변경</button>
@@ -168,53 +209,58 @@ const Mypage = () => {
                         </div>
                     </div>
                 </div>
-                <React.Fragment>
-                    <div className="filter-buttons">
+
+                {activeTab !== 'liked' && (
+                    <div className="mypage-filter-buttons">
                         <button
-                            className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'all' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('all')}
                         >
                             모든 모임
                         </button>
                         <button
-                            className={`filter-btn ${filterType === 'mine' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'mine' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('mine')}
                         >
                             내가 만든 모임
                         </button>
                         <button
-                            className={`filter-btn ${filterType === 'joined' ? 'active' : ''}`}
+                            className={`mypage-filter-btn ${filterType === 'joined' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('joined')}
                         >
                             합류한 모임
                         </button>
                     </div>
-                    <div className="meetings">
-                        {loading && <p>로딩 중...</p>}
-                        {error && <p>오류 발생: {error}</p>}
-                        {articles ? (
-                            <ul className='listView'>
-                                {articles.map((v, inx) => (
-                                    <NewsRow auth={true} key={inx} row={v} setmodal={setModalIsOpen} setContent={setContent} setalert={setAlert} />
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No meetings available</p>
-                        )}
-                    </div>
-                </React.Fragment>
-            </div>
-            <Modal className="PopUp" overlayClassName="Overlay" isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-                <Popup auth={true} content={content} setmodalIsOpen={setModalIsOpen} />
-            </Modal>
-            <Modal className='alert_Modal' overlayClassName="Overlay" isOpen={alert} onRequestClose={() => setAlert(false)}> 
-                <div>로그인이 필요합니다.</div>
-                <div>로그인 하시겠습니까?</div>
-                <div className="button-container">
-                    <button onClick={() => navigate('/login')}>예</button>
-                    <button onClick={() => setAlert(false)}>아니요</button>
+                )}
+
+                <div className="mypage-meetings">
+                    {meetings.length > 0 ? (
+                        meetings.map(meeting => (
+                            <div key={meeting.id} className="meeting-item" onClick={() => openPopup(meeting)}>
+                                <img src={meeting.created_by.profile_image} alt="Profile" className="meeting-profile-image" />
+                                <div className="info">
+                                    <h3>{meeting.meeting_name}</h3>
+                                    <p>{meeting.created_by.nickname} |&nbsp;
+                                    {format(new Date(meeting.meeting_date), 'yy.MM.dd HH:mm')} |&nbsp;
+                                    ~{format(new Date(meeting.deadline), 'yy.MM.dd HH:mm')} |&nbsp;
+                                    {meeting.user_count}/{meeting.max_user}</p>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div>No meetings found.</div>
+                    )}
                 </div>
-            </Modal>
+            </div>
+
+            {isPopupOpen && (
+                <Popup
+                    auth={!!userData} // Check if user data exists for authentication status
+                    content={selectedMeeting}
+                    setmodalIsOpen={closePopup} // Pass the function to close the popup
+                    setContent={setSelectedMeeting}
+                />
+            )}
         </div>
     );
 };
