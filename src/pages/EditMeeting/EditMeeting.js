@@ -160,7 +160,14 @@ const EditMeeting = () => {
     }, []);
 
     useEffect(() => {
-
+        if (content) {
+            setMinParticipants(content.min_user);
+            setMaxParticipants(content.max_user);
+            setEditorHtml(content.meeting_description || '');
+        }
+    }, [content]);
+    
+    useEffect(() => {
         setEditorHtml(content.meeting_description || '');
     }, [content.meeting_description]);
 

@@ -13,7 +13,7 @@ import Editnickname from './pages/Editnickname/Editnickname';
 import Editemail from './pages/Editemail/Editemail';
 import Modal from 'react-modal';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import EditMeeting from './pages/EidtMeeting/EditMeeting';
+import EditMeeting from './pages/EditMeeting/EditMeeting';
 
 Modal.setAppElement('#root');
 
