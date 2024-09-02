@@ -112,8 +112,6 @@
   font-weight: bold; 
 }
 
-/*dropdown*/
-
 .mypage-dropdown-container {
   position: relative;
   display: inline-block;
@@ -195,4 +193,10 @@
 .meeting-item p {
   margin: 5px 0;
   text-align: left;
+}
+
+.favorite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
