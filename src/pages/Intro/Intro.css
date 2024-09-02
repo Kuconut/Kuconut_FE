@@ -13,7 +13,9 @@
 #Intro-Icon {
     width: 5.2vw;
     height: 5.2vw;
-    background-color: rgb(60, 100, 200);
+    background-image: url('https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg');
+    background-position: center; 
+    background-repeat: no-repeat;
     border-radius: 50%;
 }
 #Intro-Title {

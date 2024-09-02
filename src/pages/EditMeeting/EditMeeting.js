@@ -26,7 +26,6 @@ const Write = styled.div`
         border: none;
         box-sizing: border-box;
         overflow-y: auto;
-        text-align: left !important;
     }
 
     .ql-toolbar {
@@ -160,29 +159,12 @@ const EditMeeting = () => {
     }, []);
 
     useEffect(() => {
-
-        setEditorHtml(content.meeting_description || '');
-    }, [content.meeting_description]);
-
-    useEffect(() => {
-        const quill = editorRef.current.getEditor();
-    
-        quill.format('align', 'left');
-    }, []);
-
-    useEffect(() => {
-        if (editorRef.current) {
-            const quill = editorRef.current.getEditor();
-            const content = quill.getContents();
-            
-            const align = content.ops.find(op => op.attributes && op.attributes.align);
-            if (align) {
-                quill.format('align', align.attributes.align);
-            } else {
-                quill.format('align', 'left');
-            }
+        if (content) {
+            setMinParticipants(content.min_user);
+            setMaxParticipants(content.max_user);
+            setEditorHtml(content.meeting_description || '');
         }
-    }, [editorHtml]);
+    }, [content]);
 
     const handleMinParticipantsChange = (event) => {
         const value = parseInt(event.target.value, 10);
@@ -201,8 +183,8 @@ const EditMeeting = () => {
         }
     };
 
-    const handleDescriptionChange = (event) => {
-        setEditorHtml(event);
+    const handleDescriptionChange = (value) => {
+        setEditorHtml(value);
     };
 
     const handleSubmit = async () => {
@@ -256,7 +238,7 @@ const EditMeeting = () => {
     return (
         <div className='Create_Container'>
             <div className='Left'>
-                <div id='Icon' onClick={() => navigate('/home')}></div>
+            <div id='edit_Icon' onClick={() => navigate('/home')}></div>
             </div>
             <div className="Center">
                 <div className='Content'>
@@ -369,7 +351,7 @@ EditMeeting.modules = {
             [{ 'list': 'ordered'}, { 'list': 'bullet' }, {'indent' : '-1'}, {'indent' : '+1'}],
             [{ 'color': [] }, { 'background': [] }],
             [{ align: ["left", "center", "right", "justify"] }],
-            ['link', 'image'],
+            ['link'],
             ['clean'],                                        
     ],
 };
@@ -380,7 +362,7 @@ EditMeeting.formats = [
     'list', 'bullet', 'indent',
     'color', 'background', 
     'align', 
-    'link', 'image'
+    'link'
 ]
 
 export default EditMeeting;

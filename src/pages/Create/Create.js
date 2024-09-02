@@ -306,7 +306,7 @@ const Create = () => {
     return (
         <div className='Create_Container'>
             <div className='Left'>
-                <div id='Icon' onClick={() => navigate('/home')}></div>
+                <div id='create_Icon' onClick={() => navigate('/home')}></div>
             </div>
             <div className="Center">
                 <div className='Content'>
@@ -423,7 +423,7 @@ Create.modules = {
             [{ 'list': 'ordered'}, { 'list': 'bullet' }, {'indent' : '-1'}, {'indent' : '+1'}],
             [{ 'color': [] }, { 'background': [] }],
             [{ align: ["left", "center", "right", "justify"] }],
-            ['link', 'image'],
+            ['link'],
             ['clean'],                                        
     ],
 };
@@ -434,7 +434,7 @@ Create.formats = [
     'list', 'bullet', 'indent',
     'color', 'background', 
     'align', 
-    'link', 'image'
+    'link'
 ]
 
 export default Create;
