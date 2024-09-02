@@ -63,7 +63,7 @@ const EditNickname = () => {
         const token = localStorage.getItem('access_Token');
 
         try {
-            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/users/photo',formData, {
+            const response = await axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/photo',formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }            

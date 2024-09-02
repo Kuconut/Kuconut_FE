@@ -13,18 +13,18 @@
     background-image: url('https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg');
     background-position: center; 
     background-repeat: no-repeat;
-    margin-left: 6.5vw;
-    margin-top: 6.6vh;
+    margin-left: 8vw;
+    margin-top: 9.15vh;
     cursor: pointer;
 }
 .Center {
     margin-top: 6vh;
     margin-bottom: 9vh;
 }
-.Content {
+.create_Content {
     width: 58vw;
     height: 75vh;
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(241, 245, 255);
     border-radius: 3%;
     display: flex;
     flex-direction: column;

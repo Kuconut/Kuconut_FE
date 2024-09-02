@@ -211,7 +211,7 @@ const Mypage = () => {
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
+                <div className="logo" onClick={handleLogoClick}></div>
                 <div className="tabs">
                     <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
@@ -246,7 +246,7 @@ const Mypage = () => {
                                 <div className="mypage-dropdown-menu">
                                     <button onClick={handleProfileEdit}>프로필 수정</button>
                                     <button onClick={handleEmailEdit}>이메일 수정</button>
-                                    <button onClick={handlePasswordChange}>비밀번호 변경</button>
+                                    <button onClick={handlePasswordChange}>비밀번호 수정</button>
                                     <button onClick={handleLogout}>로그아웃</button>
                                 </div>
                             )}
