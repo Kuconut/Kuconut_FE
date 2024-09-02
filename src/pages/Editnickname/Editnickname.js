@@ -17,7 +17,25 @@ const EditNickname = () => {
     }, []);
 
     const handleChange = async() => {
+
+        const formData = new FormData();
+        formData.append('profile',image);
+        console.log(image)
         const token = localStorage.getItem('access_Token');
+
+        try {
+            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/users/photo',formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }            
+            })
+            setImage(response.profile_image)
+            setCheck(true)
+            console.log(image)
+        }
+        catch{
+        }
+
         try{
             const response = await axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/updatenick',
                 {
@@ -90,7 +108,7 @@ const EditNickname = () => {
                 <input
                     type="file"
                     accept="image/jpg, image/jpeg, image/png"
-                    onChange={(e) => handleImageChange(e.target)}
+                    onChange={(e) => setImage(e.target.files[0])}
                 />
             </div>
             <div className="forget-password-container">
