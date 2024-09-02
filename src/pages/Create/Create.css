@@ -24,7 +24,7 @@
 .create_Content {
     width: 58vw;
     height: 75vh;
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(241, 245, 255);
     border-radius: 3%;
     display: flex;
     flex-direction: column;
