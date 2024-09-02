@@ -118,7 +118,7 @@ const Mypage = () => {
     };
 
     const handleCreateClick = () => {
-        window.open('/home/create', '_blank');
+        navigate('/home/create');
     };
 
     const handleDropdownToggle = () => {
@@ -126,15 +126,15 @@ const Mypage = () => {
     };
 
     const handleProfileEdit = () => {
-        navigate('/home/editnickname');
+        navigate('/home/mypage/Editnickname');
     };
 
     const handleEmailEdit = () => {
-        navigate('/home/editemail');
+        navigate('/home/mypage/Editemail');
     };
 
     const handlePasswordChange = () => {
-        navigate('/home/editpassword');
+        navigate('/home/mypage/Editpassword');
     };
 
     const handleLogout = () => {
@@ -167,7 +167,7 @@ const Mypage = () => {
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="/img/logo.png" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
+                <img src="https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
                 <div className="tabs">
                     <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
