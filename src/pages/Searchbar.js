@@ -50,32 +50,30 @@ function Searchbar(props){
             }
         })
         .then((response) => {
-            if(response.status === 200){
-                setAuth(true);
-            }else{
-                console.log(response.status);
+            setAuth(true);
+        })
+        .catch((error) => {
+            if(error.response && error.response.status === 401){
+                console.log("Token expired, attempting to refresh...");
                 axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/Refresh',{
                     refreshToken : refresh_Token
                 })
                 .then((response) =>{
-                    if(response.status === 200){
-                        localStorage.setItem('access_Token', response.data.access_token);   
-                        localStorage.setItem('refresh_Token', response.data.refresh_token);
-                        setAuth(true);       
-                    }else{
-                        setAuth(false)
-                    }
+                    console.log("refresh completed");
+                    localStorage.setItem('access_Token', response.data.access_Token);   
+                    localStorage.setItem('refresh_Token', response.data.refresh_Token);
+                    setAuth(true); 
                 })
                 .catch((error) =>{
-                    console.log(error);
+                    console.log("error refreshing",error);
                     setAuth(false);
                 })
                 setAuth(false);
+            }else{
+                console.log(error);
+                setAuth(false);
             }
-        })
-        .catch((response) => {
-            console.log(response);
-            setAuth(false);
+            
         });
     }, []);
 
@@ -123,7 +121,7 @@ function Searchbar(props){
             <Modal className = 'alert_Modal'overlayClassName="Overlay" isOpen = {isopen} onRequestClose={() => setIsOpen(false)}>
                 <div>로그아웃하시렵니까?</div>
                 <div className="button-container">
-                    <button onClick={() => {localStorage.removeItem('access_Token');setIsOpen(false); navigate("/")}} >예</button>
+                    <button onClick={() => {localStorage.removeItem('access_Token'); localStorage.removeItem('refresh_Token');setIsOpen(false); navigate("/")}} >예</button>
                     <button onClick={() => setIsOpen(false)}>아니요</button>
                 </div>
             </Modal>
