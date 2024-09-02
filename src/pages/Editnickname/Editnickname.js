@@ -6,20 +6,41 @@ const EditNickname = () => {
     const [nickname, setNickname] = useState('');
     const [error, setError] = useState('');
     const [image, setImage] = useState('');
+    const [check, setCheck] = useState(false);
     const navigate = useNavigate();
-    const [profile, setProfile] = useState('');
     useEffect(() => {
         getprofile()
-
         document.body.classList.add('forgetpassword-body');
         return () => {
             document.body.classList.remove('forgetpassword-body');
         };
     }, []);
 
-    const handleChange = () => {
+    const handleChange = async() => {
+        const token = localStorage.getItem('access_Token');
+        try{
+            const response = await axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/updatenick',
+                {
+                    nickname: nickname,
+                },
+                {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                },
+            )
+            setCheck(true)
+            console.log(response)
+        }
+        catch{
+        }
+        console.log(check)
 
+        if(check === '') setError('둘 중 하나라도 변경하십시오.')
+        else navigate('/home/mypage')
+        console.log(check)
     }
+
 
     const getprofile = () => {
         const token = localStorage.getItem('access_Token');
@@ -29,62 +50,31 @@ const EditNickname = () => {
             }
         })
         .then(response => {
-            setProfile(response.data)
             setNickname(response.data.nickname)
+            setImage(response.data.profile_image)
         })
         .catch(error => {
             console.log(error)
         })
     }
 
-    const handleEmailVerification = async () => {
-        /*try {
-            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/SendemailForgotPassword', 
-              { user_id: id,
-                email: email
-              });
-            if (response.data.message === '이메일로 인증번호를 전송하였습니다.') {
-                setVerify(true);
-                setEmaillock(true);
-                setError('');
-            } 
-            else if(response.data.message === '아이디가 일치하지 않습니다.') {
-                setError('아이디가 일치하지 않습니다.');
-            }
-            else if (response.data.message === '가입되지 않은 이메일입니다.') {
-                setError('가입되지 않은 이메일입니다.')
-            }
-        } catch (error) {
-            setError('네트워크 오류');
-        }*/
-    };
+    const handleImageChange = async (inp) => {
+        const formData = new FormData();
+        console.log(image)
+        formData.append('profile',image);
+        const token = localStorage.getItem('access_Token');
 
-    const handleVerifyCode = async () => {
-        /*try {
-            const response = await axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/auth/ForgotPassword',
-              { user_id: id,
-                email: email,
-                verifynumber: verifycode });
-            if(response.data.message === '아이디가 일치하지 않습니다.') {
-              setError('아이디가 일치하지 않습니다.')
-            }
-            else if(response.data.message === '인증번호가 만료되었거나 입력되지 않은 이메일입니다.') {
-              setError('인증번호가 만료되었거나 입력되지 않은 이메일입니다.')
-            }
-            else if(response.data.message === '인증번호가 일치하지 않습니다.') {
-              setError(response.data.message);
-            }
-            else {
-              alert(response.data.message)
-              navigate('/login')
-            }
-        } catch (error) {
-            setError('네트워크 오류');
-        }*/
-    };
-
-    const handleImageChange = () => {
-        
+        try {
+            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/users/photo',formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }            
+            })
+            setCheck(true)
+            setImage(response.profile_image)
+        }
+        catch{
+        }
     }
 
     return (
@@ -94,10 +84,13 @@ const EditNickname = () => {
         <button className="second-logo-button" onClick={() => navigate('/')}>OnBoard</button>
       </div>  
         <div className="forget-password-wrapper">
-            <div className="image">
+            <div className='profile_image'>
+                <img src={image} alt="profile_image" className='profile_image' />
+            </div>
+            <div className="image_input">
                 <input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpg, image/jpeg, image/png"
                     onChange={(e) => handleImageChange(e.target.value)}
                 />
             </div>
