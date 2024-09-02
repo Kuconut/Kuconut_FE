@@ -80,6 +80,7 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
     const navigate = useNavigate();
     const [alert,setalert] = useState(false);
     const [delete_alert,setDelete_alert] = useState(false);
+    const [delete_block_alert,setDelete_block_alert] = useState(false);
     const meeting_date = moment(new Date(content.meeting_date)).format("YYYY.MM.DD(dddd)  HH:mm")
     const deadline = moment(new Date(content.deadline)).format("~YYYY.MM.DD(dddd)  HH:mm");
     const nickname = content.created_by.nickname  ?   content.created_by.nickname : "(익명)";
@@ -140,6 +141,10 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                 console.log("delete completed");
             })
             .catch(error => {
+                if(error.response.status === 403){
+                    setDelete_block_alert(true);
+                    console.log('min users limit')
+                }
                 console.error('Error updating delete status:', error);
             });
     }
@@ -240,11 +245,15 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
             <Modal className = 'alert_Modal'isOpen ={delete_alert} onRequestClose={() => setDelete_alert(false)}> 
                 <div>정말 삭제하시겠습니까?</div>
                 <div className="button-container">
-                    <button onClick={handleDelete} className="delete-button" >예</button>
+                    <button onClick={() => {setDelete_alert(false); handleDelete();}} className="delete-button" >예</button>
                     <button onClick={() => setDelete_alert(false)}>아니요</button>
                 </div>
                 
             </Modal>
+            <Modal className = 'alert_Modal'isOpen ={delete_block_alert} onRequestClose={() => setDelete_block_alert(false)}> 
+                <div>참가 인원이 최소 인원 이하인 모임만 삭제할 수 있습니다.</div>
+                
+            </Modal> 
         </Container>)
         
         
@@ -352,7 +361,7 @@ const ClickDelete = (id,setalert,auth) =>{
     )
     .then(response => {
         console.log('delete status updated:', response);
-        return response;
+        return response; 
     })
     .catch(error => {
         console.error('Error updating delete status:', error);

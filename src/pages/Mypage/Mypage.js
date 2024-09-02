@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
-import { LuPencilLine } from "react-icons/lu";
-import { IoSettingsOutline } from "react-icons/io5";
 import { format } from 'date-fns';
 import Popup from '../popup_detail';
+import { LuPencilLine } from "react-icons/lu";
+import { IoSettingsOutline } from "react-icons/io5";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Mypage = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
@@ -15,9 +16,10 @@ const Mypage = () => {
     const [filterType, setFilterType] = useState('all');
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [userData, setUserData] = useState(null);
-    const navigate = useNavigate();
     const [selectedMeeting, setSelectedMeeting] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [favoritedMeetings, setFavoritedMeetings] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('access_Token');
@@ -59,6 +61,23 @@ const Mypage = () => {
         })
         .catch(error => {
             console.error('프로필 정보 가져오기 실패:', error);
+        });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+
+        axios.get('https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/my/likedmeeting', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        .then(response => {
+            setFavoritedMeetings(response.data.map(meeting => meeting.id));
+        })
+        .catch(error => {
+            console.error('찜한 미팅 목록 가져오기 실패:', error);
         });
     }, []);
 
@@ -152,6 +171,31 @@ const Mypage = () => {
         setSelectedMeeting(null);
     };
 
+    const toggleFavorite = async (meetingId) => {
+        const token = localStorage.getItem('access_Token');
+        if (!token) return;
+
+        try {
+            if (favoritedMeetings.includes(meetingId)) {
+                await axios.patch(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/like`, {"meeting_id": meetingId}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setFavoritedMeetings(favoritedMeetings.filter(id => id !== meetingId));
+            } else {
+                await axios.patch(`https://onboardbe-4cn4h6o76q-du.a.run.app/meeting/like`, {"meeting_id": meetingId}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setFavoritedMeetings([...favoritedMeetings, meetingId]);
+            }
+        } catch (error) {
+            console.error('찜 상태 변경 실패:', error);
+        }
+    };
+
     if (!userData) {
         return <div>Loading...</div>;
     }
@@ -236,14 +280,21 @@ const Mypage = () => {
                 <div className="mypage-meetings">
                     {meetings.length > 0 ? (
                         meetings.map(meeting => (
-                            <div key={meeting.id} className="meeting-item" onClick={() => openPopup(meeting)}>
+                            <div key={meeting.id} className="meeting-item">
                                 <img src={meeting.created_by.profile_image} alt="Profile" className="meeting-profile-image" />
-                                <div className="info">
+                                <div className="info" onClick={() => openPopup(meeting)}>
                                     <h3>{meeting.meeting_name}</h3>
                                     <p>{meeting.created_by.nickname} |&nbsp;
                                     {format(new Date(meeting.meeting_date), 'yy.MM.dd HH:mm')} |&nbsp;
                                     ~{format(new Date(meeting.deadline), 'yy.MM.dd HH:mm')} |&nbsp;
                                     {meeting.user_count}/{meeting.max_user}</p>
+                                </div>
+                                <div className="favorite-icon" onClick={() => toggleFavorite(meeting.id)}>
+                                    {favoritedMeetings.includes(meeting.id) ? (
+                                        <FaHeart size={30} />
+                                    ) : (
+                                        <FaRegHeart size={30} />
+                                    )}
                                 </div>
                             </div>
                         ))
@@ -255,9 +306,9 @@ const Mypage = () => {
 
             {isPopupOpen && (
                 <Popup
-                    auth={!!userData} // Check if user data exists for authentication status
+                    auth={!!userData}
                     content={selectedMeeting}
-                    setmodalIsOpen={closePopup} // Pass the function to close the popup
+                    setmodalIsOpen={closePopup}
                     setContent={setSelectedMeeting}
                 />
             )}
