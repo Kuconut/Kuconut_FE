@@ -6,7 +6,6 @@ const EditNickname = () => {
     const [nickname, setNickname] = useState('');
     const [error, setError] = useState('');
     const [image, setImage] = useState('');
-    const [check, setCheck] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         getprofile()
@@ -18,23 +17,8 @@ const EditNickname = () => {
 
     const handleChange = async() => {
 
-        const formData = new FormData();
-        formData.append('profile',image);
         console.log(image)
         const token = localStorage.getItem('access_Token');
-
-        try {
-            const response = await axios.post('https://onboardbe-4cn4h6o76q-du.a.run.app/users/photo',formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }            
-            })
-            setImage(response.profile_image)
-            setCheck(true)
-            console.log(image)
-        }
-        catch{
-        }
 
         try{
             const response = await axios.patch('https://onboardbe-4cn4h6o76q-du.a.run.app/users/updatenick',
@@ -47,14 +31,13 @@ const EditNickname = () => {
                     }
                 },
             )
-            setCheck(true)
+            console.log('asdf')
             console.log(response)
+            navigate('/home/mypage')
         }
         catch{
+            setError('별명을 변경하세요')
         }
-
-        if(!check) setError('둘 중 하나라도 변경하십시오.')
-        else navigate('/home/mypage')
     }
 
 
@@ -77,7 +60,6 @@ const EditNickname = () => {
     const handleImageChange = async (inp) => {
         const formData = new FormData();
         formData.append('profile',inp.files[0]);
-        console.log(inp)
         const token = localStorage.getItem('access_Token');
 
         try {
@@ -87,8 +69,6 @@ const EditNickname = () => {
                 }            
             })
             setImage(response.profile_image)
-            setCheck(true)
-            console.log(image)
         }
         catch{
         }
@@ -108,7 +88,7 @@ const EditNickname = () => {
                 <input
                     type="file"
                     accept="image/jpg, image/jpeg, image/png"
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={(e) => handleImageChange(e.target)}
                 />
             </div>
             <div className="forget-password-container">
@@ -124,7 +104,7 @@ const EditNickname = () => {
                 {error && <p className="forget-password-error">{error}</p>}
             </div>
         </div>
-        <button className="change-button" onClick={() => handleChange()}>변경</button>
+        <button className="change-button" onClick={() => handleChange()}>별명 변경</button>
       </>
     );
 };
