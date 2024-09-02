@@ -6,10 +6,12 @@
 .Left {
     width: 21vw;
 }
-#Icon {
+#edit_Icon {
     width: 4.5vw;
     height: 4.5vw;
-    background-color: rgb(60, 100, 200);
+    background-image: url('https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg');
+    background-position: center; 
+    background-repeat: no-repeat;
     border-radius: 50%;
     margin-left: 6.5vw;
     margin-top: 6.6vh;

@@ -263,7 +263,7 @@ const EditMeeting = () => {
     return (
         <div className='Create_Container'>
             <div className='Left'>
-                <div id='Icon' onClick={() => navigate('/home')}></div>
+            <div id='edit_Icon' onClick={() => navigate('/home')}></div>
             </div>
             <div className="Center">
                 <div className='Content'>
