@@ -90,6 +90,13 @@
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     transition: box-shadow 0.3s ease; 
+    
+    @media only screen and (max-width: 800px) {
+        font-size: 2vh;
+    }
+    @media only screen and (max-width: 600px) {
+        font-size: 1vh;
+    }
 }
 #button:hover {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); 
