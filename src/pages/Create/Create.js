@@ -309,7 +309,7 @@ const Create = () => {
                 <div id='create_Icon' onClick={() => navigate('/home')}></div>
             </div>
             <div className="Center">
-                <div className='Content'>
+                <div className='create_Content'>
                     <div className='Title'>
                         <select value={category} onChange={handleCategoryChange}>
                             <option value="카테고리" disabled>카테고리</option>
