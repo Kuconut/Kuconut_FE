@@ -26,14 +26,17 @@ const CommentRow = ({ row ,setParentId,isreply}) => {
                 {profile_image ? <img src={profile_image} alt = "profile"className="profile-image"></img> :<IoPerson style={{marginRight : "10px"}}/>} 
                 <div className="comment-text"> 
                     <div style={{ display : "flex" ,flexDirection: "row", alignItems: 'center'}}>
-                        <div style={{marginRight : "10px"}}>{row.user.nickname} </div>
-                        <div style={{fontSize : "10px", color : "#979797"}}>{row.created_time}</div>
+                        <div style={{marginRight : "10px",fontSize:"1.3vw"}}>{row.user.nickname} </div>
+                        <div style={{fontSize : "0.9vw", color : "#979797"}}>{row.created_time}</div>
                     </div>
-                    <div>{row.content}</div>
+                    <div style={{fontSize:"1.2vw"}}>{row.content}</div>
                 </div>
                 {!isreply && 
                 <div>
-                    <button onClick = {() => setParentId(row.id)}className="comment-button">답글 달기</button>
+                    <button onClick = {() => setParentId(row.id)}className="comment-button">
+                        <div style={{fontSize:"1vw"}}>답글달기</div>
+                        
+                        </button>
                 </div> }
                 
             </div>

@@ -37,7 +37,6 @@ const Row = styled.div`
 const CommentBox = styled.div`
     flex:2;
     height : calc(100%-30px);
-    width:50%;
     padding : 10px 20px;
 
 `
@@ -187,41 +186,41 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                     <Buttonsection>
                         {content.is_liked? 
                         <button className="popup-button" onClick={handleLike}>
-                            <FaHeart style={{marginRight : "5px"}} size={24}/>
-                            찜취소
+                            <FaHeart style={{marginRight : "5px",fontSize:"1vw"}} size={24}/>
+                            <div style={{fontSize:"1vw"}}>찜취소</div>
                         </button>  : 
                         <button className="popup-button" onClick={handleLike}>
-                            <FaRegHeart style={{marginRight : "5px"}} size={24}/>
-                            찜하기
+                            <FaRegHeart style={{marginRight : "5px",fontSize:"1vw"}} size={24}/>
+                            <div style={{fontSize:"1vw"}}>찜하기</div>
                         </button>}
                         <button className = "popup-button" onClick={handleEdit}>
-                            <LuPencilLine style={{marginRight : "5px"}} size={24}/>
-                            수정하기
+                            <LuPencilLine style={{marginRight : "5px",fontSize:"1vw"}} size={24}/>
+                            <div style={{fontSize:"1vw"}}>수정하기</div>
                         </button>
                         <button className="popup-button" style={{backgroundColor:"#EB4B4B"}} onClick={() => setDelete_alert(true)} >
-                            <FaRegTrashAlt style={{marginRight : "5px", color:"white"}} size={24}/>
-                            <div style={{color:"white"}}>삭제하기</div>
+                            <FaRegTrashAlt style={{marginRight : "5px", color:"white",fontSize:"1vw"}} size={24}/>
+                            <div style={{color:"white",fontSize:"1vw"}}>삭제하기</div>
                         </button>
                     </Buttonsection>    : 
                     
                     <Buttonsection>
                      {content.is_liked? 
                         <button className="popup-button" onClick={handleLike}>
-                            <FaHeart style={{marginRight : "5px"}} size={24}/>
-                            찜취소
+                            <FaHeart style={{marginRight : "5px",fontSize:"1vw"}} size={24}/>
+                            <div style={{fontSize:"1vw"}}>찜취소</div>
                         </button>  : 
                         <button className="popup-button" onClick={handleLike}>
-                            <FaRegHeart style={{marginRight : "5px"}} size={24}/>
-                            찜하기
+                            <FaRegHeart style={{marginRight : "5px",fontSize:"1vw"}} size={24}/>
+                            <div style={{fontSize:"1vw"}}>찜하기</div>
                         </button>}
                         {content.is_joined ?
                             <button className="popup-button" style={{backgroundColor : "#EB4B4B"}} onClick={handleLeave}>
-                                <FiLogOut style={{marginRight : "5px",color:"white"}} size={24}/>
-                                <div style={{color:"white"}}>나가기</div>
+                                <FiLogOut style={{marginRight : "5px",color:"white",fontSize:"1vw"}} size={24}/>
+                                <div style={{color:"white",fontSize:"1vw"}}>나가기</div>
                             </button> :
                             <button className="popup-button" style={{backgroundColor : "#3C64C8"} }onClick={handleJoin}>
                                 <FiLogIn style={{marginRight : "5px",color:"white"}} size={24}/>
-                                <div style={{color:"white"}}>합류하기</div>
+                                <div style={{color:"white",fontSize:"1vw"}}>합류하기</div>
                             </button>
                         }
                     
