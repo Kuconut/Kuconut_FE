@@ -34,11 +34,9 @@ const EditNickname = () => {
         }
         catch{
         }
-        console.log(check)
 
-        if(check === '') setError('둘 중 하나라도 변경하십시오.')
+        if(!check) setError('둘 중 하나라도 변경하십시오.')
         else navigate('/home/mypage')
-        console.log(check)
     }
 
 
@@ -60,8 +58,8 @@ const EditNickname = () => {
 
     const handleImageChange = async (inp) => {
         const formData = new FormData();
-        console.log(image)
-        formData.append('profile',image);
+        formData.append('profile',inp.files[0]);
+        console.log(inp)
         const token = localStorage.getItem('access_Token');
 
         try {
@@ -70,8 +68,9 @@ const EditNickname = () => {
                     Authorization: `Bearer ${token}`
                 }            
             })
-            setCheck(true)
             setImage(response.profile_image)
+            setCheck(true)
+            console.log(image)
         }
         catch{
         }
@@ -91,7 +90,7 @@ const EditNickname = () => {
                 <input
                     type="file"
                     accept="image/jpg, image/jpeg, image/png"
-                    onChange={(e) => handleImageChange(e.target.value)}
+                    onChange={(e) => handleImageChange(e.target)}
                 />
             </div>
             <div className="forget-password-container">
