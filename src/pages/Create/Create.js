@@ -281,11 +281,20 @@ const Create = () => {
                 //     setModalMessage("인원 수 설정이 올바르지 않습니다.");
                 //     setModalIsOpen(true);
                 // }
-                else if (error.response.status === 403) {
+                else if (error.response.message === '모임 날짜가 마감 날짜보다 빠를 수 없습니다.') {
                     setModalMessage((
                         <div style={{ textAlign: 'left' }}>
                         모임 이후에는 크루를 모집할 수 없습니다.<br />
-                        올바른 날짜를 선택해주세요.
+                        올바른 날짜를 선택해주세요. 
+                        </div>
+                    ));
+                    setModalIsOpen(true);
+                }
+                else if (error.response.message === '현재 시간으로부터 30분이상 차이가 나야합니다.') {
+                    setModalMessage((
+                        <div style={{ textAlign: 'left' }}>
+                        현재 시간으로부터 30분 이후에만 모임을 생성할 수 있습니다.<br />
+                        올바른 시간을 선택해주세요. 
                         </div>
                     ));
                     setModalIsOpen(true);
