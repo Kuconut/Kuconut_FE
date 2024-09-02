@@ -8,7 +8,6 @@ import "../App.css";
 
 const Side = styled.div`
   display: flex;
-  border-right: 1px solid #EEEEEE;
   background-color : #EEEEEE;
   flex-direction: column;
   align-items: center;
@@ -18,7 +17,7 @@ const Side = styled.div`
 
 const Menu = styled.div`
   margin-top: 30px;
-  width: 20vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `
