@@ -212,8 +212,16 @@ const Create = () => {
             console.error("Invalid date string:", dateString);
             return '';
         }
-        return date.toISOString();
-    }
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+    
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+    };
 
     const handleSubmit = async () => {
         const deadline = deadlineRef.current ? deadlineRef.current.value : '';
@@ -252,6 +260,8 @@ const Create = () => {
             };
 
             console.log("Sending data:", meetingData);
+            console.log("deadline:", convertToISO8601(deadline));
+            console.log("meeting_date:", convertToISO8601(meetingDate));
 
             const token = localStorage.getItem('access_Token');
 
@@ -270,6 +280,11 @@ const Create = () => {
                 }
             }
             catch (error) {
+                console.log(error);
+                console.log(error.response);
+                console.log(error.response.data.message);
+                console.log(error.message);
+
                 console.error('Error:', error);
 
                 setModalTitle("error message");
@@ -281,20 +296,20 @@ const Create = () => {
                 //     setModalMessage("인원 수 설정이 올바르지 않습니다.");
                 //     setModalIsOpen(true);
                 // }
-                else if (error.response.message === '모임 날짜가 마감 날짜보다 빠를 수 없습니다.') {
-                    setModalMessage((
-                        <div style={{ textAlign: 'left' }}>
-                        모임 이후에는 크루를 모집할 수 없습니다.<br />
-                        올바른 날짜를 선택해주세요. 
-                        </div>
-                    ));
-                    setModalIsOpen(true);
-                }
-                else if (error.response.message === '현재 시간으로부터 30분이상 차이가 나야합니다.') {
+                else if (error.response.data.message === "현재 시간으로부터 30분이상 차이가 나야합니다.") {
                     setModalMessage((
                         <div style={{ textAlign: 'left' }}>
                         현재 시간으로부터 30분 이후에만 모임을 생성할 수 있습니다.<br />
                         올바른 시간을 선택해주세요. 
+                        </div>
+                    ));
+                    setModalIsOpen(true);
+                }
+                else if (error.response.data.message === '모임 날짜가 마감 날짜보다 빠를 수 없습니다.') {
+                    setModalMessage((
+                        <div style={{ textAlign: 'left' }}>
+                        모임 이후에는 크루를 모집할 수 없습니다.<br />
+                        올바른 날짜를 선택해주세요. 
                         </div>
                     ));
                     setModalIsOpen(true);
