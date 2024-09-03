@@ -78,7 +78,7 @@ const EditNickname = () => {
             </div>
             <div className="edit-nickname-wrapper">
                 <div className="edit-profile-image">
-                    <img src={image} alt="profile_image" className="profile-image" />
+                    <img src={image} alt="profile_image" className="asdf-profile-image" />
                     <label className="edit-camera-icon">
                         <input
                             type="file"
