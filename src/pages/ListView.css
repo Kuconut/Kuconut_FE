@@ -80,7 +80,6 @@
     flex-grow: 1;
     background-color: #EEEEEE;
     border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
     margin-right: 70px;
 }
@@ -276,7 +275,7 @@
 }
 .popup-button{
 
-  width: 150px;
+  width: 30%;
   margin:10px;
   padding :10px;
   border: none;

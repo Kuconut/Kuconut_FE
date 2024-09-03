@@ -211,7 +211,7 @@ const Mypage = () => {
     return (
         <div className="mypage-container">
             <div className="side_area">
-                <img src="https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg" alt="Homepage Logo" className="logo" onClick={handleLogoClick} />
+                <div className="logo" onClick={handleLogoClick}></div>
                 <div className="tabs">
                     <button
                         className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}

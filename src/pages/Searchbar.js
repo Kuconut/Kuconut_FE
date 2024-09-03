@@ -14,7 +14,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
 
 const Container = styled.div`
-    width:80%;
+    width:80vw;
     display: flex;
     flex-direction:column;
     height:100vh;
