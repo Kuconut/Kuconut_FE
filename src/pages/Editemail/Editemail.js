@@ -13,7 +13,6 @@ const EditEmail = () => {
 
     useEffect(() => {
         getprofile()
-        console.log(email)
 
         document.body.classList.add('forgetpassword-body');
         return () => {
@@ -144,6 +143,9 @@ const EditEmail = () => {
             </div>
         </div>
         <button className="change-button" onClick={() => handleChange()} disabled={!emaillock}>변경</button>
+        <div className="signup-links">
+          <button className="transparent-login-button" onClick={() => navigate('/home/mypage')}>← 돌아가기</button>
+        </div>
       </>
     );
 };

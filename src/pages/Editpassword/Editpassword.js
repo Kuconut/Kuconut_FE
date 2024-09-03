@@ -89,6 +89,9 @@ const EditPassword = () => {
             </div>
         </div>
         <button className="change-button" onClick={() => handleChange()}>변경</button>
+        <div className="signup-links">
+          <button className="transparent-login-button" onClick={() => navigate('/home/mypage')}>← 돌아가기</button>
+        </div>
       </>
     );
 };
