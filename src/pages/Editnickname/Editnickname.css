@@ -1,0 +1,123 @@
+.edit-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.edit-logo-image {
+    width: 150px; /* 원하는 크기로 조정 */
+    height: 150px; /* 원하는 크기로 조정 */
+    margin-right: 15px; /* 간격 조정 */
+}
+
+.edit-logo-button {
+    font-size: 50px; /* 폰트 크기를 키움 */
+    margin: 0;
+    font-weight: normal; /* 글씨 굵기를 줄임 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit; /* 버튼의 텍스트 색상을 상속받도록 설정 */
+}
+
+.edit-nickname-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-profile-image {
+    position: relative;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.edit-camera-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    width: 2vw;
+    height: 2vh;
+}
+
+.edit-nickname-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.edit-nickname-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.edit-nickname-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.edit-nickname-group input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+.edit-nickname-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.edit-change-button {
+    width: 200px;
+    padding: 10px;
+    background-color: #3C64C8;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.edit-change-button:hover {
+    background-color: #2a4e8a;
+}
+
+.edit-back-link {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.transparent-back-button {
+    background: none;
+    border: none;
+    color: #979797;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+}
+
+.transparent-back-button:hover {
+    text-decoration: underline;
+}
