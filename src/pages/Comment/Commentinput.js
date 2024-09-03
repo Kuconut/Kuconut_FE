@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import axios from "axios";
 import { FaArrowUp } from "react-icons/fa6";
+import "./Comment.css";
 
 const UpdateComment = async (id,parentId,comment) =>{
 
@@ -49,7 +50,7 @@ const Commentinput = ({id,parentId,setParentId,setComments}) =>{
     return(
         <div className="input-container">
                     <input 
-                        placeholder= {parentId ? "답글 입력" : "댓글을 입력하세요"}
+                        placeholder= "댓글을 입력하세요"
                         value={comment} 
                         onChange={(e) => setComment(e.target.value)} // 입력값을 상태로 관리
                         onKeyDown={(e) => {

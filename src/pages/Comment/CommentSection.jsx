@@ -36,7 +36,7 @@ const CommentSection = ({id}) => {
                 })}
             </ul>
             <div className="input-section">
-                <Commentinput {...Commentprops}/>
+                <Commentinput parentId="" id ={id} setParentId={setParentId} setComments={setComments}/>
             </div>
             
         </div>

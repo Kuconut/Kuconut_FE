@@ -1,6 +1,7 @@
 import React ,{useState}from "react";
 import './Comment.css'
 import { IoPerson } from "react-icons/io5";
+import Commentinput from "./Commentinput";
 
 const ReplyComment = ({ children ,setParentId}) => {
     return (
@@ -12,7 +13,7 @@ const ReplyComment = ({ children ,setParentId}) => {
     );
 };
 
-const CommentRow = ({ row ,setParentId,isreply}) => {
+const CommentRow = ({ row ,id,parentId,setParentId,setComments,isreply}) => {
     const [showReplies, setShowReplies] = useState(false);
     const profile_image = row.user.profile_image
 
@@ -20,6 +21,12 @@ const CommentRow = ({ row ,setParentId,isreply}) => {
         setShowReplies(!showReplies);
     };
 
+    const Commentprops = {
+        id,
+        parentId,
+        setParentId,
+        setComments
+    }
     return (
         <>
             <div className="comment-row">
@@ -36,10 +43,14 @@ const CommentRow = ({ row ,setParentId,isreply}) => {
                     <button onClick = {() => setParentId(row.id)}className="comment-button">
                         <div style={{fontSize:"1vw"}}>답글달기</div>
                         
-                        </button>
+                    </button>
                 </div> }
                 
             </div>
+            {parentId && parentId === row.id && 
+                <div className="input-section" style={{width:"80%",marginLeft:"auto"}}>
+                    <Commentinput {...Commentprops}/>
+                </div>}
             {row.children && row.children.length > 0 && (
                 <div>
                     <button className ="comment-button"onClick={handleToggleReplies}>

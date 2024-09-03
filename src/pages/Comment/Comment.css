@@ -52,8 +52,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    background: white; 
-    border-top: 1px solid #ccc; /* Optional border for separation */
+    background: white;
 }
 .input-container{
     display: flex;
@@ -62,7 +61,7 @@
     width: 100%;
     height: 28px;
     padding: 8px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-right: 10px;
     border: none;
     background-color: #EEEEEE;

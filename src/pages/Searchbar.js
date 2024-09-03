@@ -85,10 +85,9 @@ function Searchbar(props){
                         <div style={{ width: '80px' }}>{search_by}</div>
                         <Dropdown iconOpen={<IoMdArrowDropup size={24}/>} iconClose={<IoMdArrowDropdown size={24} />}>
 
-                            <div>
-                                <button onClick={() => {setSearch_By("제목+내용"); setSearch_key("meeting_name_description");}}>제목+내용</button>
-                                <button onClick={() => {setSearch_By("작성자"); setSearch_key("created_by");}}>작성자</button>
-                            </div>
+                            <button onClick={() => {setSearch_By("제목+내용"); setSearch_key("meeting_name_description");}}>제목+내용</button>
+                            <button onClick={() => {setSearch_By("작성자"); setSearch_key("created_by");}}>작성자</button>
+                            
                         </Dropdown>
                         <input type = "text" className="searchbar" value = {search} onChange={onChange} />
                         <FaSearch size={24} color="444444"/>
@@ -102,10 +101,10 @@ function Searchbar(props){
                         <>
                             <button className="side_button" onClick={goToCreate}><LuPencilLine size={30}/></button>
                             <Dropdown iconOpen={<MdOutlinePerson size={40}/>} iconClose={<MdOutlinePerson size={40}/>}>
-                                    <div>
-                                        <button onClick={goToMypage}>마이페이지</button>
-                                        <button onClick={() => setIsOpen(true)}>로그아웃</button>
-                                    </div>
+                                    
+                                    <button onClick={goToMypage}>마이페이지</button>
+                                    <button onClick={() => setIsOpen(true)}>로그아웃</button>
+                                    
                             </Dropdown>
                         </>
                     ):(

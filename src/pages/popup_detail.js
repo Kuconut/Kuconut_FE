@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import CommentSection from "./Comment/CommentSection";
+import Dropdown from "./Dropdown";
 import parse from "html-react-parser/lib/index";
 import axios from "axios";
 import './Comment/Comment.css'
@@ -167,8 +168,20 @@ const Popup = ({auth,content,setmodalIsOpen,setContent}) => {
                         </span>
                     </Infohead>
                     
-                    <div className="list_button_text" style={{fontSize:"18px"}}>
-                        {nickname}   |   {meeting_date}   |   {deadline}   |   {content.user_count}/{content.max_user}
+                    <div className="list_button_text" style={{fontSize:"1.3vw"}}>
+                        {nickname}   |   {meeting_date}   |   {deadline}   |  
+                        <Dropdown 
+                        iconOpen={<div style={{fontSize:"1.2vw" , marginLeft:"5px"}}>{content.user_count}/{content.max_user}</div>}
+                        iconClose={<div style={{fontSize:"1.2vw", marginLeft:"5px"}}>{content.user_count}/{content.max_user}</div>}>
+                            {content.meetingUsers && content.meetingUsers.map((v,inx) =>{
+                                return(
+                                <div style={{display:"flex",flexDirection:"row",padding:"5px",alignItems:"center"}}>
+                                    <img src={v.profile_image} style={{width:"20px",height:"20px",borderRadius:"100%"}} alt = "profileimg"></img>
+                                    <div key={inx} style={{fontSize:"1vw" ,margin:"5px",color:"black"} }>{v.nickname}</div>
+                                </div>
+                                );
+                            })}
+                        </Dropdown>  
                     </div>
                 </div>
                 <button onClick={() => setmodalIsOpen(false)} style={{background:"white" , border : "none",height : "50px"}}><FaXmark size={24}/></button>
