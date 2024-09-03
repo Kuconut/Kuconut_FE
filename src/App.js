@@ -19,7 +19,7 @@ Modal.setAppElement('#root');
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename = {process.env.PUBLIC_URL}>
       <Routes>
         
         {/* 웹 서비스 소개 페이지 */}
