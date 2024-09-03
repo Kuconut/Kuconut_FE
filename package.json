@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy" : "npm run build",
-    "delploy" : "gh-pages -d build"
+    "deploy" : "gh-pages -d build"
   },
   "homepage": "https://kuconut.github.io/Kuconut_FE/",
   "eslintConfig": {
