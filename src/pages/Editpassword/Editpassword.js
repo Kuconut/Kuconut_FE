@@ -53,7 +53,7 @@ const EditPassword = () => {
     return (
     <>
     <div className="login-logo">
-        <img src="../../img/logo.jpg" alt="Logo" className="second-logo-image" />
+        <img src="https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg" alt="Logo" className="second-logo-image" />
         <button className="second-logo-button" onClick={() => navigate('/')}>OnBoard</button>
     </div>  
         <div className="forget-id-wrapper">

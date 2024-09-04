@@ -9,6 +9,7 @@
     width: 150px; /* 원하는 크기로 조정 */
     height: 150px; /* 원하는 크기로 조정 */
     margin-right: 15px; /* 간격 조정 */
+    margin-top: 15px;
 }
 
 .second-logo-button {

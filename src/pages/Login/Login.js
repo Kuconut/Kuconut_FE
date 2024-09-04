@@ -18,7 +18,7 @@ const Login = () => {
         })
         .then(response => {
             if(response.status === 200) {
-                navigate('/home')
+                navigate('home')
             }
         })
         .catch(error => {
@@ -29,7 +29,7 @@ const Login = () => {
         return () => {
             document.body.classList.remove('login-body');
         };
-    }, []);
+    }, [navigate]);
     
     const handleLogin = async () => {
         try {
@@ -62,7 +62,7 @@ const Login = () => {
         <>
         <div className="login-wrapper">
             <div className="login-logo">
-                <img src="../../img/logo.jpg" alt="Logo" className="logo-image" />
+                <img src="https://storage.googleapis.com/onboard_bucket/onboard_logo5.svg" alt="Logo" className="logo-image" />
                 <button className="logo-button" onClick={() => navigate('/')}>OnBoard</button>
             </div>
             <div className="login-container">
