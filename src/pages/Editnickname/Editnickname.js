@@ -86,7 +86,7 @@ const EditNickname = () => {
                             onChange={(e) => handleImageChange(e.target)}
                             style={{ display: 'none' }}
                         />
-                        <MdOutlineCameraAlt style={{border: 'none'}}/>
+                        <MdOutlineCameraAlt style={{border: 'none', width: '28px', height: '28px'}}/>
                     </label>
                 </div>
                 <div className="edit-nickname-container">
